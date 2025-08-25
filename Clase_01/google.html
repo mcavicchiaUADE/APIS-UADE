@@ -1,0 +1,102 @@
+<!DOCTYPE html> <!-- etiqueta de tipo de documento -->
+<html lang="es"> <!-- etiqueta de inicio de la pagina -->
+
+<head> <!-- cabecera de la pagina -->
+    <meta charset="UTF-8"> <!-- etiqueta de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- etiqueta de viewport -->
+    <title>Google</title> <!-- titulo de la pagina -->
+    <link rel="stylesheet" href="google-style.css"> <!-- enlace al archivo CSS -->
+</head> <!-- fin de la cabecera -->
+
+<body> <!-- cuerpo de la pagina -->
+    <header class="main-header"> <!-- encabezado semántico de la página -->
+        <nav class="top-navigation"> <!-- navegación superior -->
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#" class="nav-link">Gmail</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Imágenes</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link icon-link" id="apps-button">
+                        <img src="apps-icon.png" alt="Aplicaciones de Google" class="nav-icon">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link icon-link" id="account-button">
+                        <img src="account-icon.png" alt="Cuenta de Google" class="nav-icon">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content"> <!-- contenido principal semántico -->
+        <section class="search-section" id="search-area"> <!-- sección de búsqueda -->
+            <article class="logo-section"> <!-- artículo del logo -->
+                <a href="google.html" class="logo-link" id="google-logo">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+                        alt="Google" class="logo-image">
+                </a> <!-- encabezado principal (logo) -->
+            </article>
+
+            <article class="search-form-container"> <!-- artículo del buscador -->
+                <form action="#" method="get" class="search-form" id="search-form"> <!-- formulario de búsqueda -->
+                    <div class="search-input-container"> <!-- contenedor del buscador -->
+                        <img src="search-icon.png" alt="Buscar" class="search-icon">
+                        <input type="text" name="q" placeholder="Buscar en Google o escribir una URL"
+                            aria-label="Buscar" class="search-input" id="search-input">
+                        <button type="button" class="voice-search-btn" aria-label="Buscar con voz" id="voice-search">
+                            <img src="mic-icon.png" alt="Buscar con voz" class="voice-icon">
+                        </button>
+                        <button type="button" class="image-search-btn" aria-label="Buscar con imagen" id="image-search">
+                            <img src="camera-icon.png" alt="Buscar con imagen" class="camera-icon">
+                        </button>
+                    </div>
+                </form>
+            </article>
+
+            <aside class="search-actions"> <!-- botones de búsqueda -->
+                <button type="button" class="search-btn primary-btn" id="google-search">Búsqueda con Google</button>
+                <button type="button" class="search-btn secondary-btn" id="lucky-search">Voy a tener suerte</button>
+            </aside>
+        </section>
+
+        <section class="language-options" id="language-section"> <!-- sección de idiomas -->
+            <p class="language-text">Ofrecido por Google en:</p>
+            <ul class="language-list">
+                <li class="language-item"><a href="#" class="language-link">English</a></li>
+                <li class="language-item"><a href="#" class="language-link">Français</a></li>
+                <li class="language-item"><a href="#" class="language-link">Deutsch</a></li>
+                <li class="language-item"><a href="#" class="language-link">Italiano</a></li>
+                <li class="language-item"><a href="#" class="language-link">Português</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="main-footer"> <!-- pie de página semántico -->
+        <section class="footer-location"> <!-- sección superior del footer -->
+            <address class="location-info"> <!-- dirección semántica -->
+                <span class="country-name">Argentina</span>
+            </address>
+        </section>
+
+        <section class="footer-links"> <!-- sección inferior del footer -->
+            <nav class="footer-navigation left-nav"> <!-- navegación del footer -->
+                <ul class="footer-menu">
+                    <li class="footer-item"><a href="#" class="footer-link">Acerca de</a></li>
+                    <li class="footer-item"><a href="#" class="footer-link">Publicidad</a></li>
+                    <li class="footer-item"><a href="#" class="footer-link">Negocios</a></li>
+                    <li class="footer-item"><a href="#" class="footer-link">Cómo funciona la Búsqueda de Google</a></li>
+                </ul>
+            </nav>
+
+            <nav class="footer-navigation right-nav"> <!-- navegación del footer -->
+                <ul class="footer-menu">
+                    <li class="footer-item"><a href="#" class="footer-link">Privacidad</a></li>
+                    <li class="footer-item"><a href="#" class="footer-link">Condiciones</a></li>
+                    <li class="footer-item"><a href="#" class="footer-link">Preferencias</a></li>
+                </ul>
+            </nav>
+        </section>
+    </footer>
+</body> <!-- fin del cuerpo -->
+
+</html> <!-- fin de la pagina -->
