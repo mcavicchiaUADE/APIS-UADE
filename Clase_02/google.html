@@ -1,0 +1,100 @@
+<!DOCTYPE html> <!-- etiqueta de tipo de documento -->
+<html lang="es"> <!-- etiqueta de inicio de la pagina -->
+
+<head> <!-- cabecera de la pagina -->
+    <meta charset="UTF-8"> <!-- etiqueta de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- etiqueta de viewport -->
+    <title>Google</title> <!-- titulo de la pagina -->
+    <link rel="stylesheet" href="google-style.css"> <!-- enlace al archivo CSS -->
+</head> <!-- fin de la cabecera -->
+
+<body> <!-- cuerpo de la pagina -->
+    <header> <!-- encabezado semántico de la página -->
+        <nav> <!-- navegación superior -->
+            <ul>
+                <li><a href="#">Gmail</a></li>
+                <li><a href="#">Imágenes</a></li>
+                <li><a href="#" class="apps-link"><img src="apps-icon.png" alt="Aplicaciones de Google"
+                            class="nav-icon"></a></li>
+                <li><a href="#" class="account-link"><img src="account-icon.png" alt="Cuenta de Google"
+                            class="nav-icon"></a></li>
+                <li id="darkModeBtnContainer">
+                    <button id="temaOscuroBtn">Cambiar modo</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main> <!-- contenido principal semántico -->
+        <section class="search-section"> <!-- sección de búsqueda -->
+            <article class="logo-container"> <!-- artículo del logo -->
+                <a href="google.html" class="logo-link">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+                        alt="Google">
+                </a> <!-- encabezado principal (logo) -->
+            </article>
+
+            <article class="search-container"> <!-- artículo del buscador -->
+                <form action="#" method="get"> <!-- formulario de búsqueda -->
+                    <div class="search-box"> <!-- contenedor del buscador -->
+                        <img src="search-icon.png" alt="Buscar">
+                        <input type="text" name="q" placeholder="Buscar en Google o escribir una URL"
+                            aria-label="Buscar">
+                        <button type="button" class="mic-icon-btn" aria-label="Buscar con voz">
+                            <img src="mic-icon.png" alt="Buscar con voz">
+                        </button>
+                        <button type="button" class="camera-icon-btn" aria-label="Buscar con imagen">
+                            <img src="camera-icon.png" alt="Buscar con imagen">
+                        </button>
+                    </div>
+                </form>
+            </article>
+
+            <aside class="search-buttons"> <!-- botones de búsqueda -->
+                <button type="button">Búsqueda con Google</button>
+                <button type="button">Voy a tener suerte</button>
+            </aside>
+        </section>
+
+        <section class="language-section"> <!-- sección de idiomas -->
+            <p>Ofrecido por Google en:</p>
+            <ul>
+                <li><a href="#">English</a></li>
+                <li><a href="#">Français</a></li>
+                <li><a href="#">Deutsch</a></li>
+                <li><a href="#">Italiano</a></li>
+                <li><a href="#">Português</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer> <!-- pie de página semántico -->
+        <section class="footer-top"> <!-- sección superior del footer -->
+            <address> <!-- dirección semántica -->
+                <span>Argentina</span>
+            </address>
+        </section>
+
+        <section class="footer-bottom"> <!-- sección inferior del footer -->
+            <nav class="footer-nav"> <!-- navegación del footer -->
+                <ul>
+                    <li><a href="#">Acerca de</a></li>
+                    <li><a href="#">Publicidad</a></li>
+                    <li><a href="#">Negocios</a></li>
+                    <li><a href="#">Cómo funciona la Búsqueda de Google</a></li>
+                </ul>
+            </nav>
+
+            <nav class="footer-nav"> <!-- navegación del footer -->
+                <ul>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Condiciones</a></li>
+                    <li><a href="#">Preferencias</a></li>
+                </ul>
+            </nav>
+        </section>
+    </footer>
+    <script src="modo-oscuro.js"></script>
+</body> <!-- fin del cuerpo -->
+
+</html> <!-- fin de la pagina -->
