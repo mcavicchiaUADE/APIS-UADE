@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Simple - PokeAPI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Topbar con título -->
+        <header class="header">
+            <h1>🔍 Pokédex Simple (PokeAPI)</h1>
+            <p>Explora el mundo Pokémon con búsquedas y filtros</p>
+        </header>
+
+        <!-- Controles de búsqueda y filtros -->
+        <section class="search-section">
+            <form class="search-form" id="searchForm">
+                <div class="form-group">
+                    <label for="pokemonSearch">Buscar por nombre:</label>
+                    <input 
+                        type="text" 
+                        id="pokemonSearch" 
+                        name="pokemonSearch" 
+                        placeholder="Buscar por nombre: p. ej. pikachu"
+                        aria-describedby="searchHelp"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="typeFilter">Filtrar por tipo:</label>
+                    <select id="typeFilter" name="typeFilter" aria-describedby="typeHelp">
+                        <option value="">Todos los tipos</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="limitSelect">Pokémon por página:</label>
+                    <select id="limitSelect" name="limitSelect">
+                        <option value="12">12</option>
+                        <option value="20" selected>20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" id="searchBtn">
+                    🔍 Buscar
+                </button>
+                <button type="button" class="btn btn-secondary" id="clearBtn">
+                    🗑️ Limpiar
+                </button>
+            </form>
+            <div class="form-help">
+                <p id="searchHelp">Escribe el nombre exacto del Pokémon (ej: pikachu, charizard)</p>
+                <p id="typeHelp">Selecciona un tipo para filtrar Pokémon de ese elemento</p>
+            </div>
+        </section>
+
+        <!-- Controles de paginación -->
+        <section class="pagination-section" id="paginationSection" style="display: none;">
+            <div class="pagination-controls">
+                <button type="button" class="btn btn-secondary" id="prevBtn" disabled>
+                    ⬅️ Anterior
+                </button>
+                <span class="page-info" id="pageInfo">Página 1</span>
+                <button type="button" class="btn btn-secondary" id="nextBtn">
+                    Siguiente ➡️
+                </button>
+            </div>
+        </section>
+
+        <!-- Zona de resultados -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-header">
+                <h2 class="results-title">Pokémon Encontrados</h2>
+                <span class="results-count" id="resultsCount">0</span>
+            </div>
+            <div id="resultsContent"></div>
+        </section>
+
+        <!-- Modal de detalle del Pokémon -->
+        <div class="modal-overlay" id="modalOverlay" style="display: none;">
+            <div class="modal" id="pokemonModal">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Detalle del Pokémon</h3>
+                    <button type="button" class="modal-close" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-content" id="modalContent"></div>
+            </div>
+        </div>
+
+        <!-- Fuente de datos -->
+        <footer class="data-source">
+            <p>Datos provistos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokeAPI</a></p>
+        </footer>
+    </div>
+
+    <!-- Mensaje de estado para lectores de pantalla -->
+    <div id="statusMessage" class="sr-only" aria-live="polite"></div>
+
+    <!-- Scripts modulares -->
+    <script src="config.js"></script>
+    <script src="state.js"></script>
+    <script src="api.js"></script>
+    <script src="ui.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
