@@ -40,3 +40,65 @@
 .read-the-docs {
   color: #888;
 }
+
+/* estilos para el componente personalizado */
+.mi-componente {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.mi-componente.activo {
+  border-color: #4caf50;
+  background-color: #e8f5e8;
+}
+
+.mi-componente.inactivo {
+  border-color: #f44336;
+  background-color: #ffebee;
+}
+
+.mi-componente h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.mi-componente p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.mi-componente button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.mi-componente button:hover {
+  background-color: #0056b3;
+}
+
+.mi-componente input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.contenido-hijos {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
