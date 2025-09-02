@@ -1,0 +1,108 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Ray-Ban Aviator Classic",
+      "precio": 189.99,
+      "imagen": "https://picsum.photos/id/1059/800/600",
+      "categoria": "Anteojos",
+      "descripcion": "Lentes de sol clásicos con montura dorada y lentes polarizados"
+    },
+    {
+      "id": 2,
+      "nombre": "Cámara Canon EOS R5",
+      "precio": 3899.99,
+      "imagen": "https://picsum.photos/id/250/800/600",
+      "categoria": "Fotografía",
+      "descripcion": "Cámara mirrorless profesional con sensor full-frame de 45MP"
+    },
+    {
+      "id": 3,
+      "nombre": "Guantes de Boxeo Pro",
+      "precio": 89.99,
+      "imagen": "https://picsum.photos/id/345/800/600",
+      "categoria": "Deportes",
+      "descripcion": "Guantes profesionales de boxeo con protección extra"
+    },
+    {
+      "id": 4,
+      "nombre": "Smartwatch Galaxy Watch 5",
+      "precio": 299.99,
+      "imagen": "https://picsum.photos/id/160/800/600",
+      "categoria": "Tecnología",
+      "descripcion": "Reloj inteligente con monitoreo avanzado de salud"
+    },
+    {
+      "id": 5,
+      "nombre": "Zapatillas Running Pro",
+      "precio": 129.99,
+      "imagen": "https://picsum.photos/id/400/800/600",
+      "categoria": "Deportes",
+      "descripcion": "Zapatillas profesionales para running con máxima amortiguación"
+    },
+    {
+      "id": 6,
+      "nombre": "Laptop Gaming ROG",
+      "precio": 1999.99,
+      "imagen": "https://picsum.photos/id/201/800/600",
+      "categoria": "Tecnología",
+      "descripcion": "Laptop gaming con RTX 4060 y procesador Intel i9"
+    },
+    {
+      "id": 7,
+      "nombre": "Raqueta de Tenis Pro",
+      "precio": 199.99,
+      "imagen": "https://picsum.photos/id/450/800/600",
+      "categoria": "Deportes",
+      "descripcion": "Raqueta profesional de tenis con marco de grafito"
+    },
+    {
+      "id": 8,
+      "nombre": "Drone DJI Air 2S",
+      "precio": 999.99,
+      "imagen": "https://picsum.photos/id/300/800/600",
+      "categoria": "Fotografía",
+      "descripcion": "Drone con cámara 4K y sensor de 1 pulgada"
+    },
+    {
+      "id": 9,
+      "nombre": "Bicicleta Mountain Bike",
+      "precio": 799.99,
+      "imagen": "https://picsum.photos/id/146/800/600",
+      "categoria": "Deportes",
+      "descripcion": "Bicicleta de montaña con cuadro de aluminio y 21 velocidades"
+    },
+    {
+      "id": 10,
+      "nombre": "Auriculares Sony WH-1000XM5",
+      "precio": 399.99,
+      "imagen": "https://picsum.photos/id/325/800/600",
+      "categoria": "Tecnología",
+      "descripcion": "Auriculares premium con cancelación de ruido"
+    },
+    {
+      "id": 11,
+      "nombre": "Mochila Fotográfica Pro",
+      "precio": 149.99,
+      "imagen": "https://picsum.photos/id/250/800/600",
+      "categoria": "Fotografía",
+      "descripcion": "Mochila profesional para equipo fotográfico"
+    },
+    {
+      "id": 12,
+      "nombre": "Pelota de Fútbol Profesional",
+      "precio": 49.99,
+      "imagen": "https://picsum.photos/id/358/800/600",
+      "categoria": "Deportes",
+      "descripcion": "Pelota de fútbol oficial con tecnología aerodinámica"
+    },
+    {
+      "id": 13,
+      "nombre": "Termo Stanley Classic",
+      "precio": 44.99,
+      "imagen": "https://picsum.photos/id/225/800/600",
+      "categoria": "Accesorios",
+      "descripcion": "Termo de acero inoxidable con aislamiento al vacío"
+    }
+  ]
+}

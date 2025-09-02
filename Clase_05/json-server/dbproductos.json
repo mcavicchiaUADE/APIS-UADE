@@ -1,0 +1,74 @@
+{
+  "zapatillas": [
+    {
+      "id": 1,
+      "nombre": "Nike Air Max 270",
+      "precio": 159.99,
+      "imagen": "https://picsum.photos/id/500/800/600",
+      "descripcion": "Zapatillas deportivas con amortiguación Air Max"
+    },
+    {
+      "id": 2,
+      "nombre": "Adidas Ultraboost 21",
+      "precio": 179.99,
+      "imagen": "https://picsum.photos/id/501/800/600",
+      "descripcion": "Zapatillas de running con tecnología Boost"
+    },
+    {
+      "id": 3,
+      "nombre": "Puma RS-X",
+      "precio": 129.99,
+      "imagen": "https://picsum.photos/id/502/800/600",
+      "descripcion": "Zapatillas estilo retro con diseño moderno"
+    },
+    {
+      "id": 4,
+      "nombre": "New Balance 574",
+      "precio": 89.99,
+      "imagen": "https://picsum.photos/id/503/800/600",
+      "descripcion": "Zapatillas clásicas de estilo casual"
+    },
+    {
+      "id": 5,
+      "nombre": "Nike Jordan 1",
+      "precio": 199.99,
+      "imagen": "https://picsum.photos/id/504/800/600",
+      "descripcion": "Zapatillas icónicas de baloncesto"
+    },
+    {
+      "id": 6,
+      "nombre": "Adidas Stan Smith",
+      "precio": 84.99,
+      "imagen": "https://picsum.photos/id/505/800/600",
+      "descripcion": "Zapatillas clásicas de tenis"
+    },
+    {
+      "id": 7,
+      "nombre": "Vans Old Skool",
+      "precio": 69.99,
+      "imagen": "https://picsum.photos/id/506/800/600",
+      "descripcion": "Zapatillas clásicas de skate"
+    },
+    {
+      "id": 8,
+      "nombre": "Reebok Classic Leather",
+      "precio": 79.99,
+      "imagen": "https://picsum.photos/id/507/800/600",
+      "descripcion": "Zapatillas retro de estilo urbano"
+    },
+    {
+      "id": 9,
+      "nombre": "Converse Chuck Taylor",
+      "precio": 59.99,
+      "imagen": "https://picsum.photos/id/508/800/600",
+      "descripcion": "Zapatillas clásicas de lona"
+    },
+    {
+      "id": 10,
+      "nombre": "ASICS Gel-Nimbus",
+      "precio": 149.99,
+      "imagen": "https://picsum.photos/id/509/800/600",
+      "descripcion": "Zapatillas de running con tecnología GEL"
+    }
+  ]
+}
