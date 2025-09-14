@@ -1,0 +1,290 @@
+{
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Ray-Ban Aviator Classic",
+        "precio": 189.99,
+        "imagen": "https://picsum.photos/id/1059/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/1059/800/600",
+          "https://picsum.photos/id/1060/800/600",
+          "https://picsum.photos/id/1061/800/600"
+        ],
+        "categoria": "Anteojos",
+        "descripcion": "Lentes de sol clásicos con montura dorada y lentes polarizados",
+        "stock": 15,
+        "detalles": {
+          "material": "Metal",
+          "color": "Dorado",
+          "medidas": "58-14-135",
+          "garantia": "2 años"
+        }
+      },
+      {
+        "id": 2,
+        "nombre": "Cámara Canon EOS R5",
+        "precio": 3899.99,
+        "imagen": "https://picsum.photos/id/250/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/250/800/600",
+          "https://picsum.photos/id/251/800/600",
+          "https://picsum.photos/id/252/800/600"
+        ],
+        "categoria": "Fotografía",
+        "descripcion": "Cámara mirrorless profesional con sensor full-frame de 45MP",
+        "stock": 8,
+        "detalles": {
+          "sensor": "45MP Full-Frame CMOS",
+          "video": "8K RAW",
+          "estabilizacion": "5 ejes",
+          "conectividad": "Wi-Fi 6, Bluetooth"
+        }
+      },
+      {
+        "id": 3,
+        "nombre": "Guantes de Boxeo Pro",
+        "precio": 89.99,
+        "imagen": "https://picsum.photos/id/345/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/345/800/600",
+          "https://picsum.photos/id/346/800/600",
+          "https://picsum.photos/id/347/800/600"
+        ],
+        "categoria": "Deportes",
+        "descripcion": "Guantes profesionales de boxeo con protección extra",
+        "stock": 20,
+        "detalles": {
+          "peso": "14 oz",
+          "material": "Cuero genuino",
+          "color": "Rojo/Negro",
+          "cierre": "Velcro ajustable"
+        }
+      },
+      {
+        "id": 4,
+        "nombre": "Smartwatch Galaxy Watch 5",
+        "precio": 299.99,
+        "imagen": "https://picsum.photos/id/160/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/160/800/600",
+          "https://picsum.photos/id/161/800/600",
+          "https://picsum.photos/id/162/800/600"
+        ],
+        "categoria": "Tecnología",
+        "descripcion": "Reloj inteligente con monitoreo avanzado de salud",
+        "stock": 25,
+        "detalles": {
+          "pantalla": "1.4 pulgadas AMOLED",
+          "bateria": "361mAh",
+          "resistencia": "IP68",
+          "sensores": "ECG, Presión arterial, SpO2"
+        }
+      },
+      {
+        "id": 5,
+        "nombre": "Zapatillas Running Pro",
+        "precio": 129.99,
+        "imagen": "https://picsum.photos/id/400/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/400/800/600",
+          "https://picsum.photos/id/401/800/600",
+          "https://picsum.photos/id/402/800/600"
+        ],
+        "categoria": "Deportes",
+        "descripcion": "Zapatillas profesionales para running con máxima amortiguación",
+        "stock": 30,
+        "detalles": {
+          "talle": "40-45",
+          "color": "Negro/Rojo",
+          "suela": "EVA expandida",
+          "peso": "280g"
+        }
+      },
+      {
+        "id": 6,
+        "nombre": "Laptop Gaming ROG",
+        "precio": 1999.99,
+        "imagen": "https://picsum.photos/id/201/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/201/800/600",
+          "https://picsum.photos/id/202/800/600",
+          "https://picsum.photos/id/203/800/600"
+        ],
+        "categoria": "Tecnología",
+        "descripcion": "Laptop gaming con RTX 4060 y procesador Intel i9",
+        "stock": 12,
+        "detalles": {
+          "procesador": "Intel i9 13900H",
+          "gpu": "RTX 4060 8GB",
+          "ram": "32GB DDR5",
+          "almacenamiento": "1TB NVMe SSD"
+        }
+      },
+      {
+        "id": 7,
+        "nombre": "Raqueta de Tenis Pro",
+        "precio": 199.99,
+        "imagen": "https://picsum.photos/id/450/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/450/800/600",
+          "https://picsum.photos/id/451/800/600",
+          "https://picsum.photos/id/452/800/600"
+        ],
+        "categoria": "Deportes",
+        "descripcion": "Raqueta profesional de tenis con marco de grafito",
+        "stock": 18,
+        "detalles": {
+          "peso": "300g",
+          "tamaño": "27 pulgadas",
+          "material": "Grafito",
+          "tension": "50-60 libras"
+        }
+      },
+      {
+        "id": 8,
+        "nombre": "Drone DJI Air 2S",
+        "precio": 999.99,
+        "imagen": "https://picsum.photos/id/300/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/300/800/600",
+          "https://picsum.photos/id/301/800/600",
+          "https://picsum.photos/id/302/800/600"
+        ],
+        "categoria": "Fotografía",
+        "descripcion": "Drone con cámara 4K y sensor de 1 pulgada",
+        "stock": 10,
+        "detalles": {
+          "camara": "20MP 4K/60fps",
+          "autonomia": "31 minutos",
+          "alcance": "12km",
+          "peso": "595g"
+        }
+      },
+      {
+        "id": 9,
+        "nombre": "Bicicleta Mountain Bike",
+        "precio": 799.99,
+        "imagen": "https://picsum.photos/id/146/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/146/800/600",
+          "https://picsum.photos/id/147/800/600",
+          "https://picsum.photos/id/148/800/600"
+        ],
+        "categoria": "Deportes",
+        "descripcion": "Bicicleta de montaña con cuadro de aluminio y 21 velocidades",
+        "stock": 8,
+        "detalles": {
+          "marco": "Aluminio 6061",
+          "velocidades": "21",
+          "frenos": "Disco hidráulico",
+          "suspension": "Delantera 120mm"
+        }
+      },
+      {
+        "id": 10,
+        "nombre": "Auriculares Sony WH-1000XM5",
+        "precio": 399.99,
+        "imagen": "https://picsum.photos/id/325/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/325/800/600",
+          "https://picsum.photos/id/326/800/600",
+          "https://picsum.photos/id/327/800/600"
+        ],
+        "categoria": "Tecnología",
+        "descripcion": "Auriculares premium con cancelación de ruido",
+        "stock": 22,
+        "detalles": {
+          "bateria": "30 horas",
+          "conectividad": "Bluetooth 5.2",
+          "audio": "LDAC, DSEE Extreme",
+          "color": "Negro"
+        }
+      },
+      {
+        "id": 11,
+        "nombre": "Mochila Fotográfica Pro",
+        "precio": 149.99,
+        "imagen": "https://picsum.photos/id/250/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/250/800/600",
+          "https://picsum.photos/id/251/800/600",
+          "https://picsum.photos/id/252/800/600"
+        ],
+        "categoria": "Fotografía",
+        "descripcion": "Mochila profesional para equipo fotográfico",
+        "stock": 15,
+        "detalles": {
+          "capacidad": "25L",
+          "material": "Nylon balístico",
+          "compartimentos": "Múltiples divisores",
+          "resistencia": "Impermeable"
+        }
+      },
+      {
+        "id": 12,
+        "nombre": "Pelota de Fútbol Profesional",
+        "precio": 49.99,
+        "imagen": "https://picsum.photos/id/358/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/358/800/600",
+          "https://picsum.photos/id/359/800/600",
+          "https://picsum.photos/id/360/800/600"
+        ],
+        "categoria": "Deportes",
+        "descripcion": "Pelota de fútbol oficial con tecnología aerodinámica",
+        "stock": 40,
+        "detalles": {
+          "tamaño": "5",
+          "material": "Cuero sintético",
+          "tecnologia": "Aerodinámico",
+          "certificacion": "FIFA Quality Pro"
+        }
+      },
+      {
+        "id": 13,
+        "nombre": "Termo Stanley Classic",
+        "precio": 44.99,
+        "imagen": "https://picsum.photos/id/225/800/600",
+        "imagenes": [
+          "https://picsum.photos/id/225/800/600",
+          "https://picsum.photos/id/226/800/600",
+          "https://picsum.photos/id/227/800/600"
+        ],
+        "categoria": "Accesorios",
+        "descripcion": "Termo de acero inoxidable con aislamiento al vacío",
+        "stock": 35,
+        "detalles": {
+          "capacidad": "1L",
+          "material": "Acero inoxidable 18/8",
+          "aislamiento": "24 horas frío/caliente",
+          "color": "Verde militar"
+        }
+      }
+    ],
+    "usuarios": [
+      {
+        "id": 1,
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "username": "juanperez",
+        "email": "juan.perez@email.com",
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=juan"
+      },
+      {
+        "id": 2,
+        "nombre": "María",
+        "apellido": "García",
+        "username": "mariagarcia",
+        "email": "maria.garcia@email.com",
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=maria"
+      },
+      {
+        "id": 3,
+        "nombre": "Carlos",
+        "apellido": "Rodríguez",
+        "username": "carlosrodriguez",
+        "email": "carlos.rodriguez@email.com",
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=carlos"
+      }
+    ]
+}
