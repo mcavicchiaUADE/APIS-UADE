@@ -91,19 +91,6 @@
       "createdAt": "2024-01-15T10:30:00.000Z"
     },
     {
-      "id": "4",
-      "name": "Adidas Ultraboost 22",
-      "description": "Zapatillas de running premium con tecnología Boost, Primeknit+ en la parte superior y suela Continental para máxima tracción. Diseñadas para corredores serios.",
-      "price": 179.99,
-      "stock": 15,
-      "images": [
-        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&h=600&fit=crop&crop=center"
-      ],
-      "categoryId": 2,
-      "ownerUserId": 2,
-      "createdAt": "2024-01-15T10:30:00.000Z"
-    },
-    {
       "id": "5",
       "name": "Philips Hue White & Color Ambiance",
       "description": "Kit de iluminación inteligente con 3 bombillas LED que cambian de color, control por app y compatibilidad con Alexa y Google Assistant. Perfecto para crear ambientes únicos.",
@@ -175,11 +162,1186 @@
       "price": 19.99,
       "stock": 30,
       "images": [
-        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&crop=center"
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.rae.es%2Fobras-academicas%2Fediciones-conmemorativas%2Fcien-anos-de-soledad&psig=AOvVaw2FVLONmeAAQyIB-44ShGfY&ust=1757358187568000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPCy-cerx48DFQAAAAAdAAAAABAE"
       ],
       "categoryId": 5,
       "ownerUserId": 2,
       "createdAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "id": "11",
+      "name": "Smartphone Nova X",
+      "description": "Smartphone Nova X. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 1282.45,
+      "stock": 1,
+      "images": [
+        "https://picsum.photos/seed/product1/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-05T10:33:27Z"
+    },
+    {
+      "id": "12",
+      "name": "Laptop AeroBook 14",
+      "description": "Laptop AeroBook 14. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 454.18,
+      "stock": 6,
+      "images": [
+        "https://picsum.photos/seed/product2/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-08-17T15:47:20Z"
+    },
+    {
+      "id": "13",
+      "name": "Auriculares Inalámbricos WavePods",
+      "description": "Auriculares Inalámbricos WavePods. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 849.61,
+      "stock": 0,
+      "images": [
+        "https://picsum.photos/seed/product3/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": "1",
+      "createdAt": "2024-03-26T05:51:13Z",
+      "updatedAt": "2025-09-07T22:19:19.604Z"
+    },
+    {
+      "id": "14",
+      "name": "Monitor 27'' QHD Vision",
+      "description": "Monitor 27'' QHD Vision. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 472.99,
+      "stock": 38,
+      "images": [
+        "https://picsum.photos/seed/product4/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-08-06T07:10:59Z"
+    },
+    {
+      "id": "15",
+      "name": "Smartwatch Pulse Pro",
+      "description": "Smartwatch Pulse Pro. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 405.68,
+      "stock": 34,
+      "images": [
+        "https://picsum.photos/seed/product5/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-26T22:39:19Z"
+    },
+    {
+      "id": "16",
+      "name": "Tablet Orion 11",
+      "description": "Tablet Orion 11. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 903.92,
+      "stock": 17,
+      "images": [
+        "https://picsum.photos/seed/product6/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-10-22T00:35:50Z"
+    },
+    {
+      "id": "17",
+      "name": "Cámara Mirrorless Alpha M",
+      "description": "Cámara Mirrorless Alpha M. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 1613.57,
+      "stock": 27,
+      "images": [
+        "https://picsum.photos/seed/product7/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-18T05:56:55Z"
+    },
+    {
+      "id": "18",
+      "name": "Router Wi‑Fi 6 TurboLink",
+      "description": "Router Wi‑Fi 6 TurboLink. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 319.39,
+      "stock": 21,
+      "images": [
+        "https://picsum.photos/seed/product8/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-02-06T08:27:14Z"
+    },
+    {
+      "id": "19",
+      "name": "Teclado Mecánico Hexa",
+      "description": "Teclado Mecánico Hexa. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 766.05,
+      "stock": 22,
+      "images": [
+        "https://picsum.photos/seed/product9/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-08-22T19:08:04Z"
+    },
+    {
+      "id": "20",
+      "name": "Mouse Inalámbrico Vector",
+      "description": "Mouse Inalámbrico Vector. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 536.39,
+      "stock": 2,
+      "images": [
+        "https://picsum.photos/seed/product10/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-07-27T14:00:29Z"
+    },
+    {
+      "id": "21",
+      "name": "Barra de Sonido CinemaOne",
+      "description": "Barra de Sonido CinemaOne. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 258.39,
+      "stock": 24,
+      "images": [
+        "https://picsum.photos/seed/product11/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-08-02T17:23:29Z"
+    },
+    {
+      "id": "22",
+      "name": "SSD NVMe 1TB FlashMax",
+      "description": "SSD NVMe 1TB FlashMax. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 593.41,
+      "stock": 40,
+      "images": [
+        "https://picsum.photos/seed/product12/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-08-12T13:18:43Z"
+    },
+    {
+      "id": "23",
+      "name": "Disco Externo 2TB SafeDrive",
+      "description": "Disco Externo 2TB SafeDrive. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 392.64,
+      "stock": 4,
+      "images": [
+        "https://picsum.photos/seed/product13/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-09-14T03:25:15Z"
+    },
+    {
+      "id": "24",
+      "name": "Cargador GaN 65W NanoCharge",
+      "description": "Cargador GaN 65W NanoCharge. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 463.51,
+      "stock": 18,
+      "images": [
+        "https://picsum.photos/seed/product14/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-11-28T12:08:20Z"
+    },
+    {
+      "id": "25",
+      "name": "Hub USB‑C 8‑en‑1 Matrix",
+      "description": "Hub USB‑C 8‑en‑1 Matrix. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 473.24,
+      "stock": 6,
+      "images": [
+        "https://picsum.photos/seed/product15/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-18T06:54:06Z"
+    },
+    {
+      "id": "26",
+      "name": "Microfono USB Podcast Pro",
+      "description": "Microfono USB Podcast Pro. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 912.28,
+      "stock": 23,
+      "images": [
+        "https://picsum.photos/seed/product16/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-05-24T02:20:12Z"
+    },
+    {
+      "id": "27",
+      "name": "Webcam 4K ClearView",
+      "description": "Webcam 4K ClearView. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 716.98,
+      "stock": 17,
+      "images": [
+        "https://picsum.photos/seed/product17/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-08-24T21:30:44Z"
+    },
+    {
+      "id": "28",
+      "name": "Proyector LED HomeBeam",
+      "description": "Proyector LED HomeBeam. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 1273.6,
+      "stock": 34,
+      "images": [
+        "https://picsum.photos/seed/product18/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-03-04T19:01:17Z"
+    },
+    {
+      "id": "29",
+      "name": "Dron SkyEye 4K",
+      "description": "Dron SkyEye 4K. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 929.89,
+      "stock": 17,
+      "images": [
+        "https://picsum.photos/seed/product19/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-09-23T05:04:02Z"
+    },
+    {
+      "id": "30",
+      "name": "Impresora Láser Mono SpeedPrint",
+      "description": "Impresora Láser Mono SpeedPrint. Producto electrónico de alta calidad con excelente relación rendimiento/consumo. Ideal para uso diario y profesional.",
+      "price": 655.31,
+      "stock": 3,
+      "images": [
+        "https://picsum.photos/seed/product20/800/600"
+      ],
+      "categoryId": 1,
+      "ownerUserId": 1,
+      "createdAt": "2024-11-15T11:45:19Z"
+    },
+    {
+      "id": "31",
+      "name": "Remera Básica Algodón",
+      "description": "Remera Básica Algodón. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 73.87,
+      "stock": 20,
+      "images": [
+        "https://picsum.photos/seed/product21/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-14T07:31:33Z"
+    },
+    {
+      "id": "32",
+      "name": "Buzo Hoodie Urban",
+      "description": "Buzo Hoodie Urban. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 141.71,
+      "stock": 36,
+      "images": [
+        "https://picsum.photos/seed/product22/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-23T21:49:22Z"
+    },
+    {
+      "id": "33",
+      "name": "Campera Rompeviento Sport",
+      "description": "Campera Rompeviento Sport. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 1314.31,
+      "stock": 25,
+      "images": [
+        "https://picsum.photos/seed/product23/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-02-25T19:39:35Z"
+    },
+    {
+      "id": "34",
+      "name": "Pantalón Chino Classic",
+      "description": "Pantalón Chino Classic. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 537.1,
+      "stock": 15,
+      "images": [
+        "https://picsum.photos/seed/product24/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-10-17T10:40:24Z"
+    },
+    {
+      "id": "35",
+      "name": "Jean Slim Azul",
+      "description": "Jean Slim Azul. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 1173.32,
+      "stock": 37,
+      "images": [
+        "https://picsum.photos/seed/product25/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-05-20T22:03:05Z"
+    },
+    {
+      "id": "36",
+      "name": "Camisa Oxford Blanca",
+      "description": "Camisa Oxford Blanca. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 446.44,
+      "stock": 8,
+      "images": [
+        "https://picsum.photos/seed/product26/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-02-05T15:20:13Z"
+    },
+    {
+      "id": "37",
+      "name": "Zapatillas Urban Street",
+      "description": "Zapatillas Urban Street. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 1514,
+      "stock": 7,
+      "images": [
+        "https://picsum.photos/seed/product27/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 1,
+      "createdAt": "2024-09-01T00:13:15Z"
+    },
+    {
+      "id": "38",
+      "name": "Short Deportivo DryFit",
+      "description": "Short Deportivo DryFit. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 328.35,
+      "stock": 27,
+      "images": [
+        "https://picsum.photos/seed/product28/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 1,
+      "createdAt": "2024-05-29T18:17:28Z"
+    },
+    {
+      "id": "39",
+      "name": "Medias Pack x3 Comfort",
+      "description": "Medias Pack x3 Comfort. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 769.41,
+      "stock": 29,
+      "images": [
+        "https://picsum.photos/seed/product29/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 2,
+      "createdAt": "2024-08-03T04:26:20Z"
+    },
+    {
+      "id": "40",
+      "name": "Gorra Snapback Black",
+      "description": "Gorra Snapback Black. Prenda cómoda y resistente, pensada para uso urbano y deportivo. Materiales de primera calidad.",
+      "price": 1722.94,
+      "stock": 0,
+      "images": [
+        "https://picsum.photos/seed/product30/800/600"
+      ],
+      "categoryId": 2,
+      "ownerUserId": 1,
+      "createdAt": "2024-09-22T02:00:04Z"
+    },
+    {
+      "id": "41",
+      "name": "Sofá 3 Cuerpos Lino",
+      "description": "Sofá 3 Cuerpos Lino. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1322.89,
+      "stock": 35,
+      "images": [
+        "https://picsum.photos/seed/product41/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-04-13T06:30:24Z"
+    },
+    {
+      "id": "42",
+      "name": "Lámpara de Pie Minimal",
+      "description": "Lámpara de Pie Minimal. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1060.06,
+      "stock": 38,
+      "images": [
+        "https://picsum.photos/seed/product42/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-23T14:06:08Z"
+    },
+    {
+      "id": "43",
+      "name": "Mesa de Centro Roble",
+      "description": "Mesa de Centro Roble. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1858.53,
+      "stock": 12,
+      "images": [
+        "https://picsum.photos/seed/product43/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-06-04T06:52:39Z"
+    },
+    {
+      "id": "44",
+      "name": "Silla Ergonómica Office",
+      "description": "Silla Ergonómica Office. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1990.34,
+      "stock": 23,
+      "images": [
+        "https://picsum.photos/seed/product44/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-12-15T17:00:39Z"
+    },
+    {
+      "id": "45",
+      "name": "Cafetera Espresso HomeBar",
+      "description": "Cafetera Espresso HomeBar. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1039.97,
+      "stock": 7,
+      "images": [
+        "https://picsum.photos/seed/product45/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-03-28T14:19:51Z"
+    },
+    {
+      "id": "46",
+      "name": "Aspiradora Ciclónica Pro",
+      "description": "Aspiradora Ciclónica Pro. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 137.4,
+      "stock": 16,
+      "images": [
+        "https://picsum.photos/seed/product46/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": "1",
+      "createdAt": "2024-08-16T20:39:33Z",
+      "updatedAt": "2025-09-07T22:18:38.860Z"
+    },
+    {
+      "id": "47",
+      "name": "Microondas 28L SmartHeat",
+      "description": "Microondas 28L SmartHeat. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 448.22,
+      "stock": 4,
+      "images": [
+        "https://picsum.photos/seed/product47/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-03-30T05:53:31Z"
+    },
+    {
+      "id": "48",
+      "name": "Batidora de Mano ChefMix",
+      "description": "Batidora de Mano ChefMix. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 144.12,
+      "stock": 2,
+      "images": [
+        "https://picsum.photos/seed/product48/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-01-28T20:26:18Z"
+    },
+    {
+      "id": "49",
+      "name": "Juego de Sábanas Queen",
+      "description": "Juego de Sábanas Queen. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1033.16,
+      "stock": 17,
+      "images": [
+        "https://picsum.photos/seed/product49/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-24T12:49:54Z"
+    },
+    {
+      "id": "50",
+      "name": "Cortinas Blackout 2 Paneles",
+      "description": "Cortinas Blackout 2 Paneles. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1083.07,
+      "stock": 36,
+      "images": [
+        "https://picsum.photos/seed/product50/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-04T16:53:54Z"
+    },
+    {
+      "id": "51",
+      "name": "Almohadas Viscoelásticas x2",
+      "description": "Almohadas Viscoelásticas x2. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1571.38,
+      "stock": 30,
+      "images": [
+        "https://picsum.photos/seed/product51/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": "1",
+      "createdAt": "2024-02-06T23:10:48Z",
+      "updatedAt": "2025-09-07T22:15:52.986Z"
+    },
+    {
+      "id": "52",
+      "name": "Organizador de Ropa 6C",
+      "description": "Organizador de Ropa 6C. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 202.88,
+      "stock": 27,
+      "images": [
+        "https://picsum.photos/seed/product52/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-06-13T20:02:20Z"
+    },
+    {
+      "id": "53",
+      "name": "Juego de Ollas Acero 7p",
+      "description": "Juego de Ollas Acero 7p. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 828.08,
+      "stock": 3,
+      "images": [
+        "https://picsum.photos/seed/product53/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-01-24T20:57:03Z"
+    },
+    {
+      "id": "54",
+      "name": "Set Cuchillos Chef 6p",
+      "description": "Set Cuchillos Chef 6p. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 811.21,
+      "stock": 21,
+      "images": [
+        "https://picsum.photos/seed/product54/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-04-06T21:38:42Z"
+    },
+    {
+      "id": "55",
+      "name": "Parrilla Eléctrica GrillMax",
+      "description": "Parrilla Eléctrica GrillMax. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 391.25,
+      "stock": 34,
+      "images": [
+        "https://picsum.photos/seed/product55/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-02-24T18:35:37Z"
+    },
+    {
+      "id": "56",
+      "name": "Humidificador SilentAir",
+      "description": "Humidificador SilentAir. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 849.53,
+      "stock": 17,
+      "images": [
+        "https://picsum.photos/seed/product56/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-07T08:21:53Z"
+    },
+    {
+      "id": "57",
+      "name": "Purificador de Aire PureHome",
+      "description": "Purificador de Aire PureHome. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1750.22,
+      "stock": 4,
+      "images": [
+        "https://picsum.photos/seed/product57/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 2,
+      "createdAt": "2024-11-10T03:18:47Z"
+    },
+    {
+      "id": "58",
+      "name": "Espejo Redondo 60cm",
+      "description": "Espejo Redondo 60cm. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1724.07,
+      "stock": 35,
+      "images": [
+        "https://picsum.photos/seed/product58/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-01-20T23:31:02Z"
+    },
+    {
+      "id": "59",
+      "name": "Estante Flotante Doble",
+      "description": "Estante Flotante Doble. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1307.76,
+      "stock": 34,
+      "images": [
+        "https://picsum.photos/seed/product59/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-02-06T13:16:19Z"
+    },
+    {
+      "id": "60",
+      "name": "Ropero 2 Puertas Nordic",
+      "description": "Ropero 2 Puertas Nordic. Elemento para el hogar con diseño moderno y funcional, fácil de mantener y duradero.",
+      "price": 1853.46,
+      "stock": 15,
+      "images": [
+        "https://picsum.photos/seed/product60/800/600"
+      ],
+      "categoryId": 3,
+      "ownerUserId": 1,
+      "createdAt": "2024-06-07T04:03:12Z"
+    },
+    {
+      "id": "61",
+      "name": "Pelota Fútbol Pro",
+      "description": "Pelota Fútbol Pro. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 976.42,
+      "stock": 13,
+      "images": [
+        "https://picsum.photos/seed/product61/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-12-16T19:22:37Z"
+    },
+    {
+      "id": "62",
+      "name": "Pelota Basket Outdoor",
+      "description": "Pelota Basket Outdoor. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 126.67,
+      "stock": 24,
+      "images": [
+        "https://picsum.photos/seed/product62/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-05-31T22:59:40Z"
+    },
+    {
+      "id": "63",
+      "name": "Raqueta Tenis Graphite",
+      "description": "Raqueta Tenis Graphite. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 537.74,
+      "stock": 29,
+      "images": [
+        "https://picsum.photos/seed/product63/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-06-13T14:42:55Z"
+    },
+    {
+      "id": "64",
+      "name": "Bicicleta MTB 29'' TrailX",
+      "description": "Bicicleta MTB 29'' TrailX. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1396.21,
+      "stock": 35,
+      "images": [
+        "https://picsum.photos/seed/product64/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-01T10:48:39Z"
+    },
+    {
+      "id": "65",
+      "name": "Guantes Gym Grip",
+      "description": "Guantes Gym Grip. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 387.89,
+      "stock": 13,
+      "images": [
+        "https://picsum.photos/seed/product65/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-08-13T06:21:05Z"
+    },
+    {
+      "id": "66",
+      "name": "Colchoneta Yoga Antideslizante",
+      "description": "Colchoneta Yoga Antideslizante. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1474.11,
+      "stock": 3,
+      "images": [
+        "https://picsum.photos/seed/product66/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-01-23T12:49:08Z"
+    },
+    {
+      "id": "67",
+      "name": "Mancuernas Ajustables 24kg",
+      "description": "Mancuernas Ajustables 24kg. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 109.77,
+      "stock": 30,
+      "images": [
+        "https://picsum.photos/seed/product67/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-01-23T10:09:21Z"
+    },
+    {
+      "id": "68",
+      "name": "Casco Ciclismo Aero",
+      "description": "Casco Ciclismo Aero. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1921.94,
+      "stock": 5,
+      "images": [
+        "https://picsum.photos/seed/product68/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-01-27T22:39:54Z"
+    },
+    {
+      "id": "69",
+      "name": "Rollers Urban Glide",
+      "description": "Rollers Urban Glide. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1194.11,
+      "stock": 15,
+      "images": [
+        "https://picsum.photos/seed/product69/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-02-16T21:25:27Z"
+    },
+    {
+      "id": "70",
+      "name": "Zapatillas Running Light",
+      "description": "Zapatillas Running Light. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1883.77,
+      "stock": 36,
+      "images": [
+        "https://picsum.photos/seed/product70/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-08-13T03:55:00Z"
+    },
+    {
+      "id": "71",
+      "name": "Camiseta Ciclismo Dry",
+      "description": "Camiseta Ciclismo Dry. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1193.08,
+      "stock": 39,
+      "images": [
+        "https://picsum.photos/seed/product71/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-06-12T03:27:33Z"
+    },
+    {
+      "id": "72",
+      "name": "Soga de Saltar Pro",
+      "description": "Soga de Saltar Pro. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1318.16,
+      "stock": 36,
+      "images": [
+        "https://picsum.photos/seed/product72/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-12-29T08:05:37Z"
+    },
+    {
+      "id": "73",
+      "name": "Proteína Whey 2lb Vainilla",
+      "description": "Proteína Whey 2lb Vainilla. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 528.91,
+      "stock": 20,
+      "images": [
+        "https://picsum.photos/seed/product73/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-04-13T11:42:24Z"
+    },
+    {
+      "id": "74",
+      "name": "Set Bandas Elásticas 5p",
+      "description": "Set Bandas Elásticas 5p. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 797.6,
+      "stock": 19,
+      "images": [
+        "https://picsum.photos/seed/product74/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-05-03T02:59:06Z"
+    },
+    {
+      "id": "75",
+      "name": "Gafas Natación Anti‑Fog",
+      "description": "Gafas Natación Anti‑Fog. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1858.74,
+      "stock": 4,
+      "images": [
+        "https://picsum.photos/seed/product75/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-06-27T07:31:50Z"
+    },
+    {
+      "id": "76",
+      "name": "Pelota Vóley Beach",
+      "description": "Pelota Vóley Beach. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1246.1,
+      "stock": 36,
+      "images": [
+        "https://picsum.photos/seed/product76/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-01-29T18:50:21Z"
+    },
+    {
+      "id": "77",
+      "name": "Paleta Pádel Carbon",
+      "description": "Paleta Pádel Carbon. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1079.88,
+      "stock": 32,
+      "images": [
+        "https://picsum.photos/seed/product77/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-02-21T18:35:04Z"
+    },
+    {
+      "id": "78",
+      "name": "Botella Térmica 1L",
+      "description": "Botella Térmica 1L. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1867.18,
+      "stock": 4,
+      "images": [
+        "https://picsum.photos/seed/product78/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-05-23T20:14:31Z"
+    },
+    {
+      "id": "79",
+      "name": "Protector Bucal Boxeo",
+      "description": "Protector Bucal Boxeo. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 577.11,
+      "stock": 28,
+      "images": [
+        "https://picsum.photos/seed/product79/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 2,
+      "createdAt": "2024-08-25T21:14:59Z"
+    },
+    {
+      "id": "80",
+      "name": "Bolso Deportivo 40L",
+      "description": "Bolso Deportivo 40L. Artículo deportivo diseñado para entrenamiento y competencia, proporciona gran desempeño y comodidad.",
+      "price": 1967.86,
+      "stock": 33,
+      "images": [
+        "https://picsum.photos/seed/product80/800/600"
+      ],
+      "categoryId": 4,
+      "ownerUserId": 1,
+      "createdAt": "2024-09-16T16:56:10Z"
+    },
+    {
+      "id": "81",
+      "name": "Introducción a la Programación en Python",
+      "description": "Introducción a la Programación en Python. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1636.03,
+      "stock": 19,
+      "images": [
+        "https://picsum.photos/seed/product81/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-12-30T23:27:42Z"
+    },
+    {
+      "id": "82",
+      "name": "Algoritmos y Estructuras de Datos",
+      "description": "Algoritmos y Estructuras de Datos. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1757.46,
+      "stock": 15,
+      "images": [
+        "https://picsum.photos/seed/product82/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": "1",
+      "createdAt": "2024-12-11T20:43:24Z",
+      "updatedAt": "2025-09-07T22:19:13.206Z"
+    },
+    {
+      "id": "83",
+      "name": "Bases de Datos Relacionales: SQL Práctico",
+      "description": "Bases de Datos Relacionales: SQL Práctico. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 222.99,
+      "stock": 35,
+      "images": [
+        "https://picsum.photos/seed/product83/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-04-16T02:28:09Z"
+    },
+    {
+      "id": "84",
+      "name": "Diseño de Sistemas con UML",
+      "description": "Diseño de Sistemas con UML. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 570.68,
+      "stock": 13,
+      "images": [
+        "https://picsum.photos/seed/product84/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-20T09:39:52Z"
+    },
+    {
+      "id": "85",
+      "name": "Redes de Computadoras Fundamentos",
+      "description": "Redes de Computadoras Fundamentos. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1378.11,
+      "stock": 16,
+      "images": [
+        "https://picsum.photos/seed/product85/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-04-07T20:37:10Z"
+    },
+    {
+      "id": "86",
+      "name": "Ingeniería de Software Moderna",
+      "description": "Ingeniería de Software Moderna. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1811.61,
+      "stock": 3,
+      "images": [
+        "https://picsum.photos/seed/product86/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-09-03T15:57:34Z"
+    },
+    {
+      "id": "87",
+      "name": "Arquitectura de Computadoras",
+      "description": "Arquitectura de Computadoras. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 852.91,
+      "stock": 29,
+      "images": [
+        "https://picsum.photos/seed/product87/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": "1",
+      "createdAt": "2024-01-02T17:02:53Z",
+      "updatedAt": "2025-09-07T22:18:29.918Z"
+    },
+    {
+      "id": "88",
+      "name": "Criptografía y Seguridad",
+      "description": "Criptografía y Seguridad. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 673.77,
+      "stock": 8,
+      "images": [
+        "https://picsum.photos/seed/product88/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-04T02:03:11Z"
+    },
+    {
+      "id": "89",
+      "name": "Machine Learning para Principiantes",
+      "description": "Machine Learning para Principiantes. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1485.04,
+      "stock": 35,
+      "images": [
+        "https://picsum.photos/seed/product89/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-08-06T04:01:51Z"
+    },
+    {
+      "id": "90",
+      "name": "Sistemas Operativos: Conceptos",
+      "description": "Sistemas Operativos: Conceptos. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 29.23,
+      "stock": 4,
+      "images": [
+        "https://picsum.photos/seed/product90/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-07-31T05:16:12Z"
+    },
+    {
+      "id": "91",
+      "name": "Clean Code (Ed. Español)",
+      "description": "Clean Code (Ed. Español). Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 81.69,
+      "stock": 23,
+      "images": [
+        "https://picsum.photos/seed/product91/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-06-16T05:54:09Z"
+    },
+    {
+      "id": "92",
+      "name": "El Arte de la Guerra",
+      "description": "El Arte de la Guerra. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 263.61,
+      "stock": 19,
+      "images": [
+        "https://picsum.photos/seed/product92/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-12-15T11:06:53Z"
+    },
+    {
+      "id": "93",
+      "name": "Cien Años de Soledad",
+      "description": "Cien Años de Soledad. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1866.84,
+      "stock": 2,
+      "images": [
+        "https://picsum.photos/seed/product93/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-22T22:03:18Z"
+    },
+    {
+      "id": "94",
+      "name": "Don Quijote de la Mancha",
+      "description": "Don Quijote de la Mancha. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1367.3,
+      "stock": 6,
+      "images": [
+        "https://picsum.photos/seed/product94/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-10-30T07:12:37Z"
+    },
+    {
+      "id": "95",
+      "name": "El Principito (Ed. Ilustrada)",
+      "description": "El Principito (Ed. Ilustrada). Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1124.16,
+      "stock": 26,
+      "images": [
+        "https://picsum.photos/seed/product95/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-12-25T20:44:39Z"
+    },
+    {
+      "id": "96",
+      "name": "Hábitos Atómicos",
+      "description": "Hábitos Atómicos. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1860.45,
+      "stock": 10,
+      "images": [
+        "https://picsum.photos/seed/product96/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-12-08T15:23:40Z"
+    },
+    {
+      "id": "97",
+      "name": "Sapiens: De Animales a Dioses",
+      "description": "Sapiens: De Animales a Dioses. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 830.46,
+      "stock": 11,
+      "images": [
+        "https://picsum.photos/seed/product97/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-10-31T04:22:14Z"
+    },
+    {
+      "id": "98",
+      "name": "Kafka en la Orilla",
+      "description": "Kafka en la Orilla. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1862.31,
+      "stock": 15,
+      "images": [
+        "https://picsum.photos/seed/product98/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-03-03T03:49:53Z"
+    },
+    {
+      "id": "99",
+      "name": "Fundación (Asimov)",
+      "description": "Fundación (Asimov). Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 1576.87,
+      "stock": 6,
+      "images": [
+        "https://picsum.photos/seed/product99/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 2,
+      "createdAt": "2024-12-05T01:11:01Z"
+    },
+    {
+      "id": "100",
+      "name": "Rayuela",
+      "description": "Rayuela. Libro recomendado, edición en español, ideal para estudiantes y entusiastas. Tapa blanda.",
+      "price": 87.05,
+      "stock": 30,
+      "images": [
+        "https://picsum.photos/seed/product100/800/600"
+      ],
+      "categoryId": 5,
+      "ownerUserId": 1,
+      "createdAt": "2024-03-18T20:09:12Z"
     }
   ]
 }
