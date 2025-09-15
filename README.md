@@ -24,7 +24,7 @@ Este repositorio contiene todos los ejercicios, proyectos y aplicaciones desarro
 | Integrantes |
 |------------|
 | MILANESI NAHUEL |
-| LARRAT RODRIGO |
+| LARRART RODRIGO |
 | CAVICCHIA MARCOS |
 | PEREZ CICCONE LUCA |
 | BOZZER JUAN BAUTISTA |
