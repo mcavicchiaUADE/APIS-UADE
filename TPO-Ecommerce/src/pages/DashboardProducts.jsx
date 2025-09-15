@@ -1,26 +1,83 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { useFetch } from "../hooks/useFetch"
 import { useAuth } from "../context/AuthContext"
 import { useToast } from "../context/ToastContext"
+import { useFetch } from "../hooks/useFetch"
 import { api } from "../services/api"
 import { formatPrice, formatDate } from "../utils/formatters"
 import LoadingSpinner from "../components/LoadingSpinner"
 import EmptyState from "../components/EmptyState"
-import { Plus, Edit, Trash2, Package, Eye } from "lucide-react"
+import SkeletonLoader from "../components/SkeletonLoader"
+import Pagination from "../components/Pagination"
+import { Plus, Edit, Trash2, Package, Eye, Search } from "lucide-react"
 const DashboardProducts = () => {
   const { user } = useAuth()
   const { success, error } = useToast()
+  const [searchTerm, setSearchTerm] = useState("")
   const [isDeleting, setIsDeleting] = useState(null)
-  const { data: products, loading, refetch } = useFetch(() => api.getProducts(), [])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(() => {
+    const saved = localStorage.getItem('dashboardProductsPerPage')
+    return saved ? Number(saved) : 6
+  })
+  const { data: allProducts, loading, error: fetchError, refetch } = useFetch(() => api.getProducts(), [])
+  
+  // Debug logging
+  console.log('DashboardProducts - Current user:', user)
+  console.log('DashboardProducts - All products:', allProducts)
+  console.log('DashboardProducts - User ID:', user?.id, 'Type:', typeof user?.id)
+  
+  // Filter products by current user (compare as strings to handle both numeric and string IDs)
+  const userProducts = allProducts?.filter((product) => {
+    const productOwnerId = String(product.ownerUserId)
+    const userId = String(user?.id)
+    const matches = productOwnerId === userId && productOwnerId !== 'null' && productOwnerId !== 'undefined'
+    console.log(`Product ${product.id}: ownerUserId=${product.ownerUserId} (${typeof product.ownerUserId}) -> ${productOwnerId}, user.id=${user?.id} (${typeof user?.id}) -> ${userId}, matches=${matches}`)
+    return matches
+  }) || []
+  
+  console.log('DashboardProducts - Filtered user products:', userProducts)
+  // Filter by search term
+  const filteredProducts = userProducts.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex)
+
+  // Reset to first page when search term changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm])
+
+  // Save items per page preference
+  useEffect(() => {
+    localStorage.setItem('dashboardProductsPerPage', itemsPerPage.toString())
+  }, [itemsPerPage])
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+    // Scroll to top when changing pages
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage)
+    setCurrentPage(1) // Reset to first page
+  }
   const handleDelete = async (productId, productName) => {
-    if (!window.confirm(`¿Estás seguro de que quieres eliminar "${productName}"? Esta acción no se puede deshacer.`)) {
+    if (!window.confirm(`¿Estás seguro de que quieres eliminar "${productName}"?`)) {
       return
     }
     setIsDeleting(productId)
     try {
       await api.deleteProduct(productId)
-      success("Producto eliminado exitosamente")
+      success(`${productName} eliminado exitosamente`)
       refetch()
     } catch (err) {
       error("Error al eliminar el producto: " + err.message)
@@ -30,201 +87,203 @@ const DashboardProducts = () => {
   }
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-64">
-        <LoadingSpinner size="lg" />
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Mis Productos</h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-1">Gestiona tu inventario de productos</p>
+        </div>
+          <div className="h-10 bg-gray-200 rounded-lg w-32 animate-pulse"></div>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="relative max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input type="text" placeholder="Buscar productos..." className="input pl-10" disabled />
+          </div>
+          <div className="flex items-center gap-4 text-sm text-gray-400">
+            <span>Cargando estadísticas...</span>
+          </div>
+        </div>
+        <SkeletonLoader type="list" count={4} />
       </div>
     )
   }
-  if (!products || products.length === 0) {
+  if (fetchError) {
     return (
-      <div>
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Mis Productos</h1>
-          <Link to="/dashboard/products/new" className="btn btn-primary flex items-center gap-2">
-            <Plus size={18} />
-            Nuevo Producto
-          </Link>
-        </div>
-        <EmptyState
-          icon={Package}
-          title="No tienes productos"
-          description="Comienza creando tu primer producto para vender"
-          action={
-            <Link to="/dashboard/products/new" className="btn btn-primary">
-              Crear mi primer producto
-            </Link>
-          }
-        />
+      <div className="text-center py-12">
+        <p className="text-red-600 mb-4">Error al cargar los productos: {fetchError}</p>
+        <button onClick={refetch} className="btn btn-primary">
+          Reintentar
+        </button>
       </div>
     )
   }
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Mis Productos</h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-1">
-            Gestiona tu inventario de productos
-          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-1">Gestiona tu inventario de productos</p>
         </div>
-        <Link to="/dashboard/products/new" className="btn btn-primary flex items-center gap-2">
+        <Link to="/dashboard/products/new" className="btn btn-primary inline-flex items-center gap-2">
           <Plus size={18} />
           Nuevo Producto
         </Link>
       </div>
-      <div className="card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Producto
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Precio
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Stock
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Estado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Fecha
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
-              {products.map((product) => {
-                const isOutOfStock = product.stock === 0
-                const isLowStock = product.stock > 0 && product.stock <= 5
-                return (
-                  <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-12 w-12">
-                          <img
-                            className="h-12 w-12 rounded-lg object-cover"
-                            src={product.images?.[0] || "/placeholder.svg?height=48&width=48"}
-                            alt={product.name}
-                          />
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
-                            {product.name}
-                          </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                            {product.description}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {formatPrice(product.price)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {product.stock}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          isOutOfStock
-                            ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                            : isLowStock
-                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                            : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                        }`}
-                      >
-                        {isOutOfStock ? "Sin stock" : isLowStock ? "Stock bajo" : "En stock"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {formatDate(product.createdAt)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end space-x-2">
-                        <Link
-                          to={`/product/${product.id}`}
-                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1"
-                          title="Ver producto"
-                        >
-                          <Eye size={16} />
-                        </Link>
-                        <Link
-                          to={`/dashboard/products/${product.id}/edit`}
-                          className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 p-1"
-                          title="Editar producto"
-                        >
-                          <Edit size={16} />
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(product.id, product.name)}
-                          disabled={isDeleting === product.id}
-                          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                          title="Eliminar producto"
-                        >
-                          {isDeleting === product.id ? (
-                            <LoadingSpinner size="sm" className="border-red-600 border-t-transparent" />
-                          ) : (
-                            <Trash2 size={16} />
-                          )}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+      {/* Search and Stats */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Search */}
+        <div className="relative max-w-md">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            className="input pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        {/* Stats */}
+        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+          <span>Total: {userProducts.length} productos</span>
+          <span>En stock: {userProducts.filter((p) => p.stock > 0).length}</span>
+          <span>Sin stock: {userProducts.filter((p) => p.stock === 0).length}</span>
+          {searchTerm && (
+            <span className="text-blue-600 dark:text-blue-400">
+              Filtrados: {filteredProducts.length}
+            </span>
+          )}
         </div>
       </div>
-      {/* Summary Stats */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Package className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Productos</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{products.length}</p>
-            </div>
+      {/* Items per page selector */}
+      {filteredProducts.length > 0 && (
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-2">
+            <label htmlFor="items-per-page" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Mostrar:
+            </label>
+            <select
+              id="items-per-page"
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+              className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              {[3, 6, 9, 12, 18, 24].map((option) => (
+                <option key={option} value={option}>
+                  {option} por página
+                </option>
+              ))}
+            </select>
           </div>
         </div>
-        <div className="card p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="h-8 w-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                <span className="text-green-600 dark:text-green-400 font-semibold text-sm">✓</span>
-              </div>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">En Stock</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                {products.filter(p => p.stock > 0).length}
-              </p>
-            </div>
+      )}
+
+      {/* Products List */}
+      {filteredProducts.length === 0 ? (
+        <EmptyState
+          icon={Package}
+          title={searchTerm ? "No se encontraron productos" : "No tienes productos"}
+          description={searchTerm ? "Intenta ajustar tu búsqueda" : "Comienza creando tu primer producto para vender"}
+          action={
+            !searchTerm && (
+              <Link to="/dashboard/products/new" className="btn btn-primary">
+                Crear primer producto
+              </Link>
+            )
+          }
+        />
+      ) : (
+        <>
+          <div className="space-y-4">
+            {paginatedProducts.map((product) => (
+              <ProductRow
+                key={product.id}
+                product={product}
+                onDelete={handleDelete}
+                isDeleting={isDeleting === product.id}
+              />
+            ))}
           </div>
+          
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            totalItems={filteredProducts.length}
+            itemsPerPage={itemsPerPage}
+          />
+        </>
+      )}
+    </div>
+  )
+}
+const ProductRow = ({ product, onDelete, isDeleting }) => {
+  const isOutOfStock = product.stock === 0
+  return (
+    <div className="card p-6">
+      <div className="flex items-center space-x-4">
+        {/* Product Image */}
+        <div className="flex-shrink-0">
+          <img
+            src={product.images?.[0] || "/placeholder.svg?height=80&width=80"}
+            alt={product.name}
+            className="w-20 h-20 object-cover rounded-lg"
+          />
         </div>
-        <div className="card p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="h-8 w-8 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
-                <span className="text-red-600 dark:text-red-400 font-semibold text-sm">!</span>
+        {/* Product Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">{product.description}</p>
+              <div className="flex items-center gap-4 mt-2">
+                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{formatPrice(product.price)}</span>
+                <span className={`text-sm font-medium ${isOutOfStock ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`}>
+                  {isOutOfStock ? "Sin stock" : `${product.stock} en stock`}
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">Creado: {formatDate(product.createdAt)}</span>
               </div>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Sin Stock</p>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                {products.filter(p => p.stock === 0).length}
-              </p>
+            {/* Actions */}
+            <div className="flex items-center space-x-2">
+              <Link
+                to={`/product/${product.id}`}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                title="Ver producto"
+              >
+                <Eye size={18} />
+              </Link>
+              <Link
+                to={`/dashboard/products/${product.id}/edit`}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                title="Editar producto"
+              >
+                <Edit size={18} />
+              </Link>
+              <button
+                onClick={() => onDelete(product.id, product.name)}
+                disabled={isDeleting}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                title="Eliminar producto"
+              >
+                {isDeleting ? <LoadingSpinner size="sm" /> : <Trash2 size={18} />}
+              </button>
             </div>
           </div>
         </div>
       </div>
+      {/* Stock Warning */}
+      {product.stock <= 5 && product.stock > 0 && (
+        <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">⚠️ Stock bajo: Solo quedan {product.stock} unidades</p>
+        </div>
+      )}
     </div>
   )
 }
