@@ -1,4 +1,4 @@
-import { Modal } from "../Modal"
+import  Modal  from "../Modal"
 import { Shield, Eye, Lock, Database, UserCheck } from "lucide-react"
 const PrivacyModal = ({ isOpen, onClose }) => {
   return (

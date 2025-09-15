@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Modal } from "../Modal"
+import  Modal  from "../Modal"
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react"
 const ContactModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
