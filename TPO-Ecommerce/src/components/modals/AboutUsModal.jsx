@@ -1,4 +1,4 @@
-import { Modal } from "../Modal"
+import  Modal  from "../Modal"
 import { Users, Heart, Target, Award } from "lucide-react"
 const AboutUsModal = ({ isOpen, onClose }) => {
   return (

@@ -1,4 +1,4 @@
-import { Modal } from "../Modal"
+import  Modal  from "../Modal"
 import { FileText, Scale, AlertTriangle, CheckCircle } from "lucide-react"
 const TermsModal = ({ isOpen, onClose }) => {
   return (
