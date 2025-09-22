@@ -14,7 +14,7 @@ class ErrorBoundary extends React.Component {
       errorInfo: errorInfo,
     })
   }
-  handleReload = () => {
+  handleReload() {
     window.location.reload()
   }
   render() {
@@ -32,7 +32,7 @@ class ErrorBoundary extends React.Component {
             </div>
             <div className="space-y-4">
               <button
-                onClick={this.handleReload}
+                onClick={() => this.handleReload()}
                 className="btn btn-primary w-full flex items-center justify-center gap-2"
               >
                 <RefreshCw size={18} />

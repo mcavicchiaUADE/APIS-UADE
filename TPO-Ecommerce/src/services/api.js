@@ -1,7 +1,8 @@
 import { ERROR_MESSAGES, TOKEN_PREFIX } from "../constants"
 
-// Base URL for JSON Server
-const API_BASE_URL = "http://localhost:3001"
+// Base URL for Spring Boot Backend
+const API_BASE_URL = "http://localhost:8081/api"
+
 // Helper function to make HTTP requests
 const request = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`
@@ -24,17 +25,23 @@ const request = async (endpoint, options = {}) => {
     return await response.json()
   } catch (error) {
     if (error.name === 'TypeError' && error.message.includes('fetch')) {
-      throw new Error('No se puede conectar con el servidor. Asegúrate de que JSON Server esté ejecutándose.')
+      throw new Error('No se puede conectar con el servidor. Asegúrate de que el backend Spring Boot esté ejecutándose en http://localhost:8081')
     }
     throw error
   }
 }
 
 export const api = {
-  // Auth endpoints
+  // Auth endpoints (simulados - el backend actual no tiene autenticación real)
   async login(email, password) {
-    const users = await request('/users')
-    const user = users.find((u) => u.email === email && u.password === password)
+    // Simulamos autenticación básica
+    const mockUsers = [
+      { id: 1, email: "admin@test.com", password: "admin123", username: "admin", firstName: "Admin", lastName: "User", role: "user" },
+      { id: 2, email: "user1@test.com", password: "user123", username: "user1", firstName: "Juan", lastName: "Pérez", role: "user" },
+      { id: 3, email: "test@test.com", password: "test123", username: "testuser", firstName: "Test", lastName: "User", role: "user" }
+    ]
+    
+    const user = mockUsers.find((u) => u.email === email && u.password === password)
     if (!user) {
       throw new Error(ERROR_MESSAGES.INVALID_CREDENTIALS)
     }
@@ -43,65 +50,45 @@ export const api = {
   },
   
   async register(userData) {
-    // Check if email already exists
-    const users = await request('/users')
-    if (users.find((u) => u.email === userData.email)) {
-      throw new Error(ERROR_MESSAGES.EMAIL_EXISTS)
-    }
-    // Check if username already exists
-    if (users.find((u) => u.username === userData.username)) {
-      throw new Error(ERROR_MESSAGES.USERNAME_EXISTS)
-    }
-    
-    const newUser = {
+    // Simulamos registro - en un backend real esto iría a un endpoint de registro
+    const mockUser = {
+      id: Date.now(),
       ...userData,
       role: "user",
     }
     
-    const createdUser = await request('/users', {
-      method: 'POST',
-      body: JSON.stringify(newUser),
-    })
-    
-    const token = `${TOKEN_PREFIX}${createdUser.id}_${Date.now()}`
-    return { user: { ...createdUser, password: undefined }, token }
+    const token = `${TOKEN_PREFIX}${mockUser.id}_${Date.now()}`
+    return { user: { ...mockUser, password: undefined }, token }
   },
   
   // Products endpoints
   async getProducts(filters = {}) {
-    let endpoint = '/products'
-    const queryParams = new URLSearchParams()
-    
+    // Si hay filtros de categoría, usar el endpoint específico
     if (filters.categoryId) {
-      queryParams.append('categoryId', filters.categoryId)
+      return await request(`/productos/categoria/${filters.categoryId}`)
     }
     
+    // Si hay búsqueda por texto, usar el endpoint de búsqueda
     if (filters.search) {
-      queryParams.append('q', filters.search)
+      return await request(`/productos/buscar?nombre=${encodeURIComponent(filters.search)}`)
     }
     
-    if (queryParams.toString()) {
-      endpoint += `?${queryParams.toString()}`
+    // Si se solicita solo productos con stock
+    if (filters.availableOnly) {
+      return await request('/productos/stock?disponible=true')
     }
     
-    let products = await request(endpoint)
+    // Obtener todos los productos
+    let products = await request('/productos')
     
-    // JSON Server doesn't have built-in text search, so we filter manually
-    if (filters.search) {
-      products = products.filter((p) => 
-        p.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-        p.description.toLowerCase().includes(filters.search.toLowerCase())
-      )
-    }
-    
-    // Sort alphabetically
+    // Ordenar alfabéticamente
     products.sort((a, b) => a.name.localeCompare(b.name))
     return products
   },
   
   async getProduct(id) {
     try {
-      return await request(`/products/${id}`)
+      return await request(`/productos/${id}`)
     } catch (error) {
       if (error.message.includes('404')) {
         throw new Error(ERROR_MESSAGES.PRODUCT_NOT_FOUND)
@@ -112,10 +99,16 @@ export const api = {
   
   async createProduct(productData) {
     const newProduct = {
-      ...productData,
-      createdAt: new Date().toISOString(),
+      name: productData.name,
+      description: productData.description,
+      price: productData.price,
+      stock: productData.stock || 0,
+      images: productData.images || [],
+      categoryId: productData.categoryId,
+      ownerUserId: productData.ownerUserId || 1, // Usuario por defecto
     }
-    return await request('/products', {
+    
+    return await request('/productos', {
       method: 'POST',
       body: JSON.stringify(newProduct),
     })
@@ -123,19 +116,17 @@ export const api = {
   
   async updateProduct(id, productData) {
     try {
-      // Obtener el producto actual para preservar createdAt
-      const currentProduct = await request(`/products/${id}`)
-      
       const updatedProduct = {
-        ...currentProduct,
-        ...productData,
-        // Preservar createdAt original
-        createdAt: currentProduct.createdAt,
-        // Actualizar updatedAt si existe
-        updatedAt: new Date().toISOString(),
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        stock: productData.stock,
+        images: productData.images,
+        categoryId: productData.categoryId,
+        ownerUserId: productData.ownerUserId,
       }
       
-      return await request(`/products/${id}`, {
+      return await request(`/productos/${id}`, {
         method: 'PUT',
         body: JSON.stringify(updatedProduct),
       })
@@ -149,7 +140,7 @@ export const api = {
   
   async deleteProduct(id) {
     try {
-      await request(`/products/${id}`, {
+      await request(`/productos/${id}`, {
         method: 'DELETE',
       })
       return true
@@ -161,18 +152,28 @@ export const api = {
     }
   },
   
-  // Categories endpoints
+  // Categories endpoints (simulados - el backend actual no tiene categorías)
   async getCategories() {
-    return await request('/categories')
+    // Retornamos las categorías que están en el db.json original
+    return [
+      { id: 1, name: "Electrónicos" },
+      { id: 2, name: "Ropa" },
+      { id: 3, name: "Hogar" },
+      { id: 4, name: "Deportes" },
+      { id: 5, name: "Libros" }
+    ]
   },
   
   // Update product stock (for checkout)
   async updateProductStock(productId, newStock) {
     try {
-      const product = await request(`/products/${productId}`)
-      return await request(`/products/${productId}`, {
+      const product = await request(`/productos/${productId}`)
+      return await request(`/productos/${productId}`, {
         method: 'PUT',
-        body: JSON.stringify({ ...product, stock: newStock }),
+        body: JSON.stringify({ 
+          ...product, 
+          stock: newStock 
+        }),
       })
     } catch (error) {
       if (error.message.includes('404')) {
