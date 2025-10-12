@@ -55,6 +55,11 @@ public class Usuario implements UserDetails {
     @Builder.Default
     private List<Producto> productos = new ArrayList<>();
     
+    // Relación con pedidos (un usuario puede tener muchos pedidos)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Pedido> pedidos = new ArrayList<>();
+    
     // =============================================
     // Métodos requeridos por UserDetails (Spring Security)
     // =============================================

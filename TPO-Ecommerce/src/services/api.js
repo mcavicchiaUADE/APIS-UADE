@@ -323,4 +323,113 @@ export const api = {
       throw error
     }
   },
+
+  // ===== PEDIDOS/ÓRDENES =====
+  
+  /**
+   * Obtener historial de pedidos del usuario autenticado
+   */
+  async getMyOrders() {
+    try {
+      const pedidos = await request('/pedidos/mis-pedidos')
+      return pedidos
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener pedidos')
+    }
+  },
+  
+  /**
+   * Obtener detalle de un pedido por ID
+   */
+  async getOrder(orderId) {
+    try {
+      const pedido = await request(`/pedidos/${orderId}`)
+      return pedido
+    } catch (error) {
+      if (error.message.includes('404')) {
+        throw new Error('Pedido no encontrado')
+      }
+      throw error
+    }
+  },
+  
+  /**
+   * Crear un nuevo pedido (checkout del carrito)
+   */
+  async createOrder(orderData) {
+    try {
+      const newOrder = {
+        items: orderData.items.map(item => ({
+          productoId: item.productId || item.id,
+          cantidad: item.quantity || item.cantidad
+        })),
+        direccionEnvio: orderData.shippingAddress || orderData.direccionEnvio || '',
+        notas: orderData.notes || orderData.notas || ''
+      }
+      
+      const created = await request('/pedidos', {
+        method: 'POST',
+        body: JSON.stringify(newOrder)
+      })
+      
+      return created
+    } catch (error) {
+      if (error.message.includes('Stock insuficiente')) {
+        throw new Error(error.message)
+      }
+      throw new Error(error.message || 'Error al crear el pedido')
+    }
+  },
+  
+  /**
+   * Cancelar un pedido (solo si está en estado PENDIENTE)
+   */
+  async cancelOrder(orderId) {
+    try {
+      const canceled = await request(`/pedidos/${orderId}/cancelar`, {
+        method: 'PUT'
+      })
+      return canceled
+    } catch (error) {
+      throw new Error(error.message || 'Error al cancelar el pedido')
+    }
+  },
+  
+  /**
+   * Actualizar estado de un pedido (solo ADMIN)
+   */
+  async updateOrderStatus(orderId, newStatus) {
+    try {
+      const updated = await request(`/pedidos/${orderId}/estado?estado=${newStatus}`, {
+        method: 'PUT'
+      })
+      return updated
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar el estado del pedido')
+    }
+  },
+  
+  /**
+   * Obtener todos los pedidos (solo ADMIN)
+   */
+  async getAllOrders() {
+    try {
+      const pedidos = await request('/pedidos')
+      return pedidos
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener pedidos')
+    }
+  },
+  
+  /**
+   * Obtener pedidos por estado (solo ADMIN)
+   */
+  async getOrdersByStatus(status) {
+    try {
+      const pedidos = await request(`/pedidos/estado/${status}`)
+      return pedidos
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener pedidos')
+    }
+  },
 }

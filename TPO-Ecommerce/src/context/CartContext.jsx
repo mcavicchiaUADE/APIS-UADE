@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from "react"
 import { cartReducer, cartInitialState } from "../reducers/cartReducer"
+import { api } from "../services/api"
 const CartContext = createContext()
 export const useCart = () => {
   const context = useContext(CartContext)
@@ -48,6 +49,34 @@ export const CartProvider = ({ children }) => {
   const getCartItemsCount = () => {
     return state.items.reduce((total, item) => total + item.quantity, 0)
   }
+
+  /**
+   * Finalizar compra - Crea un pedido con los items del carrito
+   */
+  const checkout = async (shippingData) => {
+    try {
+      // Preparar datos del pedido
+      const orderData = {
+        items: state.items.map(item => ({
+          productId: item.id,
+          cantidad: item.quantity
+        })),
+        shippingAddress: shippingData?.address || '',
+        notes: shippingData?.notes || ''
+      }
+
+      // Crear el pedido en el backend
+      const order = await api.createOrder(orderData)
+
+      // Limpiar el carrito después de crear el pedido exitosamente
+      clearCart()
+
+      return order
+    } catch (error) {
+      throw error
+    }
+  }
+
   const value = {
     ...state,
     addToCart,
@@ -55,6 +84,7 @@ export const CartProvider = ({ children }) => {
     updateQuantity,
     clearCart,
     getCartItemsCount,
+    checkout,
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

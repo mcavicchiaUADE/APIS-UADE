@@ -54,6 +54,33 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
     
+    @ExceptionHandler(PedidoNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handlePedidoNotFound(
+            PedidoNotFoundException ex) {
+        
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", LocalDateTime.now());
+        error.put("status", HttpStatus.NOT_FOUND.value());
+        error.put("error", "Not Found");
+        error.put("message", ex.getMessage());
+        error.put("path", "/api/pedidos");
+        
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(StockInsuficienteException.class)
+    public ResponseEntity<Map<String, Object>> handleStockInsuficiente(
+            StockInsuficienteException ex) {
+        
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", LocalDateTime.now());
+        error.put("status", HttpStatus.BAD_REQUEST.value());
+        error.put("error", "Stock Insuficiente");
+        error.put("message", ex.getMessage());
+        
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(
             IllegalArgumentException ex) {

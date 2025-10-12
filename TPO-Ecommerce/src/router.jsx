@@ -9,6 +9,8 @@ import ProductDetail from "./pages/ProductDetail"
 import Cart from "./pages/Cart"
 import DashboardProducts from "./pages/DashboardProducts"
 import ProductForm from "./pages/ProductForm"
+import Orders from "./pages/Orders"
+import OrderDetail from "./pages/OrderDetail"
 function AppRouter() {
   return (
     <Routes>
@@ -72,6 +74,26 @@ function AppRouter() {
           <ProtectedRoute>
             <Layout>
               <ProductForm />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/orders"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Orders />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/orders/:id"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <OrderDetail />
             </Layout>
           </ProtectedRoute>
         }

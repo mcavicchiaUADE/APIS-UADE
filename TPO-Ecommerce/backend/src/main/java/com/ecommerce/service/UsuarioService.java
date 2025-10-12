@@ -31,6 +31,11 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
     
+    // Obtener usuario por ID (sin Optional)
+    public Usuario findById(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
+    
     // Obtener usuario por email
     public Optional<Usuario> getUsuarioByEmail(String email) {
         return usuarioRepository.findByEmail(email);

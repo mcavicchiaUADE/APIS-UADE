@@ -1,16 +1,23 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 import { useCart } from "../context/CartContext"
 import { useToast } from "../context/ToastContext"
 import { api } from "../services/api"
 import { formatPrice } from "../utils/formatters"
 import EmptyState from "../components/EmptyState"
 import LoadingSpinner from "../components/LoadingSpinner"
-import { ShoppingCart, Minus, Plus, Trash2, ArrowLeft, CreditCard } from "lucide-react"
+import Modal from "../components/Modal"
+import { ShoppingCart, Minus, Plus, Trash2, ArrowLeft, CreditCard, MapPin, FileText } from "lucide-react"
 const Cart = () => {
-  const { items, total, updateQuantity, removeFromCart, clearCart } = useCart()
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const { items, total, updateQuantity, removeFromCart, clearCart, checkout } = useCart()
   const { success, error } = useToast()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
+  const [shippingAddress, setShippingAddress] = useState("")
+  const [notes, setNotes] = useState("")
   const handleQuantityChange = (productId, newQuantity) => {
     if (newQuantity < 1) {
       removeFromCart(productId)
@@ -28,58 +35,32 @@ const Cart = () => {
       success("Carrito vaciado")
     }
   }
-  const validateStock = async () => {
-    const stockErrors = []
-    for (const item of items) {
-      try {
-        const product = await api.getProduct(item.id)
-        if (product.stock < item.quantity) {
-          stockErrors.push({
-            name: item.name,
-            available: product.stock,
-            requested: item.quantity,
-          })
-        }
-      } catch (err) {
-        stockErrors.push({
-          name: item.name,
-          error: "Producto no encontrado",
-        })
-      }
-    }
-    return stockErrors
-  }
-  const handleCheckout = async () => {
-    if (items.length === 0) {
-      error("El carrito está vacío")
+  const handleOpenCheckout = () => {
+    if (!user) {
+      error("Debes iniciar sesión para finalizar la compra")
+      navigate("/login")
       return
     }
+    setShowCheckoutModal(true)
+  }
+
+  const handleConfirmCheckout = async () => {
     setIsCheckingOut(true)
     try {
-      // Validate stock for all items
-      const stockErrors = await validateStock()
-      if (stockErrors.length > 0) {
-        const errorMessages = stockErrors.map((err) => {
-          if (err.error) {
-            return `${err.name}: ${err.error}`
-          }
-          return `${err.name}: Solo ${err.available} disponibles (solicitaste ${err.requested})`
-        })
-        error(`Stock insuficiente:\n${errorMessages.join("\n")}`)
-        setIsCheckingOut(false)
-        return
-      }
-      // Update stock for each item
-      for (const item of items) {
-        const product = await api.getProduct(item.id)
-        const newStock = product.stock - item.quantity
-        await api.updateProductStock(item.id, newStock)
-      }
-      // Clear cart and show success
-      clearCart()
-      success("¡Compra realizada exitosamente! El stock ha sido actualizado.")
+      const order = await checkout({
+        address: shippingAddress,
+        notes: notes
+      })
+      
+      setShowCheckoutModal(false)
+      success(`¡Pedido #${order.id} creado exitosamente!`)
+      
+      // Navegar al detalle del pedido
+      setTimeout(() => {
+        navigate(`/orders/${order.id}`)
+      }, 1000)
     } catch (err) {
-      error("Error al procesar la compra: " + err.message)
+      error(err.message || "Error al procesar la compra")
     } finally {
       setIsCheckingOut(false)
     }
@@ -155,28 +136,104 @@ const Cart = () => {
               </div>
             </div>
             <button
-              onClick={handleCheckout}
+              onClick={handleOpenCheckout}
               disabled={isCheckingOut}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isCheckingOut ? (
-                <>
-                  <LoadingSpinner size="sm" className="border-white border-t-transparent" />
-                  Procesando...
-                </>
-              ) : (
-                <>
-                  <CreditCard size={18} />
-                  Proceder al checkout
-                </>
-              )}
+              <CreditCard size={18} />
+              Finalizar Compra
             </button>
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
-              Al hacer clic en "Proceder al checkout", se validará el stock y se actualizará automáticamente.
+              Se creará un pedido y se descontará el stock automáticamente.
             </p>
           </div>
         </div>
       </div>
+
+      {/* Checkout Modal */}
+      <Modal
+        isOpen={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        title="Finalizar Compra"
+      >
+        <div className="space-y-4">
+          {/* Shipping Address */}
+          <div>
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <MapPin className="w-4 h-4" />
+              Dirección de Envío
+            </label>
+            <textarea
+              value={shippingAddress}
+              onChange={(e) => setShippingAddress(e.target.value)}
+              placeholder="Calle, número, ciudad, código postal..."
+              rows={3}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            />
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <FileText className="w-4 h-4" />
+              Notas (Opcional)
+            </label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Instrucciones especiales, horario preferido de entrega..."
+              rows={2}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            />
+          </div>
+
+          {/* Order Summary */}
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-gray-600 dark:text-gray-400">Productos</span>
+              <span className="text-gray-900 dark:text-white">{items.length}</span>
+            </div>
+            <div className="flex justify-between items-center text-lg font-semibold">
+              <span className="text-gray-900 dark:text-white">Total</span>
+              <span className="text-blue-600 dark:text-blue-400">{formatPrice(total)}</span>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => setShowCheckoutModal(false)}
+              disabled={isCheckingOut}
+              className="flex-1 btn btn-secondary"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleConfirmCheckout}
+              disabled={isCheckingOut || !shippingAddress.trim()}
+              className="flex-1 btn btn-primary inline-flex items-center justify-center gap-2"
+            >
+              {isCheckingOut ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  Procesando...
+                </>
+              ) : (
+                <>
+                  <CreditCard className="w-4 h-4" />
+                  Confirmar Pedido
+                </>
+              )}
+            </button>
+          </div>
+
+          {!shippingAddress.trim() && (
+            <p className="text-sm text-yellow-600 dark:text-yellow-400 text-center">
+              * La dirección de envío es obligatoria
+            </p>
+          )}
+        </div>
+      </Modal>
     </div>
   )
 }

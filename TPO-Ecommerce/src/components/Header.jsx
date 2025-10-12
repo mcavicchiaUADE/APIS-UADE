@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { useCart } from "../context/CartContext"
-import { ShoppingCart, User, LogOut, Package } from "lucide-react"
+import { ShoppingCart, User, LogOut, Package, ClipboardList } from "lucide-react"
 import ThemeToggle from "./ThemeToggle"
 const Header = () => {
   const { user, logout } = useAuth()
@@ -31,6 +31,13 @@ const Header = () => {
             >
               <Package size={18} />
               Mis Productos
+            </Link>
+            <Link
+              to="/orders"
+              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"
+            >
+              <ClipboardList size={18} />
+              Mis Pedidos
             </Link>
           </nav>
           {/* User actions */}
@@ -72,6 +79,9 @@ const Header = () => {
             </Link>
             <Link to="/dashboard/products" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Mis Productos
+            </Link>
+            <Link to="/orders" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Mis Pedidos
             </Link>
           </div>
         </nav>
