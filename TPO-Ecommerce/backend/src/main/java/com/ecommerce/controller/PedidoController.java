@@ -229,6 +229,83 @@ public class PedidoController {
         }
     }
     
+    /**
+     * GET /api/pedidos/admin/ventas-totales
+     * Obtiene todas las ventas (items vendidos) de todos los vendedores (ADMIN)
+     */
+    @GetMapping("/admin/ventas-totales")
+    public ResponseEntity<?> obtenerTodasLasVentas(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (!isAdmin(authHeader)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(createErrorResponse("Solo administradores pueden ver todas las ventas"));
+            }
+            
+            // Obtener todos los pedidos y extraer todos los items
+            List<Map<String, Object>> todasLasVentas = pedidoService.obtenerTodosLosPedidos()
+                    .stream()
+                    .flatMap(pedido -> pedido.getItems().stream().map(item -> {
+                        Map<String, Object> venta = new HashMap<>();
+                        venta.put("detalleId", item.getId());
+                        venta.put("pedidoId", pedido.getId());
+                        venta.put("productoNombre", item.getProductoNombre());
+                        venta.put("cantidad", item.getCantidad());
+                        venta.put("subtotal", item.getSubtotal());
+                        venta.put("estadoItem", item.getEstadoItem());
+                        venta.put("vendedorId", item.getVendedor() != null ? item.getVendedor().getId() : null);
+                        venta.put("vendedorNombre", item.getVendedor() != null ? 
+                                item.getVendedor().getNombre() + " " + item.getVendedor().getApellido() : null);
+                        venta.put("compradorNombre", pedido.getUsuario() != null ? 
+                                pedido.getUsuario().getNombre() + " " + pedido.getUsuario().getApellido() : null);
+                        venta.put("fechaPedido", pedido.getCreatedAt());
+                        return venta;
+                    }))
+                    .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(todasLasVentas);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(createErrorResponse("Error al obtener ventas: " + e.getMessage()));
+        }
+    }
+    
+    /**
+     * GET /api/pedidos/admin/estadisticas-generales
+     * Obtiene estadísticas generales del marketplace (ADMIN)
+     */
+    @GetMapping("/admin/estadisticas-generales")
+    public ResponseEntity<?> obtenerEstadisticasGenerales(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (!isAdmin(authHeader)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(createErrorResponse("Solo administradores pueden ver estadísticas generales"));
+            }
+            
+            List<Pedido> todosPedidos = pedidoService.obtenerTodosLosPedidos();
+            
+            Map<String, Object> estadisticas = new HashMap<>();
+            estadisticas.put("totalPedidos", todosPedidos.size());
+            estadisticas.put("totalItems", todosPedidos.stream()
+                    .mapToLong(p -> p.getItems().size())
+                    .sum());
+            estadisticas.put("itemsPendientes", todosPedidos.stream()
+                    .flatMap(p -> p.getItems().stream())
+                    .filter(i -> i.getEstadoItem() == EstadoPedido.PENDIENTE)
+                    .count());
+            estadisticas.put("itemsEntregados", todosPedidos.stream()
+                    .flatMap(p -> p.getItems().stream())
+                    .filter(i -> i.getEstadoItem() == EstadoPedido.ENTREGADO)
+                    .count());
+            
+            return ResponseEntity.ok(estadisticas);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(createErrorResponse("Error al obtener estadísticas: " + e.getMessage()));
+        }
+    }
+    
     // ===== MÉTODOS AUXILIARES =====
     
     /**

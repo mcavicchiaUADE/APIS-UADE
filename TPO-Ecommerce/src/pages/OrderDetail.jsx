@@ -6,6 +6,7 @@ import { useFetch } from "../hooks/useFetch"
 import { api } from "../services/api"
 import { formatPrice, formatDate } from "../utils/formatters"
 import LoadingSpinner from "../components/LoadingSpinner"
+import ConfirmModal from "../components/ConfirmModal"
 import { ArrowLeft, Package, MapPin, FileText, X, Clock, CheckCircle, Truck, XCircle } from "lucide-react"
 
 const OrderDetail = () => {
@@ -14,6 +15,7 @@ const OrderDetail = () => {
   const { user } = useAuth()
   const { success, error } = useToast()
   const [isCanceling, setIsCanceling] = useState(false)
+  const [showCancelModal, setShowCancelModal] = useState(false)
 
   // Fetch order details
   const { data: order, loading, error: fetchError, refetch } = useFetch(
@@ -36,11 +38,23 @@ const OrderDetail = () => {
         text: "Confirmado",
         description: "Tu pedido ha sido confirmado"
       },
+      PREPARANDO: {
+        color: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400",
+        icon: Package,
+        text: "Preparando",
+        description: "Los vendedores están preparando tu pedido"
+      },
       ENVIADO: {
         color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
         icon: Truck,
         text: "Enviado",
         description: "Tu pedido está en camino"
+      },
+      EN_TRANSITO: {
+        color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+        icon: Truck,
+        text: "En Tránsito",
+        description: "Tu pedido está en tránsito"
       },
       ENTREGADO: {
         color: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
@@ -53,6 +67,18 @@ const OrderDetail = () => {
         icon: XCircle,
         text: "Cancelado",
         description: "El pedido fue cancelado"
+      },
+      CANCELADO_COMPRADOR: {
+        color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+        icon: XCircle,
+        text: "Cancelado",
+        description: "Cancelaste este pedido"
+      },
+      CANCELADO_VENDEDOR: {
+        color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+        icon: XCircle,
+        text: "Cancelado por Vendedor",
+        description: "El vendedor canceló este pedido"
       }
     }
 
@@ -61,14 +87,11 @@ const OrderDetail = () => {
 
   // Handle cancel order
   const handleCancelOrder = async () => {
-    if (!window.confirm("¿Estás seguro de que quieres cancelar este pedido? El stock será restaurado.")) {
-      return
-    }
-
     setIsCanceling(true)
     try {
       await api.cancelOrder(order.id)
       success("Pedido cancelado exitosamente")
+      setShowCancelModal(false)
       refetch()
     } catch (err) {
       error("Error al cancelar el pedido: " + err.message)
@@ -153,7 +176,7 @@ const OrderDetail = () => {
           {order.items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+              className="flex flex-col sm:flex-row items-start gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-l-4 border-blue-500"
             >
               {item.productoImagen && (
                 <img
@@ -169,6 +192,18 @@ const OrderDetail = () => {
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {formatPrice(item.precioUnitario)} × {item.cantidad} unidad{item.cantidad !== 1 ? 'es' : ''}
                 </p>
+                {item.vendedorNombre && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    👤 Vendido por: <span className="font-medium">{item.vendedorNombre}</span>
+                  </p>
+                )}
+                {item.estadoItem && (
+                  <div className="mt-2">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                      Estado: {item.estadoItem.replace(/_/g, ' ')}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="text-right">
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -239,25 +274,29 @@ const OrderDetail = () => {
               </p>
             </div>
             <button
-              onClick={handleCancelOrder}
+              onClick={() => setShowCancelModal(true)}
               disabled={isCanceling}
               className="btn btn-danger inline-flex items-center gap-2 whitespace-nowrap"
             >
-              {isCanceling ? (
-                <>
-                  <LoadingSpinner size="sm" />
-                  Cancelando...
-                </>
-              ) : (
-                <>
-                  <X className="w-4 h-4" />
-                  Cancelar Pedido
-                </>
-              )}
+              <X className="w-4 h-4" />
+              Cancelar Pedido
             </button>
           </div>
         </div>
       )}
+
+      {/* Cancel Confirm Modal */}
+      <ConfirmModal
+        isOpen={showCancelModal}
+        onClose={() => !isCanceling && setShowCancelModal(false)}
+        onConfirm={handleCancelOrder}
+        title="Cancelar Pedido"
+        message="¿Estás seguro de que deseas cancelar este pedido? El stock será restaurado automáticamente."
+        confirmText="Sí, cancelar pedido"
+        cancelText="No, mantener pedido"
+        confirmButtonClass="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        isLoading={isCanceling}
+      />
     </div>
   )
 }

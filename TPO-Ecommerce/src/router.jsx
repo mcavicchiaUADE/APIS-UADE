@@ -11,6 +11,7 @@ import DashboardProducts from "./pages/DashboardProducts"
 import ProductForm from "./pages/ProductForm"
 import Orders from "./pages/Orders"
 import OrderDetail from "./pages/OrderDetail"
+import Sales from "./pages/Sales"
 function AppRouter() {
   return (
     <Routes>
@@ -94,6 +95,16 @@ function AppRouter() {
           <ProtectedRoute>
             <Layout>
               <OrderDetail />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sales"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Sales />
             </Layout>
           </ProtectedRoute>
         }

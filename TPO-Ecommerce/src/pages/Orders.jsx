@@ -7,18 +7,34 @@ import { api } from "../services/api"
 import { formatPrice, formatDate } from "../utils/formatters"
 import LoadingSpinner from "../components/LoadingSpinner"
 import EmptyState from "../components/EmptyState"
-import { Package, Eye, X, Clock, CheckCircle, Truck, XCircle } from "lucide-react"
+import { Package, Eye, X, Clock, CheckCircle, Truck, XCircle, RefreshCw } from "lucide-react"
 
 const Orders = () => {
   const { user } = useAuth()
   const { success, error } = useToast()
   const [cancelingOrderId, setCancelingOrderId] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
 
   // Fetch user orders
   const { data: orders, loading, error: fetchError, refetch } = useFetch(
     () => api.getMyOrders(),
     []
   )
+
+  // No auto-refresh, solo manual cuando el usuario quiera
+
+  // Handle manual refresh
+  const handleRefresh = async () => {
+    setRefreshing(true)
+    try {
+      await refetch()
+      success("Pedidos actualizados")
+    } catch (err) {
+      error("Error al actualizar pedidos: " + err.message)
+    } finally {
+      setRefreshing(false)
+    }
+  }
 
   // Handle cancel order
   const handleCancelOrder = async (orderId) => {
@@ -51,10 +67,20 @@ const Orders = () => {
         icon: CheckCircle,
         text: "Confirmado"
       },
+      PREPARANDO: {
+        color: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400",
+        icon: Package,
+        text: "Preparando"
+      },
       ENVIADO: {
         color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
         icon: Truck,
         text: "Enviado"
+      },
+      EN_TRANSITO: {
+        color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+        icon: Truck,
+        text: "En Tránsito"
       },
       ENTREGADO: {
         color: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
@@ -65,6 +91,26 @@ const Orders = () => {
         color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
         icon: XCircle,
         text: "Cancelado"
+      },
+      CANCELADO_COMPRADOR: {
+        color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+        icon: XCircle,
+        text: "Cancelado por Comprador"
+      },
+      CANCELADO_VENDEDOR: {
+        color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+        icon: XCircle,
+        text: "Cancelado por Vendedor"
+      },
+      DEVOLUCION_SOLICITADA: {
+        color: "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400",
+        icon: XCircle,
+        text: "Devolución Solicitada"
+      },
+      DEVUELTO: {
+        color: "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400",
+        icon: XCircle,
+        text: "Devuelto"
       }
     }
 
@@ -120,13 +166,27 @@ const Orders = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Mis Pedidos
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Historial completo de tus compras
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Mis Pedidos
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Historial completo de tus compras
+          </p>
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {refreshing ? (
+            <LoadingSpinner size="sm" />
+          ) : (
+            <RefreshCw className="w-4 h-4" />
+          )}
+          {refreshing ? "Actualizando..." : "Actualizar"}
+        </button>
       </div>
 
       {/* Orders List */}

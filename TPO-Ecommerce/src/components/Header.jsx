@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { useCart } from "../context/CartContext"
-import { ShoppingCart, User, LogOut, Package, ClipboardList } from "lucide-react"
+import { ShoppingCart, User, LogOut, Package, ClipboardList, ShoppingBag } from "lucide-react"
 import ThemeToggle from "./ThemeToggle"
 const Header = () => {
   const { user, logout } = useAuth()
@@ -31,6 +31,13 @@ const Header = () => {
             >
               <Package size={18} />
               Mis Productos
+            </Link>
+            <Link
+              to="/sales"
+              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"
+            >
+              <ShoppingBag size={18} />
+              Mis Ventas
             </Link>
             <Link
               to="/orders"
@@ -73,14 +80,17 @@ const Header = () => {
         </div>
         {/* Mobile navigation */}
         <nav className="md:hidden pb-4">
-          <div className="flex space-x-4">
-            <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <div className="flex space-x-4 overflow-x-auto">
+            <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
               Inicio
             </Link>
-            <Link to="/dashboard/products" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link to="/dashboard/products" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
               Mis Productos
             </Link>
-            <Link to="/orders" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link to="/sales" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
+              Mis Ventas
+            </Link>
+            <Link to="/orders" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
               Mis Pedidos
             </Link>
           </div>

@@ -21,6 +21,14 @@ public class DetallePedidoDTO {
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
     
+    // Información del vendedor
+    private Long vendedorId;
+    private String vendedorNombre;
+    private String vendedorEmail;
+    
+    // Estado individual del item
+    private String estadoItem;
+    
     // Constructor para mapear desde DetallePedido
     public DetallePedidoDTO(DetallePedido detalle) {
         this.id = detalle.getId();
@@ -30,6 +38,11 @@ public class DetallePedidoDTO {
         this.cantidad = detalle.getCantidad();
         this.precioUnitario = detalle.getPrecioUnitario();
         this.subtotal = detalle.getSubtotal();
+        this.vendedorId = detalle.getVendedor() != null ? detalle.getVendedor().getId() : null;
+        this.vendedorNombre = detalle.getVendedor() != null ? 
+                detalle.getVendedor().getNombre() + " " + detalle.getVendedor().getApellido() : null;
+        this.vendedorEmail = detalle.getVendedor() != null ? detalle.getVendedor().getEmail() : null;
+        this.estadoItem = detalle.getEstadoItem() != null ? detalle.getEstadoItem().name() : null;
     }
 }
 

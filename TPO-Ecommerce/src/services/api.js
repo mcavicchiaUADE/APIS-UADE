@@ -432,4 +432,94 @@ export const api = {
       throw new Error(error.message || 'Error al obtener pedidos')
     }
   },
+
+  // ===== VENTAS (PARA VENDEDORES) =====
+  
+  /**
+   * Obtener todas las ventas del usuario autenticado (como vendedor)
+   */
+  async getMySales() {
+    try {
+      const ventas = await request('/ventas/mis-ventas')
+      return ventas
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener ventas')
+    }
+  },
+
+  /**
+   * Obtener ventas filtradas por estado
+   */
+  async getMySalesByStatus(status) {
+    try {
+      const ventas = await request(`/ventas/mis-ventas/estado/${status}`)
+      return ventas
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener ventas')
+    }
+  },
+
+  /**
+   * Obtener estadísticas de ventas del vendedor
+   */
+  async getSalesStats() {
+    try {
+      const stats = await request('/ventas/estadisticas')
+      return stats
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener estadísticas')
+    }
+  },
+
+  /**
+   * Actualizar estado de una venta (item)
+   */
+  async updateSaleStatus(detalleId, newStatus) {
+    try {
+      const updated = await request(`/ventas/${detalleId}/estado?estado=${newStatus}`, {
+        method: 'PUT'
+      })
+      return updated
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar el estado de la venta')
+    }
+  },
+
+  /**
+   * Obtener detalle de una venta específica
+   */
+  async getSale(detalleId) {
+    try {
+      const venta = await request(`/ventas/${detalleId}`)
+      return venta
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener detalle de venta')
+    }
+  },
+
+  // ===== ADMIN - VENTAS TOTALES =====
+  
+  /**
+   * Obtener todas las ventas de todos los vendedores (solo ADMIN)
+   */
+  async getAllSales() {
+    try {
+      const ventas = await request('/pedidos/admin/ventas-totales')
+      return ventas
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener ventas totales')
+    }
+  },
+
+  /**
+   * Obtener estadísticas generales del marketplace (solo ADMIN)
+   */
+  async getGeneralStats() {
+    try {
+      const stats = await request('/pedidos/admin/estadisticas-generales')
+      return stats
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener estadísticas generales')
+    }
+  },
 }

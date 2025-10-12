@@ -27,20 +27,25 @@ Bienvenido a la documentación completa del proyecto **E-commerce Full Stack**. 
 
 ## Sobre el Proyecto
 
-Este es un sistema de e-commerce completo que implementa:
+Este es un sistema de e-commerce marketplace completo que implementa:
 
 - **Backend**: Spring Boot 3.2.0 + MySQL 8.0
 - **Frontend**: React 18 + Vite + TailwindCSS
 - **Autenticación**: JWT (JSON Web Tokens)
 - **Base de Datos**: MySQL containerizado con Docker
 - **Seguridad**: Spring Security con roles y validación de propiedad
-- **Sistema de Pedidos**: Gestión completa del ciclo de vida de compras
+- **Sistema de Marketplace**: Múltiples vendedores, gestión de ventas por usuario
+- **Sistema de Pedidos**: Gestión completa con estados granulares por item
 
 ## Características Principales
 
 ✅ CRUD completo de productos y categorías  
 ✅ Autenticación JWT con roles (USER, ADMIN)  
 ✅ Carrito de compras funcional  
+✅ **Sistema de marketplace con múltiples vendedores**  
+✅ **Gestión de ventas por vendedor**  
+✅ **Estados granulares por item de pedido**  
+✅ **Sincronización automática de estados**  
 ✅ Sistema de pedidos con historial  
 ✅ Gestión de stock automática  
 ✅ UI/UX moderna con dark mode  
@@ -96,16 +101,23 @@ docker ps
 
 **✅ Resultado esperado:** Contenedor corriendo con el nombre `mysql-ecommerce`
 
-### 3. Cargar Datos Iniciales (Opcional)
+### 3. Cargar Datos Iniciales (Recomendado)
 
-Si deseas cargar los 100 productos de prueba:
+Carga la base de datos completa con migración de marketplace incluida:
 
 ```powershell
-# Desde el directorio raíz del proyecto
-Get-Content TPO-Ecommerce\backend\db-seed.sql | docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db
+# Desde el directorio backend
+Get-Content TPO-Ecommerce\backend\db-seed-completo.sql | docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db
 ```
 
-**Nota:** Si no ejecutas este paso, el backend cargará automáticamente datos mínimos al iniciar.
+**✅ Este script incluye:**
+- Migración completa del sistema marketplace
+- 100 productos distribuidos entre usuarios
+- 3 usuarios con roles configurados
+- 5 categorías completas
+- Estados granulares del marketplace
+
+**Nota:** Si no ejecutas este paso, el backend cargará automáticamente datos mínimos al iniciar, pero sin la funcionalidad de marketplace.
 
 ---
 
@@ -393,12 +405,13 @@ src/main/java/com/ecommerce/
       ├──▶│  pedidos    │
       │   ├─────────────┤
       │   │ id (PK)     │
-      │   │ usuario_id  │
+      │   │ usuario_id  │ (comprador)
       │   │ total       │
-      │   │ estado      │
+      │   │ estado      │ (sincronizado)
       │   │ direccion   │
       │   │ notas       │
       │   │ created_at  │
+      │   │ updated_at  │
       │   └─────┬───────┘
       │         │
       │   ┌─────▼───────────────┐
@@ -407,8 +420,10 @@ src/main/java/com/ecommerce/
       │   │ id (PK)             │
       │   │ pedido_id           │
       │   │ producto_id         │
+      │   │ vendedor_id (FK)    │ ⭐ MARKETPLACE
       │   │ cantidad            │
       │   │ precio_unitario     │
+      │   │ estado_item         │ ⭐ MARKETPLACE
       │   │ producto_nombre     │
       │   │ producto_imagen     │
       │   └─────────────────────┘
@@ -416,11 +431,12 @@ src/main/java/com/ecommerce/
 
 ### Relaciones
 
-- `productos.owner_user_id` → `usuarios.id` (Many-to-One)
+- `productos.owner_user_id` → `usuarios.id` (Many-to-One) - Usuario es dueño/vendedor del producto
 - `productos.categoria_id` → `categorias.id` (Many-to-One)
-- `pedidos.usuario_id` → `usuarios.id` (Many-to-One)
+- `pedidos.usuario_id` → `usuarios.id` (Many-to-One) - Usuario es comprador del pedido
 - `detalle_pedidos.pedido_id` → `pedidos.id` (Many-to-One)
 - `detalle_pedidos.producto_id` → `productos.id` (Many-to-One)
+- **`detalle_pedidos.vendedor_id` → `usuarios.id` (Many-to-One)** ⭐ - Vendedor del item
 
 ### Configuración
 
@@ -555,6 +571,16 @@ Organizado en capas:
 - `PUT /api/pedidos/{id}/estado` - Cambiar estado (admin)
 - `GET /api/pedidos` - Todos los pedidos (admin)
 - `GET /api/pedidos/estado/{estado}` - Filtrar por estado (admin)
+
+### 🛍️ Ventas (Marketplace)
+
+- `GET /api/ventas/mis-ventas` - Ventas del vendedor (autenticado)
+- `GET /api/ventas/mis-ventas/estado/{estado}` - Filtrar ventas por estado (autenticado)
+- `GET /api/ventas/{detalleId}` - Detalle de venta específica (vendedor)
+- `PUT /api/ventas/{detalleId}/estado` - Actualizar estado del item (vendedor)
+- `GET /api/ventas/estadisticas` - Estadísticas de ventas (autenticado)
+- `GET /api/pedidos/admin/ventas-totales` - Todas las ventas (admin)
+- `GET /api/pedidos/admin/estadisticas-generales` - Estadísticas generales (admin)
 
 ---
 
@@ -730,34 +756,75 @@ $token = ($response.Content | ConvertFrom-Json).token
 
 ## Resumen del Sistema
 
-Sistema completo de pedidos implementado que permite a los usuarios:
+Sistema completo de marketplace con pedidos multi-vendedor que permite:
 
-- ✅ Crear pedidos desde el carrito de compras
+### Para Compradores:
+- ✅ Crear pedidos con productos de múltiples vendedores
 - ✅ Ver historial completo de sus compras
-- ✅ Ver detalle de cada pedido
+- ✅ Ver detalle de cada pedido con información del vendedor
+- ✅ Ver estado individual de cada item del pedido
 - ✅ Cancelar pedidos pendientes
-- ✅ Descuento automático de stock
-- ✅ Estados de pedido (PENDIENTE, CONFIRMADO, ENVIADO, ENTREGADO, CANCELADO)
+- ✅ Botón de actualización manual de estados
+
+### Para Vendedores:
+- ✅ Ver todas sus ventas en "Mis Ventas"
+- ✅ Gestionar estado de cada item vendido
+- ✅ Estadísticas de ventas (pendientes, enviadas, entregadas, etc.)
+- ✅ Filtrar ventas por estado
+- ✅ Confirmación modal para cambios de estado
+
+### Para Administradores:
+- ✅ Ver todos los pedidos del marketplace
+- ✅ Ver todas las ventas de todos los vendedores
+- ✅ Estadísticas generales del sistema
+- ✅ Información completa de compradores y vendedores
+
+### Sistema:
+- ✅ Descuento automático de stock al crear pedido
+- ✅ Restauración de stock al cancelar
+- ✅ Estados granulares por item individual
+- ✅ Sincronización automática del estado del pedido general
+- ✅ 11 estados disponibles (ver sección Estados)
 
 ---
 
-## Arquitectura de Pedidos
+## Arquitectura de Pedidos Marketplace
 
 ```
-Usuario
+Usuario (Rol: Comprador)
    │
-   ├── 1:N Pedidos
-   │      │
-   │      ├── Estado (PENDIENTE, CONFIRMADO, etc.)
-   │      ├── Total
-   │      ├── Dirección de envío
-   │      └── 1:N DetallePedido
-   │             │
-   │             ├── Producto (referencia)
-   │             ├── Cantidad
-   │             ├── Precio unitario (histórico)
-   │             └── Subtotal
-   └── 1:N Productos (vendedor)
+   └── 1:N Pedidos
+          │
+          ├── Estado (sincronizado automáticamente)
+          ├── Total
+          ├── Dirección de envío
+          └── 1:N DetallePedido
+                 │
+                 ├── Producto (referencia)
+                 ├── Vendedor (Usuario) ⭐ MARKETPLACE
+                 ├── Cantidad
+                 ├── Precio unitario (histórico)
+                 ├── Estado Item (individual) ⭐ MARKETPLACE
+                 └── Subtotal
+
+Usuario (Rol: Vendedor)
+   │
+   ├── 1:N Productos (owner)
+   └── 1:N DetallePedido (ventas)
+          │
+          └── Gestiona su estado_item
+```
+
+### Lógica de Sincronización de Estados
+
+El estado del **pedido general** se actualiza automáticamente basándose en los estados de los items individuales:
+
+```
+Si hay items CANCELADOS           → Pedido: CANCELADO_COMPRADOR
+Si TODOS items ENTREGADOS          → Pedido: ENTREGADO
+Si hay items EN_TRANSITO/ENVIADO   → Pedido: ENVIADO
+Si hay items CONFIRMADO/PREPARANDO → Pedido: CONFIRMADO
+Si TODOS items PENDIENTE           → Pedido: PENDIENTE
 ```
 
 ---
@@ -767,40 +834,134 @@ Usuario
 ### Backend
 
 **Entidades:**
-- `EstadoPedido` - Enum con 5 estados (PENDIENTE, CONFIRMADO, ENVIADO, ENTREGADO, CANCELADO)
-- `Pedido` - Pedido completo con total, estado, dirección, notas
-- `DetallePedido` - Items del pedido con precio histórico
+- `EstadoPedido` - Enum con 11 estados del marketplace:
+  - `PENDIENTE` - Item/pedido recién creado
+  - `CONFIRMADO` - Vendedor confirma el pedido
+  - `PREPARANDO` - Vendedor preparando el envío
+  - `ENVIADO` - Item enviado al comprador
+  - `EN_TRANSITO` - Item en camino
+  - `ENTREGADO` - Item entregado al comprador
+  - `CANCELADO` - ⚠️ Deprecado (backward compatibility)
+  - `CANCELADO_COMPRADOR` - Cancelado por el comprador
+  - `CANCELADO_VENDEDOR` - Cancelado por el vendedor
+  - `DEVOLUCION_SOLICITADA` - Solicitud de devolución
+  - `DEVUELTO` - Item devuelto al vendedor
+  
+- `Pedido` - Pedido completo con total, estado (sincronizado), dirección, notas
+- `DetallePedido` - Items del pedido con:
+  - Precio histórico
+  - **`vendedor_id`** (FK → usuarios) ⭐
+  - **`estado_item`** (individual) ⭐
 
 **Servicios:**
-- Crear pedido con validación de stock
-- Obtener historial de usuario
-- Cancelar pedido y restaurar stock
-- Cambiar estados (admin)
-- Filtrar por estado (admin)
+- `PedidoService`:
+  - Crear pedido con validación de stock
+  - Asignar vendedor (owner) a cada item
+  - Obtener historial de usuario
+  - Cancelar pedido y restaurar stock
+  - **`actualizarEstadoPedidoGeneral()`** - Sincronización automática ⭐
+  - Validación de transiciones de estado
+  - Cambiar estados (admin)
+  - Filtrar por estado (admin)
+  
+- `VentasController` (nuevo):
+  - Obtener ventas del vendedor
+  - Filtrar ventas por estado
+  - Actualizar estado de items individuales
+  - Estadísticas de ventas por vendedor
+  - Validación de permisos (solo el vendedor puede actualizar sus items)
 
-**Endpoints:** Ver [Capítulo 3](#pedidos) para lista completa
+**Endpoints:** Ver [Capítulo 3](#-ventas-marketplace) para lista completa
 
 ### Frontend
 
 **Páginas:**
-- `Orders.jsx` - Historial con badges de estado coloridos
-- `OrderDetail.jsx` - Detalle completo con opción de cancelar
+- `Orders.jsx` - Historial de compras con:
+  - Badges de estado coloridos
+  - Botón de actualización manual ⭐
+  - Estados sincronizados del pedido
+  
+- `OrderDetail.jsx` - Detalle completo con:
+  - Información del vendedor por item ⭐
+  - Estado individual de cada item ⭐
+  - Modal de confirmación para cancelar ⭐
+  - Opción de cancelar (solo items PENDIENTE)
+  
+- `Sales.jsx` (nueva) - Panel de ventas del vendedor: ⭐
+  - Estadísticas de ventas (total, pendientes, enviadas, entregadas)
+  - Lista de items vendidos con información del comprador
+  - Botones para avanzar al siguiente estado
+  - Botón para cancelar (solo PENDIENTE/CONFIRMADO)
+  - Modal de confirmación para cambios de estado
+  - Filtro por estado de items
+
+**Componentes:**
+- `ConfirmModal.jsx` (nuevo) - Modal reutilizable para confirmaciones ⭐
+- `Header.jsx` - Actualizado con enlace a "Mis Ventas" ⭐
 
 **Context:**
 - `CartContext.checkout()` - Crea pedido desde el carrito
 
-**API:**
-- 7 métodos nuevos para gestión de pedidos
+**API (api.js):**
+- 7 métodos para gestión de pedidos (compradores)
+- 6 métodos nuevos para gestión de ventas (vendedores) ⭐
+- 2 métodos para administradores (estadísticas generales) ⭐
 
 ---
 
-## Flujo Completo de Compra
+## Flujo Completo de Compra Multi-Vendedor
 
-1. Usuario agrega productos al carrito
+### Proceso de Compra (Comprador)
+
+1. Usuario agrega productos al carrito (pueden ser de diferentes vendedores)
 2. Click "Finalizar Compra" → Modal con dirección y notas
-3. Backend valida stock, crea pedido y descuenta inventario
+3. **Backend**:
+   - Valida stock de todos los productos
+   - Crea el pedido con estado `PENDIENTE`
+   - Crea items (`DetallePedido`) asignando el vendedor (owner) a cada uno ⭐
+   - Cada item inicia con `estado_item: PENDIENTE` ⭐
+   - Descuenta inventario de cada producto
 4. Frontend limpia carrito y navega a detalle del pedido
-5. Usuario ve confirmación con número de pedido
+5. Usuario ve confirmación con número de pedido y vendedores involucrados ⭐
+
+### Proceso de Venta (Vendedor)
+
+1. Vendedor entra a "Mis Ventas" y ve sus items vendidos
+2. Para cada item, puede:
+   - Ver información del comprador (nombre, dirección) ⭐
+   - Avanzar al siguiente estado: `PENDIENTE → CONFIRMADO → PREPARANDO → ENVIADO → EN_TRANSITO → ENTREGADO`
+   - Cancelar (solo si está en `PENDIENTE` o `CONFIRMADO`)
+3. Al cambiar el estado:
+   - Aparece modal de confirmación ⭐
+   - Backend actualiza `estado_item` del detalle
+   - **Backend sincroniza automáticamente el estado del pedido general** ⭐
+
+### Actualización de Estado (Comprador)
+
+1. Comprador entra a "Mis Pedidos"
+2. Ve el estado general del pedido (sincronizado)
+3. Puede hacer click en "Actualizar" para refrescar los estados ⭐
+4. En el detalle del pedido, ve el estado individual de cada item y su vendedor ⭐
+
+### Ejemplo Práctico
+
+```
+Pedido #123 (Comprador: Juan)
+├── Item 1: iPhone (Vendedor: María)
+│   └── Estado: ENVIADO
+├── Item 2: MacBook (Vendedor: Pedro)
+│   └── Estado: CONFIRMADO
+└── Estado del Pedido General: CONFIRMADO
+    (porque hay items en CONFIRMADO/ENVIADO)
+
+Si María cambia a ENTREGADO:
+└── Estado del Pedido General: CONFIRMADO
+    (aún hay items no entregados)
+
+Si Pedro también cambia a ENTREGADO:
+└── Estado del Pedido General: ENTREGADO
+    (todos los items están entregados)
+```
 
 ---
 
@@ -826,31 +987,85 @@ Usuario
 | id | BIGINT | PK auto-increment |
 | pedido_id | BIGINT | FK → pedidos(id) |
 | producto_id | BIGINT | FK → productos(id) |
+| **vendedor_id** | **BIGINT** | **FK → usuarios(id)** ⭐ **MARKETPLACE** |
 | cantidad | INT | Cantidad comprada |
 | precio_unitario | DECIMAL(10,2) | Precio en el momento |
+| **estado_item** | **ENUM** | **Estado individual del item** ⭐ **MARKETPLACE** |
 | producto_nombre | VARCHAR | Nombre guardado |
 | producto_imagen | VARCHAR | URL de imagen |
 
+### Índices del Marketplace
+
+| Índice | Columnas | Propósito |
+|--------|----------|-----------|
+| `idx_detalle_pedido_vendedor` | vendedor_id | Consultas de ventas por vendedor |
+| `idx_detalle_pedido_estado_item` | estado_item | Filtros por estado |
+| `idx_detalle_pedido_vendedor_estado` | vendedor_id, estado_item | Filtros combinados (optimización) |
+
 ---
 
-## Testing del Sistema de Pedidos
+## Testing del Sistema de Marketplace
 
-### Prueba Completa del Flujo
+### Prueba Completa del Flujo Multi-Vendedor
 
-1. Login → Home → Agregar productos al carrito
-2. Click "Finalizar Compra" → Ingresar dirección
-3. Confirmar pedido → Ver detalle
-4. Verificar descuento de stock en productos
+**Paso 1: Como Comprador**
+1. Login como `user1` o `testuser`
+2. Home → Agregar productos de diferentes vendedores al carrito
+3. Click "Finalizar Compra" → Ingresar dirección
+4. Confirmar pedido → Ver detalle con vendedores ⭐
+5. Verificar descuento de stock en productos
+
+**Paso 2: Como Vendedor**
+1. Login como el usuario que vendió productos
+2. Ir a "Mis Ventas" (nuevo enlace en header) ⭐
+3. Ver estadísticas de ventas ⭐
+4. Cambiar estado de un item (aparece modal) ⭐
+5. Confirmar cambio de estado
+
+**Paso 3: Como Comprador (Verificar Sincronización)**
+1. Login como el comprador original
+2. Ir a "Mis Pedidos"
+3. Click en botón "Actualizar" ⭐
+4. Verificar que el estado del pedido cambió automáticamente ⭐
+5. Ver detalle: verificar estado individual de cada item ⭐
+
+**Paso 4: Como Administrador**
+1. Login como `admin`
+2. Ver todos los pedidos del sistema
+3. Ver todas las ventas (endpoint admin)
+4. Ver estadísticas generales del marketplace
 
 ### Verificar en Base de Datos
 
 ```sql
--- Ver pedidos con detalles completos
-SELECT p.id, u.username, p.total, p.estado, COUNT(dp.id) AS items
+-- Ver pedidos con detalles completos y vendedores
+SELECT 
+    p.id AS pedido_id,
+    u_comprador.username AS comprador,
+    p.total,
+    p.estado AS estado_pedido,
+    dp.producto_nombre,
+    u_vendedor.username AS vendedor,
+    dp.estado_item,
+    dp.cantidad,
+    dp.subtotal
 FROM pedidos p
-JOIN usuarios u ON p.usuario_id = u.id
-LEFT JOIN detalle_pedidos dp ON p.id = dp.pedido_id
-GROUP BY p.id;
+JOIN usuarios u_comprador ON p.usuario_id = u_comprador.id
+JOIN detalle_pedidos dp ON p.id = dp.pedido_id
+JOIN usuarios u_vendedor ON dp.vendedor_id = u_vendedor.id
+ORDER BY p.id DESC, dp.id;
+
+-- Ver estadísticas de ventas por vendedor
+SELECT 
+    u.username AS vendedor,
+    COUNT(dp.id) AS total_items_vendidos,
+    SUM(dp.subtotal) AS total_ventas,
+    dp.estado_item,
+    COUNT(*) AS cantidad_por_estado
+FROM detalle_pedidos dp
+JOIN usuarios u ON dp.vendedor_id = u.id
+GROUP BY u.id, u.username, dp.estado_item
+ORDER BY u.username, dp.estado_item;
 ```
 
 ## Clases 9-10-11
@@ -951,7 +1166,12 @@ El proyecto actual cumple con la estructura esperada y agrega capas adicionales 
 - **Múltiples imágenes** - List<String> en lugar de String
 - **BigDecimal** - Precios precisos sin errores de redondeo
 - **DataInitializer** - Carga automática de 100 productos
-- **Sistema de Pedidos** - Gestión completa de compras
+- **Sistema de Marketplace** ⭐ - Múltiples vendedores con gestión independiente
+- **Estados Granulares** ⭐ - 11 estados para seguimiento detallado
+- **Sincronización Automática** ⭐ - Estados de pedido sincronizados con items
+- **Modal de Confirmación** ⭐ - UX mejorada sin alerts del navegador
+- **Panel de Ventas** ⭐ - Vista completa para vendedores
+- **Script Unificado** ⭐ - db-seed-completo.sql con migración incluida
 
 ---
 
@@ -973,8 +1193,8 @@ El proyecto actual cumple con la estructura esperada y agrega capas adicionales 
 ---
 
 **Última actualización**: Octubre 12, 2025  
-**Versión del documento**: 2.0.0  
-**Estado**: Completo y actualizado
+**Versión del documento**: 3.0.0 - **MARKETPLACE**  
+**Estado**: Completo y actualizado con sistema de marketplace multi-vendedor
 
 ---
 

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /**
  * Entidad que representa un item/detalle dentro de un pedido
  * Relaciona un pedido con los productos comprados
+ * Cada item tiene su propio estado y vendedor (owner del producto)
  */
 @Entity
 @Table(name = "detalle_pedidos")
@@ -31,6 +32,11 @@ public class DetallePedido {
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
     
+    // Relación con el vendedor (owner del producto al momento de la compra)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendedor_id", nullable = false)
+    private Usuario vendedor;
+    
     @Column(nullable = false)
     private Integer cantidad;
     
@@ -46,6 +52,12 @@ public class DetallePedido {
     @Column(name = "producto_imagen")
     private String productoImagen;
     
+    // Estado individual del item (cada vendedor gestiona sus propios items)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private EstadoPedido estadoItem = EstadoPedido.PENDIENTE;
+    
     // Método auxiliar para calcular subtotal
     public BigDecimal getSubtotal() {
         return precioUnitario.multiply(BigDecimal.valueOf(cantidad));
@@ -56,9 +68,11 @@ public class DetallePedido {
         return "DetallePedido{" +
                 "id=" + id +
                 ", producto=" + (producto != null ? producto.getId() : null) +
+                ", vendedor=" + (vendedor != null ? vendedor.getId() : null) +
                 ", cantidad=" + cantidad +
                 ", precioUnitario=" + precioUnitario +
                 ", subtotal=" + getSubtotal() +
+                ", estadoItem=" + estadoItem +
                 '}';
     }
 }
