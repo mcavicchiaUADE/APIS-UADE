@@ -65,23 +65,29 @@ public class DataInitializer implements CommandLineRunner {
 
         // Crear usuarios
         Usuario admin = Usuario.builder()
-                .nombre("Administrador")
-                .email("admin@ecommerce.com")
+                .nombre("Admin")
+                .apellido("User")
+                .username("admin")
+                .email("admin@test.com")
                 .password("admin123")  // Se encriptará en el service
                 .role(Role.ADMIN)
                 .build();
 
         Usuario usuario1 = Usuario.builder()
-                .nombre("Juan Pérez")
-                .email("juan@email.com")
-                .password("password123")  // Se encriptará en el service
+                .nombre("User")
+                .apellido("One")
+                .username("user1")
+                .email("user1@test.com")
+                .password("user123")  // Se encriptará en el service
                 .role(Role.USER)
                 .build();
 
         Usuario usuario2 = Usuario.builder()
-                .nombre("María García")
-                .email("maria@email.com")
-                .password("password123")  // Se encriptará en el service
+                .nombre("Test")
+                .apellido("User")
+                .username("testuser")
+                .email("test@test.com")
+                .password("test123")  // Se encriptará en el service
                 .role(Role.USER)
                 .build();
 

@@ -36,6 +36,22 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email);
     }
     
+    // Obtener usuario por email (sin Optional para JWT)
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElse(null);
+    }
+    
+    // Buscar usuario por email o username
+    public Usuario findByEmailOrUsername(String emailOrUsername) {
+        // Primero intentar por email
+        Usuario usuario = usuarioRepository.findByEmail(emailOrUsername).orElse(null);
+        if (usuario == null) {
+            // Si no se encuentra por email, intentar por username
+            usuario = usuarioRepository.findByUsername(emailOrUsername).orElse(null);
+        }
+        return usuario;
+    }
+    
     // Crear o actualizar usuario
     public Usuario saveUsuario(Usuario usuario) {
         // Encriptar contraseña si no está ya encriptada
@@ -53,6 +69,16 @@ public class UsuarioService {
     // Verificar si existe un email
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
+    }
+    
+    // Verificar si existe un username
+    public boolean existsByUsername(String username) {
+        return usuarioRepository.existsByUsername(username);
+    }
+    
+    // Método save simple para AuthController
+    public Usuario save(Usuario usuario) {
+        return saveUsuario(usuario);
     }
     
     // Obtener usuarios por rol

@@ -3,12 +3,20 @@ import { ERROR_MESSAGES, TOKEN_PREFIX } from "../constants"
 // Base URL for Spring Boot Backend
 const API_BASE_URL = "http://localhost:8081/api"
 
-// Helper function to make HTTP requests
+// Helper function to get JWT token from storage
+const getAuthToken = () => {
+  return localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')
+}
+
+// Helper function to make HTTP requests with JWT support
 const request = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`
+  const token = getAuthToken()
+  
   const config = {
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
@@ -19,7 +27,7 @@ const request = async (endpoint, options = {}) => {
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`)
+      throw new Error(errorData.error || errorData.message || `HTTP error! status: ${response.status}`)
     }
     
     return await response.json()
@@ -32,63 +40,143 @@ const request = async (endpoint, options = {}) => {
 }
 
 export const api = {
-  // Auth endpoints (simulados - el backend actual no tiene autenticación real)
-  async login(email, password) {
-    // Simulamos autenticación básica
-    const mockUsers = [
-      { id: 1, email: "admin@test.com", password: "admin123", username: "admin", firstName: "Admin", lastName: "User", role: "user" },
-      { id: 2, email: "user1@test.com", password: "user123", username: "user1", firstName: "Juan", lastName: "Pérez", role: "user" },
-      { id: 3, email: "test@test.com", password: "test123", username: "testuser", firstName: "Test", lastName: "User", role: "user" }
-    ]
-    
-    const user = mockUsers.find((u) => u.email === email && u.password === password)
-    if (!user) {
-      throw new Error(ERROR_MESSAGES.INVALID_CREDENTIALS)
+  // Auth endpoints - AUTENTICACIÓN REAL con Spring Boot + JWT
+  async login(emailOrUsername, password) {
+    try {
+      const response = await request('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ emailOrUsername, password })
+      })
+      
+      // Transformar la respuesta del backend al formato del frontend
+      return {
+        user: {
+          id: response.user.id,
+          email: response.user.email,
+          username: response.user.email.split('@')[0], // Usar parte del email como username
+          firstName: response.user.nombre,
+          lastName: response.user.nombre, // Backend solo tiene 'nombre'
+          role: response.user.role.toLowerCase()
+        },
+        token: response.token
+      }
+    } catch (error) {
+      throw new Error(error.message || ERROR_MESSAGES.INVALID_CREDENTIALS)
     }
-    const token = `${TOKEN_PREFIX}${user.id}_${Date.now()}`
-    return { user: { ...user, password: undefined }, token }
   },
   
   async register(userData) {
-    // Simulamos registro - en un backend real esto iría a un endpoint de registro
-    const mockUser = {
-      id: Date.now(),
-      ...userData,
-      role: "user",
+    try {
+      const response = await request('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: userData.username || userData.email.split('@')[0],
+          email: userData.email,
+          password: userData.password,
+          nombre: userData.firstName || userData.name?.split(' ')[0] || 'Usuario',
+          apellido: userData.lastName || userData.name?.split(' ')[1] || 'Apellido'
+        })
+      })
+      
+      // Transformar la respuesta del backend al formato del frontend
+      return {
+        user: {
+          id: response.user.id,
+          email: response.user.email,
+          username: userData.username || response.user.email.split('@')[0],
+          firstName: response.user.nombre,
+          lastName: response.user.nombre,
+          role: response.user.role.toLowerCase()
+        },
+        token: response.token
+      }
+    } catch (error) {
+      throw new Error(error.message || 'Error al crear la cuenta')
     }
-    
-    const token = `${TOKEN_PREFIX}${mockUser.id}_${Date.now()}`
-    return { user: { ...mockUser, password: undefined }, token }
+  },
+  
+  async validateToken(token) {
+    try {
+      const response = await request('/auth/validate', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      
+      return {
+        id: response.id,
+        email: response.email,
+        username: response.email.split('@')[0],
+        firstName: response.nombre,
+        lastName: response.nombre,
+        role: response.role.toLowerCase()
+      }
+    } catch (error) {
+      throw new Error('Sesión expirada')
+    }
   },
   
   // Products endpoints
   async getProducts(filters = {}) {
+    let products = []
+    
     // Si hay filtros de categoría, usar el endpoint específico
     if (filters.categoryId) {
-      return await request(`/productos/categoria/${filters.categoryId}`)
+      products = await request(`/productos/categoria/${filters.categoryId}`)
     }
-    
     // Si hay búsqueda por texto, usar el endpoint de búsqueda
-    if (filters.search) {
-      return await request(`/productos/buscar?nombre=${encodeURIComponent(filters.search)}`)
+    else if (filters.search) {
+      products = await request(`/productos/buscar?nombre=${encodeURIComponent(filters.search)}`)
     }
-    
     // Si se solicita solo productos con stock
-    if (filters.availableOnly) {
-      return await request('/productos/stock?disponible=true')
+    else if (filters.availableOnly) {
+      products = await request('/productos/stock?disponible=true')
+    }
+    // Obtener todos los productos
+    else {
+      products = await request('/productos')
     }
     
-    // Obtener todos los productos
-    let products = await request('/productos')
+    // Mapear campos del backend al formato del frontend
+    const mappedProducts = products.map(product => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      images: product.images || [],
+      categoryId: product.categoriaId, // Backend usa 'categoriaId'
+      categoryName: product.categoriaNombre,
+      ownerUserId: product.ownerUserId,
+      ownerUserName: product.ownerUserNombre,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt
+    }))
     
     // Ordenar alfabéticamente
-    products.sort((a, b) => a.name.localeCompare(b.name))
-    return products
+    mappedProducts.sort((a, b) => a.name.localeCompare(b.name))
+    return mappedProducts
   },
   
   async getProduct(id) {
     try {
-      return await request(`/productos/${id}`)
+      const product = await request(`/productos/${id}`)
+      
+      // Mapear campos del backend al formato del frontend
+      return {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        images: product.images || [],
+        categoryId: product.categoriaId,
+        categoryName: product.categoriaNombre,
+        ownerUserId: product.ownerUserId,
+        ownerUserName: product.ownerUserNombre,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt
+      }
     } catch (error) {
       if (error.message.includes('404')) {
         throw new Error(ERROR_MESSAGES.PRODUCT_NOT_FOUND)
@@ -101,17 +189,33 @@ export const api = {
     const newProduct = {
       name: productData.name,
       description: productData.description,
-      price: productData.price,
-      stock: productData.stock || 0,
+      price: Number(productData.price),
+      stock: Number(productData.stock) || 0,
       images: productData.images || [],
-      categoryId: productData.categoryId,
-      ownerUserId: productData.ownerUserId || 1, // Usuario por defecto
+      categoriaId: Number(productData.categoryId), // Backend espera 'categoriaId'
+      ownerUserId: productData.ownerUserId || null,
     }
     
-    return await request('/productos', {
+    const created = await request('/productos', {
       method: 'POST',
       body: JSON.stringify(newProduct),
     })
+    
+    // Mapear respuesta al formato del frontend
+    return {
+      id: created.id,
+      name: created.name,
+      description: created.description,
+      price: created.price,
+      stock: created.stock,
+      images: created.images || [],
+      categoryId: created.categoriaId,
+      categoryName: created.categoriaNombre,
+      ownerUserId: created.ownerUserId,
+      ownerUserName: created.ownerUserNombre,
+      createdAt: created.createdAt,
+      updatedAt: created.updatedAt
+    }
   },
   
   async updateProduct(id, productData) {
@@ -119,17 +223,33 @@ export const api = {
       const updatedProduct = {
         name: productData.name,
         description: productData.description,
-        price: productData.price,
-        stock: productData.stock,
-        images: productData.images,
-        categoryId: productData.categoryId,
-        ownerUserId: productData.ownerUserId,
+        price: Number(productData.price),
+        stock: Number(productData.stock),
+        images: productData.images || [],
+        categoriaId: Number(productData.categoryId), // Backend espera 'categoriaId'
+        ownerUserId: productData.ownerUserId || null,
       }
       
-      return await request(`/productos/${id}`, {
+      const updated = await request(`/productos/${id}`, {
         method: 'PUT',
         body: JSON.stringify(updatedProduct),
       })
+      
+      // Mapear respuesta al formato del frontend
+      return {
+        id: updated.id,
+        name: updated.name,
+        description: updated.description,
+        price: updated.price,
+        stock: updated.stock,
+        images: updated.images || [],
+        categoryId: updated.categoriaId,
+        categoryName: updated.categoriaNombre,
+        ownerUserId: updated.ownerUserId,
+        ownerUserName: updated.ownerUserNombre,
+        createdAt: updated.createdAt,
+        updatedAt: updated.updatedAt
+      }
     } catch (error) {
       if (error.message.includes('404')) {
         throw new Error(ERROR_MESSAGES.PRODUCT_NOT_FOUND)
@@ -152,29 +272,50 @@ export const api = {
     }
   },
   
-  // Categories endpoints (simulados - el backend actual no tiene categorías)
+  // Categories endpoints - REAL desde el backend
   async getCategories() {
-    // Retornamos las categorías que están en el db.json original
-    return [
-      { id: 1, name: "Electrónicos" },
-      { id: 2, name: "Ropa" },
-      { id: 3, name: "Hogar" },
-      { id: 4, name: "Deportes" },
-      { id: 5, name: "Libros" }
-    ]
+    const categories = await request('/categorias')
+    
+    // Mapear campos del backend (nombre) al formato del frontend (name)
+    return categories.map(cat => ({
+      id: cat.id,
+      name: cat.nombre // Backend usa 'nombre', frontend espera 'name'
+    }))
   },
   
   // Update product stock (for checkout)
   async updateProductStock(productId, newStock) {
     try {
       const product = await request(`/productos/${productId}`)
-      return await request(`/productos/${productId}`, {
+      
+      const updated = await request(`/productos/${productId}`, {
         method: 'PUT',
         body: JSON.stringify({ 
-          ...product, 
-          stock: newStock 
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          stock: newStock,
+          images: product.images || [],
+          categoriaId: product.categoriaId,
+          ownerUserId: product.ownerUserId
         }),
       })
+      
+      // Mapear respuesta al formato del frontend
+      return {
+        id: updated.id,
+        name: updated.name,
+        description: updated.description,
+        price: updated.price,
+        stock: updated.stock,
+        images: updated.images || [],
+        categoryId: updated.categoriaId,
+        categoryName: updated.categoriaNombre,
+        ownerUserId: updated.ownerUserId,
+        ownerUserName: updated.ownerUserNombre,
+        createdAt: updated.createdAt,
+        updatedAt: updated.updatedAt
+      }
     } catch (error) {
       if (error.message.includes('404')) {
         throw new Error(ERROR_MESSAGES.PRODUCT_NOT_FOUND)

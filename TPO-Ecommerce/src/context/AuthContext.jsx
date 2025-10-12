@@ -30,31 +30,31 @@ export const AuthProvider = ({ children }) => {
         
         if (token && user) {
           try {
-            const userData = JSON.parse(user)
-            
-            // Simple validation - check if user has required fields
-            if (userData && userData.id && userData.email) {
-              // Create a completely new object with explicit properties
-              const userCopy = {
-                id: userData.id,
-                username: userData.username,
-                email: userData.email,
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                role: userData.role || 'user'
-              }
-              
-              dispatch({
-                type: "AUTH_RESTORE",
-                payload: {
-                  token: token,
+            // Validar token con el backend
+            api.validateToken(token)
+              .then((validatedUser) => {
+                const userCopy = {
+                  id: validatedUser.id,
+                  username: validatedUser.username,
+                  email: validatedUser.email,
+                  firstName: validatedUser.firstName,
+                  lastName: validatedUser.lastName,
+                  role: validatedUser.role || 'user'
+                }
+                
+                dispatch({
+                  type: "AUTH_RESTORE",
+                  payload: {
+                    token: token,
                   user: userCopy,
                   storageType: storageType,
                 },
               })
-            } else {
-              clearAllStorage()
-            }
+              })
+              .catch(() => {
+                // Token inválido o expirado
+                clearAllStorage()
+              })
           } catch (parseError) {
             clearAllStorage()
           }

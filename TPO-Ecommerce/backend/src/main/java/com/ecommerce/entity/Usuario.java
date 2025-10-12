@@ -26,6 +26,12 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String nombre;
     
+    @Column(nullable = false)
+    private String apellido;
+    
+    @Column(nullable = false, unique = true)
+    private String username;
+    
     @Column(nullable = false, unique = true)
     private String email;
     
@@ -60,7 +66,7 @@ public class Usuario implements UserDetails {
     
     @Override
     public String getUsername() {
-        return email;  // Usamos email como identificador
+        return username;  // Usamos username como identificador
     }
     
     @Override
