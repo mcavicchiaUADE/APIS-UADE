@@ -1,72 +1,103 @@
-# E-commerce Full Stack
+# 🛒 E-COMMERCE FULL STACK
 
-Proyecto de e-commerce desarrollado con React (Frontend) y Spring Boot (Backend).
+Proyecto completo de e-commerce con **React** (Frontend) y **Spring Boot** (Backend) + **MySQL**.
 
-## 🚀 Inicio Rápido
+## 🚀 CONFIGURACIÓN RÁPIDA
 
-### Ejecutar Todo el Proyecto
+### ⚡ **Setup en 3 pasos:**
+
+1. **MySQL con Docker:**
 ```powershell
-# Instalar dependencias
-npm install
-
-# Ejecutar backend + frontend
-npm run start
+docker run --name mysql-ecommerce -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ecommerce_db -p 3308:3306 -d mysql:8.0
 ```
 
-### Ejecutar por Separado
+2. **Backend Spring Boot:**
 ```powershell
-# Solo backend
-npm run backend
+cd TPO-Ecommerce\backend
+mvnd clean compile
+mvnd spring-boot:run
+```
 
-# Solo frontend
+3. **Frontend React:**
+```powershell
+cd TPO-Ecommerce
+npm install
 npm run dev
 ```
 
-## 📁 Estructura
+### 📖 **Para configuración detallada:** [README-SETUP.md](README-SETUP.md)
 
-- `backend/` - Backend Spring Boot (Java) con **100 productos**
-- `backend-legacy/` - Referencia al backend anterior (JSON Server) - NO USAR
-- `src/` - Frontend React
+## 🎯 ESTADO ACTUAL
 
-## 📦 Productos
+### ✅ **Funcionando:**
+- **Backend**: Spring Boot + MySQL + 7 productos + 5 categorías + 3 usuarios
+- **Frontend**: React + TailwindCSS + Autenticación simulada
+- **API**: Endpoints REST completos (`/api/productos`, `/api/categorias`)
+- **Base de datos**: MySQL con datos iniciales
 
-El sistema incluye **100 productos** organizados en 5 categorías:
-- **Electrónicos** (30 productos)
-- **Ropa** (10 productos)
-- **Hogar** (20 productos)
-- **Deportes** (20 productos)
-- **Libros** (20 productos)
-
-## 🌐 URLs
-
+### 🔗 **URLs:**
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8081/api
-- **Consola H2**: http://localhost:8081/h2-console
+- **Postman**: `backend/postman-collection-complete.json`
 
-## 📋 Comandos Disponibles
+## 📁 ESTRUCTURA
 
-- `npm run start` - Ejecutar backend + frontend
-- `npm run backend` - Solo backend Spring Boot
-- `npm run dev` - Solo frontend React
-- `npm run build` - Construir para producción
+```
+TPO-Ecommerce/
+├── backend/                 # Spring Boot + MySQL
+│   ├── src/main/java/       # Código Java
+│   ├── src/main/resources/  # Configuración
+│   └── postman-collection-complete.json
+├── src/                     # React Frontend
+│   ├── pages/              # Páginas principales
+│   ├── components/         # Componentes reutilizables
+│   └── services/api.js     # Conexión con backend
+└── README-SETUP.md         # Configuración detallada
+```
 
-## 🔧 Tecnologías
+## 🔧 TECNOLOGÍAS
 
-### Frontend
-- React 18
-- Vite
-- Tailwind CSS
-- Axios
+### Backend:
+- **Java 24** + **Spring Boot 3.2.0**
+- **MySQL 8.0** (Docker)
+- **Spring Security** + **JPA/Hibernate**
+- **Maven Daemon (mvnd)**
 
-### Backend
-- Java 17
-- Spring Boot 3.2.0
-- Spring Data JPA
-- H2 Database
-- Maven Daemon (mvnd)
+### Frontend:
+- **React 18** + **Vite**
+- **TailwindCSS** + **Lucide Icons**
+- **React Router** + **Context API**
 
-## 📚 Documentación
+## 📊 FUNCIONALIDADES
 
-- [Backend Spring Boot](backend/README.md)
-- [Backend Legacy (Referencia)](backend-legacy/README.md)
-- [Documentación Completa](README-BACKEND.md)
+### ✅ **Implementadas:**
+- CRUD completo de productos
+- Gestión de categorías
+- Sistema de usuarios
+- Autenticación (simulada)
+- Interfaz responsive
+- Dark mode
+
+### 🔄 **En desarrollo:**
+- Autenticación real con JWT
+- Páginas de administración
+- Gestión de usuarios
+
+## 🛠️ COMANDOS ÚTILES
+
+```powershell
+# Verificar estado
+docker ps                    # MySQL corriendo
+netstat -an | Select-String ":8081"  # Backend corriendo
+netstat -an | Select-String ":5173"  # Frontend corriendo
+
+# Reiniciar servicios
+docker restart mysql-ecommerce
+Get-Process java -ErrorAction SilentlyContinue | Stop-Process -Force
+```
+
+## 📚 DOCUMENTACIÓN
+
+- **[Configuración Completa](README-SETUP.md)** - Pasos detallados
+- **[Backend](backend/README.md)** - Documentación técnica
+- **[Postman Collection](backend/postman-collection-complete.json)** - Pruebas de API
