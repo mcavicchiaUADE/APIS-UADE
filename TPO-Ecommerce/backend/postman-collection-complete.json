@@ -1,0 +1,412 @@
+{
+  "info": {
+    "name": "E-commerce Backend API - Completa",
+    "description": "Colección completa de Postman para probar el backend del e-commerce con todas las funcionalidades implementadas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🏠 PRODUCTOS",
+      "item": [
+        {
+          "name": "Obtener todos los productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Obtiene todos los productos disponibles con sus categorías y usuarios propietarios"
+          }
+        },
+        {
+          "name": "Obtener producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            },
+            "description": "Obtiene un producto específico por su ID"
+          }
+        },
+        {
+          "name": "Crear nuevo producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Nuevo Producto Test\",\n    \"description\": \"Descripción del nuevo producto\",\n    \"price\": 99.99,\n    \"stock\": 10,\n    \"images\": [\"https://example.com/image.jpg\"],\n    \"categoriaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Crea un nuevo producto (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Producto Actualizado\",\n    \"description\": \"Descripción actualizada\",\n    \"price\": 149.99,\n    \"stock\": 15,\n    \"images\": [\"https://example.com/updated-image.jpg\"],\n    \"categoriaId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            },
+            "description": "Actualiza un producto existente (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            },
+            "description": "Elimina un producto (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Buscar productos por nombre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/buscar?nombre=iPhone",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "buscar"],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "iPhone",
+                  "description": "Término de búsqueda"
+                }
+              ]
+            },
+            "description": "Busca productos por nombre (búsqueda parcial)"
+          }
+        },
+        {
+          "name": "Buscar productos por categoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/categoria/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "categoria", "1"]
+            },
+            "description": "Obtiene todos los productos de una categoría específica"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📂 CATEGORÍAS",
+      "item": [
+        {
+          "name": "Obtener todas las categorías",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias"]
+            },
+            "description": "Obtiene todas las categorías disponibles"
+          }
+        },
+        {
+          "name": "Obtener categoría por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "1"]
+            },
+            "description": "Obtiene una categoría específica por su ID"
+          }
+        },
+        {
+          "name": "Crear nueva categoría",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Nueva Categoría\",\n    \"descripcion\": \"Descripción de la nueva categoría\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias"]
+            },
+            "description": "Crea una nueva categoría (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Actualizar categoría",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Categoría Actualizada\",\n    \"descripcion\": \"Descripción actualizada\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "1"]
+            },
+            "description": "Actualiza una categoría existente (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Eliminar categoría",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "1"]
+            },
+            "description": "Elimina una categoría (requiere autenticación)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 USUARIOS (Protegido)",
+      "item": [
+        {
+          "name": "Obtener todos los usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios"]
+            },
+            "description": "Obtiene todos los usuarios (requiere autenticación - debería devolver 403)"
+          }
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "1"]
+            },
+            "description": "Obtiene un usuario específico (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Crear nuevo usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"nuevousuario\",\n    \"email\": \"nuevo@ejemplo.com\",\n    \"password\": \"password123\",\n    \"nombre\": \"Nuevo Usuario\",\n    \"apellido\": \"Apellido\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios"]
+            },
+            "description": "Registra un nuevo usuario"
+          }
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"usuariomodificado\",\n    \"email\": \"modificado@ejemplo.com\",\n    \"nombre\": \"Usuario Modificado\",\n    \"apellido\": \"Apellido Modificado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "1"]
+            },
+            "description": "Actualiza un usuario existente (requiere autenticación)"
+          }
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "1"]
+            },
+            "description": "Elimina un usuario (requiere autenticación)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔐 AUTENTICACIÓN",
+      "item": [
+        {
+          "name": "Login de usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Autentica un usuario y obtiene un token JWT"
+          }
+        },
+        {
+          "name": "Registro de usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@ejemplo.com\",\n    \"password\": \"test123\",\n    \"nombre\": \"Usuario Test\",\n    \"apellido\": \"Apellido Test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Registra un nuevo usuario"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧪 ENDPOINTS DE PRUEBA",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "Endpoint raíz (debería devolver 403 por Spring Security)"
+          }
+        },
+        {
+          "name": "Info de la aplicación",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/info",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "info"]
+            },
+            "description": "Información básica de la aplicación"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 ESTADÍSTICAS",
+      "item": [
+        {
+          "name": "Estadísticas generales",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "stats"]
+            },
+            "description": "Obtiene estadísticas generales del sistema"
+          }
+        }
+      ]
+    }
+  ]
+}
