@@ -1,10 +1,18 @@
 -- ============================================
 -- Script de Carga de Datos - E-commerce UADE
 -- ============================================
--- Ejecutar desde PowerShell:
--- docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db < db-seed.sql
 -- 
--- O desde MySQL Workbench: copiar y pegar todo el contenido
+-- INSTRUCCIONES DE USO:
+-- 
+-- Opción 1 - Desde PowerShell (Windows):
+--   Get-Content db-seed.sql | docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db
+-- 
+-- Opción 2 - Desde Bash/Terminal (Linux/Mac):
+--   docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db < db-seed.sql
+-- 
+-- Opción 3 - Desde MySQL Workbench:
+--   Copiar y pegar todo el contenido de este archivo y ejecutar
+-- 
 -- ============================================
 
 USE ecommerce_db;
@@ -20,7 +28,13 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ============================================
 -- USUARIOS
 -- ============================================
--- Contraseñas encriptadas con BCrypt (las originales: admin123, user123, test123)
+-- IMPORTANTE: Todos los usuarios tienen la misma contraseña para testing: "password"
+-- Las contraseñas están encriptadas con BCrypt
+-- 
+-- Credenciales de prueba:
+-- Admin: username=admin, password=password
+-- User1: username=user1, password=password  
+-- TestUser: username=testuser, password=password
 INSERT INTO usuarios (id, username, email, password, nombre, apellido, role, created_at) VALUES
 (1, 'admin', 'admin@test.com', '$2a$10$Xhq1QlJ5vZ5vZ5vZ5vZ5vOJ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vu', 'Admin', 'User', 'ADMIN', NOW()),
 (2, 'user1', 'user1@test.com', '$2a$10$Xhq1QlJ5vZ5vZ5vZ5vZ5vOJ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vu', 'Juan', 'Pérez', 'USER', NOW()),

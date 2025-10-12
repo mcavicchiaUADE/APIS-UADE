@@ -1,15 +1,27 @@
 {
   "info": {
     "name": "E-commerce Backend API - Completa",
-    "description": "Colección completa de Postman para probar el backend del e-commerce con todas las funcionalidades implementadas",
+    "description": "Colección completa de Postman para probar el backend del e-commerce con todas las funcionalidades: Productos, Categorías, Usuarios, Autenticación, Pedidos y Estadísticas. Incluye gestión completa del ciclo de vida de pedidos con control de stock.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "variable": [
     {
       "key": "baseUrl",
       "value": "http://localhost:8081",
       "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT del usuario autenticado (obtenerlo del endpoint Login)"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT del administrador (obtenerlo del endpoint Login con credenciales de admin)"
     }
   ],
   "item": [
@@ -404,6 +416,159 @@
               "path": ["api", "stats"]
             },
             "description": "Obtiene estadísticas generales del sistema"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 PEDIDOS",
+      "item": [
+        {
+          "name": "Crear nuevo pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"items\": [\n        {\n            \"productoId\": 1,\n            \"cantidad\": 2\n        },\n        {\n            \"productoId\": 3,\n            \"cantidad\": 1\n        }\n    ],\n    \"direccionEnvio\": \"Av. Ejemplo 123, CABA, Argentina\",\n    \"notas\": \"Entregar en horario de oficina\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos"]
+            },
+            "description": "Crea un nuevo pedido desde el carrito. Requiere autenticación. El pedido se crea en estado PENDIENTE y descuenta stock automáticamente."
+          }
+        },
+        {
+          "name": "Obtener mis pedidos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/mis-pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "mis-pedidos"]
+            },
+            "description": "Obtiene el historial de pedidos del usuario autenticado"
+          }
+        },
+        {
+          "name": "Obtener pedido por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "1"]
+            },
+            "description": "Obtiene un pedido específico por ID. Solo el dueño del pedido o un admin pueden verlo."
+          }
+        },
+        {
+          "name": "Cancelar pedido",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/1/cancelar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "1", "cancelar"]
+            },
+            "description": "Cancela un pedido (solo si está en estado PENDIENTE). Restaura el stock de los productos automáticamente."
+          }
+        },
+        {
+          "name": "Obtener todos los pedidos (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos"]
+            },
+            "description": "Obtiene todos los pedidos del sistema. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Obtener pedidos por estado (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/estado/PENDIENTE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "estado", "PENDIENTE"]
+            },
+            "description": "Obtiene pedidos filtrados por estado. Estados válidos: PENDIENTE, CONFIRMADO, ENVIADO, ENTREGADO, CANCELADO. Solo para administradores."
+          }
+        },
+        {
+          "name": "Actualizar estado de pedido (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/1/estado?estado=CONFIRMADO",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "1", "estado"],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "CONFIRMADO",
+                  "description": "Nuevo estado del pedido (PENDIENTE, CONFIRMADO, ENVIADO, ENTREGADO, CANCELADO)"
+                }
+              ]
+            },
+            "description": "Actualiza el estado de un pedido. Solo accesible para administradores. Estados válidos: PENDIENTE, CONFIRMADO, ENVIADO, ENTREGADO, CANCELADO."
           }
         }
       ]
