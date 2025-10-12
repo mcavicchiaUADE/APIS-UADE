@@ -1,46 +1,62 @@
-# 🛒 E-COMMERCE FULL STACK
+# 🛒 E-commerce Full Stack
 
-Proyecto completo de e-commerce con **React** (Frontend) y **Spring Boot** (Backend) + **MySQL**.
+Aplicación completa de e-commerce con **React + Vite** (Frontend) y **Spring Boot + MySQL** (Backend).
 
-## 🚀 CONFIGURACIÓN RÁPIDA
+## 🚀 Inicio Rápido
 
-### ⚡ **Setup en 3 pasos:**
+### Setup en 3 pasos:
 
-1. **MySQL con Docker:**
 ```powershell
+# 1. MySQL con Docker
 docker run --name mysql-ecommerce -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ecommerce_db -p 3308:3306 -d mysql:8.0
-```
 
-2. **Backend Spring Boot:**
-```powershell
-cd TPO-Ecommerce\backend
-mvnd clean compile
-mvnd spring-boot:run
-```
-
-3. **Frontend React:**
-```powershell
+# 2. Instalar dependencias (solo primera vez)
 cd TPO-Ecommerce
 npm install
-npm run dev
+
+# 3. Iniciar aplicación completa (Backend + Frontend)
+npm run start
 ```
 
-### 📖 **Para configuración detallada:** [README-SETUP.md](README-SETUP.md)
-
-## 🎯 ESTADO ACTUAL
-
-### ✅ **Funcionando:**
-- **Backend**: Spring Boot + MySQL + 7 productos + 5 categorías + 3 usuarios
-- **Frontend**: React + TailwindCSS + Autenticación simulada
-- **API**: Endpoints REST completos (`/api/productos`, `/api/categorias`)
-- **Base de datos**: MySQL con datos iniciales
-
-### 🔗 **URLs:**
+### URLs de Acceso:
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8081/api
-- **Postman**: `backend/postman-collection-complete.json`
 
-## 📁 ESTRUCTURA
+### Credenciales de Prueba:
+- **Admin**: `admin@test.com` / `admin123`
+- **User**: `user1@test.com` / `user123`
+
+---
+
+## 🎯 Características
+
+### ✅ Implementadas:
+- **Backend**: Spring Boot + MySQL + JWT + Spring Security
+- **Frontend**: React + TailwindCSS + Context API
+- **Autenticación**: Login/Register con JWT
+- **Productos**: CRUD completo con imágenes
+- **Categorías**: Gestión completa
+- **Carrito**: Sistema de compras funcional
+- **UI/UX**: Diseño moderno y responsivo + Dark mode
+
+---
+
+## 🔧 Tecnologías
+
+### Backend:
+- **Java 24** + **Spring Boot 3.2.0**
+- **MySQL 8.0** (Docker)
+- **Spring Security** + **JWT**
+- **Spring Data JPA** + **Hibernate**
+
+### Frontend:
+- **React 18** + **Vite**
+- **TailwindCSS** + **Lucide Icons**
+- **React Router** + **Context API**
+
+---
+
+## 📁 Estructura del Proyecto
 
 ```
 TPO-Ecommerce/
@@ -51,53 +67,149 @@ TPO-Ecommerce/
 ├── src/                     # React Frontend
 │   ├── pages/              # Páginas principales
 │   ├── components/         # Componentes reutilizables
-│   └── services/api.js     # Conexión con backend
-└── README-SETUP.md         # Configuración detallada
+│   ├── context/            # Estado global
+│   └── services/api.js     # API integrada con backend
+├── docs/                   # Documentación completa
+│   ├── SETUP.md           # Guía de configuración
+│   ├── BACKEND.md         # Documentación del backend
+│   ├── TESTING.md         # Guía de pruebas
+│   ├── INTEGRATION.md     # Integración frontend-backend
+│   ├── CREDENTIALS.md     # Credenciales de acceso
+│   └── ARCHITECTURE.md    # Arquitectura del sistema
+└── package.json
 ```
 
-## 🔧 TECNOLOGÍAS
+---
 
-### Backend:
-- **Java 24** + **Spring Boot 3.2.0**
-- **MySQL 8.0** (Docker)
-- **Spring Security** + **JPA/Hibernate**
-- **Maven Daemon (mvnd)**
+## 📚 Documentación
 
-### Frontend:
-- **React 18** + **Vite**
-- **TailwindCSS** + **Lucide Icons**
-- **React Router** + **Context API**
+- **[Guía de Configuración](./docs/SETUP.md)** - Instalación paso a paso
+- **[Documentación del Backend](./docs/BACKEND.md)** - API y endpoints
+- **[Guía de Pruebas](./docs/TESTING.md)** - Testing y validación
+- **[Integración](./docs/INTEGRATION.md)** - Frontend ↔ Backend
+- **[Credenciales](./docs/CREDENTIALS.md)** - Usuarios de prueba
+- **[Arquitectura](./docs/ARCHITECTURE.md)** - Diseño del sistema
 
-## 📊 FUNCIONALIDADES
+---
 
-### ✅ **Implementadas:**
-- CRUD completo de productos
-- Gestión de categorías
-- Sistema de usuarios
-- Autenticación (simulada)
-- Interfaz responsive
-- Dark mode
-
-### 🔄 **En desarrollo:**
-- Autenticación real con JWT
-- Páginas de administración
-- Gestión de usuarios
-
-## 🛠️ COMANDOS ÚTILES
+## 🛠️ Comandos Útiles
 
 ```powershell
-# Verificar estado
-docker ps                    # MySQL corriendo
-netstat -an | Select-String ":8081"  # Backend corriendo
-netstat -an | Select-String ":5173"  # Frontend corriendo
+# Desarrollo
+npm run dev              # Solo frontend
+npm run backend          # Solo backend
+npm run start            # Backend + Frontend
 
-# Reiniciar servicios
+# Docker MySQL
+docker start mysql-ecommerce
 docker restart mysql-ecommerce
+docker logs mysql-ecommerce
+
+# Backend (manual)
+cd backend
+mvnd spring-boot:run
+
+# Verificar estado
+docker ps                                           # MySQL corriendo
+netstat -an | Select-String ":8081"                # Backend corriendo
+netstat -an | Select-String ":5173"                # Frontend corriendo
+```
+
+---
+
+## 📊 Datos Iniciales
+
+Al iniciar el backend por primera vez, se cargan automáticamente:
+- ✅ **3 usuarios** (1 admin, 2 usuarios normales)
+- ✅ **5 categorías** (Electrónicos, Ropa, Hogar, Deportes, Libros)
+- ✅ **7 productos** con imágenes y descripciones completas
+
+---
+
+## 🧪 Testing
+
+### Postman
+Importar la colección: `backend/postman-collection-complete.json`
+
+### Endpoints Principales
+```http
+# Autenticación
+POST http://localhost:8081/api/auth/login
+POST http://localhost:8081/api/auth/register
+
+# Productos
+GET  http://localhost:8081/api/productos
+GET  http://localhost:8081/api/productos/{id}
+POST http://localhost:8081/api/productos          # Requiere JWT
+
+# Categorías
+GET  http://localhost:8081/api/categorias
+```
+
+---
+
+## 🆘 Solución de Problemas
+
+### Error: MySQL no conecta
+```powershell
+# Verificar que MySQL esté corriendo
+docker ps
+docker start mysql-ecommerce
+```
+
+### Error: Puerto 8081 ocupado
+```powershell
+# Detener proceso Java
 Get-Process java -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
 
-## 📚 DOCUMENTACIÓN
+### Error: "Credenciales inválidas"
+```powershell
+# Recrear base de datos
+docker exec mysql-ecommerce mysql -u root -ppassword -e "DROP DATABASE IF EXISTS ecommerce_db; CREATE DATABASE ecommerce_db;"
+npm run start
+```
 
-- **[Configuración Completa](README-SETUP.md)** - Pasos detallados
-- **[Backend](backend/README.md)** - Documentación técnica
-- **[Postman Collection](backend/postman-collection-complete.json)** - Pruebas de API
+---
+
+## 👨‍💻 Desarrollo
+
+### Estructura del Código
+- **Backend**: Arquitectura en capas (Controller → Service → Repository)
+- **Frontend**: Componentes funcionales con Hooks
+- **Estado**: Context API para autenticación y carrito
+- **Estilos**: TailwindCSS con sistema de diseño consistente
+
+### Flujo de Autenticación
+1. Login en frontend → Request a backend
+2. Backend valida credenciales
+3. Backend genera JWT token
+4. Frontend almacena token
+5. Token se incluye automáticamente en requests
+
+---
+
+## 📈 Próximos Pasos
+
+- [ ] Sistema de órdenes/pedidos
+- [ ] Panel de administración avanzado
+- [ ] Gestión de usuarios completa
+- [ ] Sistema de reviews y ratings
+- [ ] Pasarela de pagos
+- [ ] Deploy a producción
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+
+---
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, abre un issue primero para discutir cambios mayores.
+
+---
+
+**¿Necesitas ayuda?** Consulta la [documentación completa](./docs/) o abre un issue.
