@@ -101,24 +101,6 @@ docker ps
 
 **✅ Resultado esperado:** Contenedor corriendo con el nombre `mysql-ecommerce`
 
-### 3. Cargar Datos Iniciales (Recomendado)
-
-Carga la base de datos completa con migración de marketplace incluida:
-
-```powershell
-# Desde el directorio backend
-Get-Content TPO-Ecommerce\backend\db-seed-completo.sql | docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db
-```
-
-**✅ Este script incluye:**
-- Migración completa del sistema marketplace
-- 100 productos distribuidos entre usuarios
-- 3 usuarios con roles configurados
-- 5 categorías completas
-- Estados granulares del marketplace
-
-**Nota:** Si no ejecutas este paso, el backend cargará automáticamente datos mínimos al iniciar, pero sin la funcionalidad de marketplace.
-
 ---
 
 ## Inicializar el Proyecto
@@ -155,6 +137,26 @@ cd TPO-Ecommerce
 npm install
 npm run dev
 ```
+
+---
+
+## Cargar Datos Iniciales (Recomendado)
+
+Carga la base de datos completa con migración de marketplace incluida:
+
+```powershell
+# Desde el directorio backend
+Get-Content TPO-Ecommerce\backend\db-seed-completo.sql | docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db
+```
+
+**✅ Este script incluye:**
+- Migración completa del sistema marketplace
+- 100 productos distribuidos entre usuarios
+- 3 usuarios con roles configurados
+- 5 categorías completas
+- Estados granulares del marketplace
+
+**Nota:** Si no ejecutas este paso, el backend cargará automáticamente datos mínimos al iniciar, pero sin la funcionalidad de marketplace.
 
 ---
 
