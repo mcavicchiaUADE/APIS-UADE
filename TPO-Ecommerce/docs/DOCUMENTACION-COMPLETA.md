@@ -164,9 +164,9 @@ El sistema viene con 3 usuarios pre-configurados:
 
 | Rol | Email | Username | Password |
 |-----|-------|----------|----------|
-| **Admin** | admin@test.com | admin | password |
-| **Usuario** | user1@test.com | user1 | password |
-| **Usuario** | test@test.com | testuser | password |
+| **Admin** | admin@test.com | admin | admin123 |
+| **Usuario** | user1@test.com | user1 | user123 |
+| **Usuario** | test@test.com | testuser | test123 |
 
 ---
 
@@ -198,7 +198,7 @@ http://localhost:5173
 ### 3. Probar Login
 
 1. Click en "Iniciar Sesión"
-2. Usar credenciales: `admin@test.com` / `password`
+2. Usar credenciales: `admin@test.com` / `admin123`
 3. Deberías ser redirigido al dashboard
 
 ---
@@ -230,7 +230,7 @@ mvnd clean compile
 | **Puerto 3308 ocupado** | Cambiar el mapeo de puerto en el comando docker: `-p 3309:3306` |
 | **Error de conexión BD** | Verificar que el contenedor MySQL esté corriendo: `docker ps` |
 | **Productos no cargan** | Verificar que el backend esté corriendo en http://localhost:8081 |
-| **Login no funciona** | Verificar credenciales: `admin@test.com` / `password` |
+| **Login no funciona** | Verificar credenciales: `admin@test.com` / `admin123` |
 
 ---
 
@@ -720,7 +720,7 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/productos/buscar?nombre=iPhone
 # Login y obtener token
 $loginBody = @{
     emailOrUsername = "admin@test.com"
-    password = "password"
+    password = "admin123"
 } | ConvertTo-Json
 
 $response = Invoke-WebRequest -Uri "http://localhost:8081/api/auth/login" -Method POST -Body $loginBody -ContentType "application/json"
@@ -734,7 +734,7 @@ $token = ($response.Content | ConvertFrom-Json).token
 ### Esenciales
 - [ ] Backend inicia en puerto 8081
 - [ ] Frontend inicia en puerto 5173
-- [ ] Login funciona (admin@test.com / password)
+- [ ] Login funciona (admin@test.com / admin123)
 - [ ] Productos se listan correctamente
 - [ ] Crear pedido desde carrito funciona
 - [ ] Stock se descuenta al crear pedido
