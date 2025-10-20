@@ -27,15 +27,11 @@ public class ProductoController {
      */
     @GetMapping
     public ResponseEntity<List<ProductoDTO>> obtenerTodosLosProductos() {
-        try {
-            List<ProductoDTO> productos = productoService.obtenerTodosLosProductos()
-                    .stream()
-                    .map(ProductoDTO::new)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(productos);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<ProductoDTO> productos = productoService.obtenerTodosLosProductos()
+                .stream()
+                .map(ProductoDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productos);
     }
     
     /**
@@ -44,15 +40,9 @@ public class ProductoController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<ProductoDTO> obtenerProductoPorId(@PathVariable Long id) {
-        try {
-            Optional<Producto> producto = productoService.obtenerProductoPorId(id);
-            return producto.map(p -> ResponseEntity.ok(new ProductoDTO(p)))
-                         .orElseThrow(() -> new ProductoNotFoundException(id));
-        } catch (ProductoNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Optional<Producto> producto = productoService.obtenerProductoPorId(id);
+        return producto.map(p -> ResponseEntity.ok(new ProductoDTO(p)))
+                     .orElseThrow(() -> new ProductoNotFoundException(id));
     }
     
     /**
@@ -61,14 +51,8 @@ public class ProductoController {
      */
     @PostMapping
     public ResponseEntity<ProductoDTO> crearProducto(@RequestBody Producto producto) {
-        try {
-            Producto productoCreado = productoService.crearProducto(producto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ProductoDTO(productoCreado));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Producto productoCreado = productoService.crearProducto(producto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductoDTO(productoCreado));
     }
     
     /**
@@ -77,15 +61,9 @@ public class ProductoController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<ProductoDTO> actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
-        try {
-            Optional<Producto> productoActualizado = productoService.actualizarProducto(id, producto);
-            return productoActualizado.map(p -> ResponseEntity.ok(new ProductoDTO(p)))
-                                    .orElseThrow(() -> new ProductoNotFoundException(id));
-        } catch (ProductoNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Optional<Producto> productoActualizado = productoService.actualizarProducto(id, producto);
+        return productoActualizado.map(p -> ResponseEntity.ok(new ProductoDTO(p)))
+                                .orElseThrow(() -> new ProductoNotFoundException(id));
     }
     
     /**
@@ -94,17 +72,11 @@ public class ProductoController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
-        try {
-            boolean eliminado = productoService.eliminarProducto(id);
-            if (!eliminado) {
-                throw new ProductoNotFoundException(id);
-            }
-            return ResponseEntity.noContent().build();
-        } catch (ProductoNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        boolean eliminado = productoService.eliminarProducto(id);
+        if (!eliminado) {
+            throw new ProductoNotFoundException(id);
         }
+        return ResponseEntity.noContent().build();
     }
     
     /**
@@ -113,15 +85,11 @@ public class ProductoController {
      */
     @GetMapping("/buscar")
     public ResponseEntity<List<ProductoDTO>> buscarProductosPorNombre(@RequestParam(required = false) String nombre) {
-        try {
-            List<ProductoDTO> productos = productoService.buscarProductosPorNombre(nombre)
-                    .stream()
-                    .map(ProductoDTO::new)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(productos);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<ProductoDTO> productos = productoService.buscarProductosPorNombre(nombre)
+                .stream()
+                .map(ProductoDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productos);
     }
     
     /**
@@ -130,15 +98,11 @@ public class ProductoController {
      */
     @GetMapping("/categoria/{categoryId}")
     public ResponseEntity<List<ProductoDTO>> buscarProductosPorCategoria(@PathVariable Long categoryId) {
-        try {
-            List<ProductoDTO> productos = productoService.buscarProductosPorCategoria(categoryId)
-                    .stream()
-                    .map(ProductoDTO::new)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(productos);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<ProductoDTO> productos = productoService.buscarProductosPorCategoria(categoryId)
+                .stream()
+                .map(ProductoDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productos);
     }
     
     /**
@@ -147,15 +111,11 @@ public class ProductoController {
      */
     @GetMapping("/stock")
     public ResponseEntity<List<ProductoDTO>> buscarProductosPorStock(@RequestParam(defaultValue = "true") boolean disponible) {
-        try {
-            List<ProductoDTO> productos = productoService.buscarProductosPorStock(disponible)
-                    .stream()
-                    .map(ProductoDTO::new)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(productos);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<ProductoDTO> productos = productoService.buscarProductosPorStock(disponible)
+                .stream()
+                .map(ProductoDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productos);
     }
     
     /**

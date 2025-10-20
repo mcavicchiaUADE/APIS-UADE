@@ -3,10 +3,10 @@ package com.ecommerce.controller;
 import com.ecommerce.dto.VentaDTO;
 import com.ecommerce.entity.DetallePedido;
 import com.ecommerce.entity.EstadoPedido;
+import com.ecommerce.exception.UnauthorizedException;
 import com.ecommerce.service.PedidoService;
 import com.ecommerce.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,23 +37,17 @@ public class VentasController {
     @GetMapping("/mis-ventas")
     public ResponseEntity<?> obtenerMisVentas(
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        try {
-            Long vendedorId = getUserIdFromAuth(authHeader);
-            if (vendedorId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(createErrorResponse("Debe iniciar sesión para ver sus ventas"));
-            }
-            
-            List<VentaDTO> ventas = pedidoService.obtenerVentasPorVendedor(vendedorId)
-                    .stream()
-                    .map(VentaDTO::new)
-                    .collect(Collectors.toList());
-            
-            return ResponseEntity.ok(ventas);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(createErrorResponse("Error al obtener ventas: " + e.getMessage()));
+        Long vendedorId = getUserIdFromAuth(authHeader);
+        if (vendedorId == null) {
+            throw new UnauthorizedException("Debe iniciar sesión para ver sus ventas");
         }
+        
+        List<VentaDTO> ventas = pedidoService.obtenerVentasPorVendedor(vendedorId)
+                .stream()
+                .map(VentaDTO::new)
+                .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(ventas);
     }
     
     /**
@@ -64,31 +58,24 @@ public class VentasController {
     public ResponseEntity<?> obtenerMisVentasPorEstado(
             @PathVariable String estado,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        try {
-            Long vendedorId = getUserIdFromAuth(authHeader);
-            if (vendedorId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(createErrorResponse("Debe iniciar sesión"));
-            }
-            
-            EstadoPedido estadoPedido;
-            try {
-                estadoPedido = EstadoPedido.valueOf(estado.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest()
-                        .body(createErrorResponse("Estado inválido: " + estado));
-            }
-            
-            List<VentaDTO> ventas = pedidoService.obtenerVentasPorVendedorYEstado(vendedorId, estadoPedido)
-                    .stream()
-                    .map(VentaDTO::new)
-                    .collect(Collectors.toList());
-            
-            return ResponseEntity.ok(ventas);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(createErrorResponse("Error al obtener ventas: " + e.getMessage()));
+        Long vendedorId = getUserIdFromAuth(authHeader);
+        if (vendedorId == null) {
+            throw new UnauthorizedException("Debe iniciar sesión");
         }
+        
+        EstadoPedido estadoPedido;
+        try {
+            estadoPedido = EstadoPedido.valueOf(estado.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Estado inválido: " + estado);
+        }
+        
+        List<VentaDTO> ventas = pedidoService.obtenerVentasPorVendedorYEstado(vendedorId, estadoPedido)
+                .stream()
+                .map(VentaDTO::new)
+                .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(ventas);
     }
     
     /**
@@ -99,22 +86,13 @@ public class VentasController {
     public ResponseEntity<?> obtenerVentaPorId(
             @PathVariable Long detalleId,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        try {
-            Long vendedorId = getUserIdFromAuth(authHeader);
-            if (vendedorId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(createErrorResponse("Debe iniciar sesión"));
-            }
-            
-            DetallePedido detalle = pedidoService.obtenerVentaPorId(detalleId, vendedorId);
-            return ResponseEntity.ok(new VentaDTO(detalle));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(createErrorResponse(e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(createErrorResponse("Error al obtener venta: " + e.getMessage()));
+        Long vendedorId = getUserIdFromAuth(authHeader);
+        if (vendedorId == null) {
+            throw new UnauthorizedException("Debe iniciar sesión");
         }
+        
+        DetallePedido detalle = pedidoService.obtenerVentaPorId(detalleId, vendedorId);
+        return ResponseEntity.ok(new VentaDTO(detalle));
     }
     
     /**
@@ -127,30 +105,20 @@ public class VentasController {
             @PathVariable Long detalleId,
             @RequestParam String estado,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        try {
-            Long vendedorId = getUserIdFromAuth(authHeader);
-            if (vendedorId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(createErrorResponse("Debe iniciar sesión"));
-            }
-            
-            EstadoPedido nuevoEstado;
-            try {
-                nuevoEstado = EstadoPedido.valueOf(estado.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest()
-                        .body(createErrorResponse("Estado inválido: " + estado));
-            }
-            
-            DetallePedido detalle = pedidoService.actualizarEstadoItem(detalleId, vendedorId, nuevoEstado);
-            return ResponseEntity.ok(new VentaDTO(detalle));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(createErrorResponse(e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(createErrorResponse("Error al actualizar estado: " + e.getMessage()));
+        Long vendedorId = getUserIdFromAuth(authHeader);
+        if (vendedorId == null) {
+            throw new UnauthorizedException("Debe iniciar sesión");
         }
+        
+        EstadoPedido nuevoEstado;
+        try {
+            nuevoEstado = EstadoPedido.valueOf(estado.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Estado inválido: " + estado);
+        }
+        
+        DetallePedido detalle = pedidoService.actualizarEstadoItem(detalleId, vendedorId, nuevoEstado);
+        return ResponseEntity.ok(new VentaDTO(detalle));
     }
     
     /**
@@ -160,46 +128,40 @@ public class VentasController {
     @GetMapping("/estadisticas")
     public ResponseEntity<?> obtenerEstadisticasVentas(
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        try {
-            Long vendedorId = getUserIdFromAuth(authHeader);
-            if (vendedorId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(createErrorResponse("Debe iniciar sesión"));
-            }
-            
-            List<DetallePedido> todasLasVentas = pedidoService.obtenerVentasPorVendedor(vendedorId);
-            
-            Map<String, Object> estadisticas = new HashMap<>();
-            estadisticas.put("totalVentas", todasLasVentas.size());
-            estadisticas.put("ventasPendientes", 
-                    todasLasVentas.stream()
-                            .filter(v -> v.getEstadoItem() == EstadoPedido.PENDIENTE)
-                            .count());
-            estadisticas.put("ventasConfirmadas", 
-                    todasLasVentas.stream()
-                            .filter(v -> v.getEstadoItem() == EstadoPedido.CONFIRMADO)
-                            .count());
-            estadisticas.put("ventasEnviadas", 
-                    todasLasVentas.stream()
-                            .filter(v -> v.getEstadoItem() == EstadoPedido.ENVIADO || 
-                                       v.getEstadoItem() == EstadoPedido.EN_TRANSITO)
-                            .count());
-            estadisticas.put("ventasEntregadas", 
-                    todasLasVentas.stream()
-                            .filter(v -> v.getEstadoItem() == EstadoPedido.ENTREGADO)
-                            .count());
-            estadisticas.put("ventasCanceladas", 
-                    todasLasVentas.stream()
-                            .filter(v -> v.getEstadoItem() == EstadoPedido.CANCELADO ||
-                                       v.getEstadoItem() == EstadoPedido.CANCELADO_COMPRADOR || 
-                                       v.getEstadoItem() == EstadoPedido.CANCELADO_VENDEDOR)
-                            .count());
-            
-            return ResponseEntity.ok(estadisticas);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(createErrorResponse("Error al obtener estadísticas: " + e.getMessage()));
+        Long vendedorId = getUserIdFromAuth(authHeader);
+        if (vendedorId == null) {
+            throw new UnauthorizedException("Debe iniciar sesión");
         }
+        
+        List<DetallePedido> todasLasVentas = pedidoService.obtenerVentasPorVendedor(vendedorId);
+        
+        Map<String, Object> estadisticas = new HashMap<>();
+        estadisticas.put("totalVentas", todasLasVentas.size());
+        estadisticas.put("ventasPendientes", 
+                todasLasVentas.stream()
+                        .filter(v -> v.getEstadoItem() == EstadoPedido.PENDIENTE)
+                        .count());
+        estadisticas.put("ventasConfirmadas", 
+                todasLasVentas.stream()
+                        .filter(v -> v.getEstadoItem() == EstadoPedido.CONFIRMADO)
+                        .count());
+        estadisticas.put("ventasEnviadas", 
+                todasLasVentas.stream()
+                        .filter(v -> v.getEstadoItem() == EstadoPedido.ENVIADO || 
+                                   v.getEstadoItem() == EstadoPedido.EN_TRANSITO)
+                        .count());
+        estadisticas.put("ventasEntregadas", 
+                todasLasVentas.stream()
+                        .filter(v -> v.getEstadoItem() == EstadoPedido.ENTREGADO)
+                        .count());
+        estadisticas.put("ventasCanceladas", 
+                todasLasVentas.stream()
+                        .filter(v -> v.getEstadoItem() == EstadoPedido.CANCELADO ||
+                                   v.getEstadoItem() == EstadoPedido.CANCELADO_COMPRADOR || 
+                                   v.getEstadoItem() == EstadoPedido.CANCELADO_VENDEDOR)
+                        .count());
+        
+        return ResponseEntity.ok(estadisticas);
     }
     
     // ===== MÉTODOS AUXILIARES =====
@@ -220,13 +182,5 @@ public class VentasController {
         }
     }
     
-    /**
-     * Crea un mapa de respuesta de error
-     */
-    private Map<String, String> createErrorResponse(String message) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", message);
-        return error;
-    }
 }
 

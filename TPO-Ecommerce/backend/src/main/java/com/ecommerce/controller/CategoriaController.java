@@ -27,15 +27,11 @@ public class CategoriaController {
      */
     @GetMapping
     public ResponseEntity<List<CategoriaDTO>> obtenerTodasLasCategorias() {
-        try {
-            List<CategoriaDTO> categorias = categoriaService.getAllCategorias()
-                    .stream()
-                    .map(CategoriaDTO::new)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(categorias);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<CategoriaDTO> categorias = categoriaService.getAllCategorias()
+                .stream()
+                .map(CategoriaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(categorias);
     }
     
     /**
@@ -44,15 +40,9 @@ public class CategoriaController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaDTO> obtenerCategoriaPorId(@PathVariable Long id) {
-        try {
-            Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
-            return categoria.map(c -> ResponseEntity.ok(new CategoriaDTO(c)))
-                         .orElseThrow(() -> new CategoriaNotFoundException(id));
-        } catch (CategoriaNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
+        return categoria.map(c -> ResponseEntity.ok(new CategoriaDTO(c)))
+                     .orElseThrow(() -> new CategoriaNotFoundException(id));
     }
     
     /**
@@ -61,14 +51,8 @@ public class CategoriaController {
      */
     @PostMapping
     public ResponseEntity<CategoriaDTO> crearCategoria(@RequestBody Categoria categoria) {
-        try {
-            Categoria categoriaCreada = categoriaService.saveCategoria(categoria);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new CategoriaDTO(categoriaCreada));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Categoria categoriaCreada = categoriaService.saveCategoria(categoria);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CategoriaDTO(categoriaCreada));
     }
     
     /**
@@ -79,20 +63,14 @@ public class CategoriaController {
     public ResponseEntity<CategoriaDTO> actualizarCategoria(
             @PathVariable Long id, 
             @RequestBody Categoria categoria) {
-        try {
-            Optional<Categoria> categoriaExistente = categoriaService.getCategoriaById(id);
-            if (categoriaExistente.isEmpty()) {
-                throw new CategoriaNotFoundException(id);
-            }
-            
-            categoria.setId(id);
-            Categoria categoriaActualizada = categoriaService.saveCategoria(categoria);
-            return ResponseEntity.ok(new CategoriaDTO(categoriaActualizada));
-        } catch (CategoriaNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        Optional<Categoria> categoriaExistente = categoriaService.getCategoriaById(id);
+        if (categoriaExistente.isEmpty()) {
+            throw new CategoriaNotFoundException(id);
         }
+        
+        categoria.setId(id);
+        Categoria categoriaActualizada = categoriaService.saveCategoria(categoria);
+        return ResponseEntity.ok(new CategoriaDTO(categoriaActualizada));
     }
     
     /**
@@ -101,19 +79,13 @@ public class CategoriaController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCategoria(@PathVariable Long id) {
-        try {
-            Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
-            if (categoria.isEmpty()) {
-                throw new CategoriaNotFoundException(id);
-            }
-            
-            categoriaService.deleteCategoria(id);
-            return ResponseEntity.noContent().build();
-        } catch (CategoriaNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
+        if (categoria.isEmpty()) {
+            throw new CategoriaNotFoundException(id);
         }
+        
+        categoriaService.deleteCategoria(id);
+        return ResponseEntity.noContent().build();
     }
     
     /**
