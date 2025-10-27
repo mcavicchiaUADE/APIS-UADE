@@ -12,7 +12,7 @@ services:
       MYSQL_USER: ${MYSQL_USER:-user_app}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-user_password}
     ports:
-      - "${MYSQL_PORT:-3306}:3306"
+      - "${MYSQL_PORT:-3307}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
