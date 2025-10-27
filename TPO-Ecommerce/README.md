@@ -4,7 +4,16 @@ Aplicación completa de e-commerce con **React + Vite** (Frontend) y **Spring Bo
 
 ## 🚀 Inicio Rápido
 
-### Setup en 3 pasos:
+### 🐳 Método 1: Docker (Recomendado)
+
+```powershell
+# 1. Construir y levantar todos los servicios
+docker-compose up -d --build
+
+# 2. ¡Listo! Los servicios están corriendo
+```
+
+### 💻 Método 2: Desarrollo Local (Manual)
 
 ```powershell
 # 1. MySQL con Docker
@@ -19,12 +28,15 @@ npm run start
 ```
 
 ### URLs de Acceso:
-- **Frontend**: http://localhost:5173
+- **Frontend**: http://localhost (Docker) / http://localhost:5173 (Local)
 - **Backend API**: http://localhost:8081/api
+- **MySQL**: localhost:3306 (Docker) / localhost:3308 (Local)
 
 ### Credenciales de Prueba:
 - **Admin**: `admin@test.com` / `admin123`
 - **User**: `user1@test.com` / `user123`
+
+> 📖 Para más información sobre Docker, consulta [DOCKER.md](./docs/DOCKER.md)
 
 ---
 
@@ -94,6 +106,18 @@ TPO-Ecommerce/
 
 ## 🛠️ Comandos Útiles
 
+### 🐳 Docker Compose (Recomendado)
+```powershell
+# Desarrollar con Docker
+docker-compose up -d --build        # Construir e iniciar todo
+docker-compose logs -f             # Ver logs en tiempo real
+docker-compose ps                   # Ver estado de servicios
+docker-compose restart              # Reiniciar servicios
+docker-compose down                 # Detener servicios
+docker-compose down -v              # Detener y eliminar volúmenes
+```
+
+### 💻 Desarrollo Local
 ```powershell
 # Desarrollo
 npm run dev              # Solo frontend

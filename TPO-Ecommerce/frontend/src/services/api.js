@@ -1,7 +1,12 @@
 import { ERROR_MESSAGES, TOKEN_PREFIX } from "../constants"
 
 // Base URL for Spring Boot Backend
-const API_BASE_URL = "http://localhost:8081/api"
+// En Docker, Nginx hace proxy de /api al backend
+// En desarrollo local, usa la URL completa
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (window.location.hostname === 'localhost' && import.meta.env.MODE === 'development' 
+    ? 'http://localhost:8081/api' 
+    : '/api')
 
 // Helper function to get JWT token from storage
 const getAuthToken = () => {
