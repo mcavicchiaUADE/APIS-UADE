@@ -8,9 +8,7 @@
 
 ## 📖 Tabla de Contenidos
 
-- [**Capítulo 0: Inicio Rápido**](#capítulo-0-inicio-rápido) ⚡
-  - [Método 1: Desarrollo Local](#método-1-desarrollo-local-manual)
-  - [Método 2: Docker Compose](#método-2-docker-compose-recomendado)
+- [**Inicio Rápido**](#inicio-rápido) ⚡
 - [**Capítulo 1: Arquitectura**](#capítulo-1-arquitectura-del-sistema)
 - [**Capítulo 2: Configuración Avanzada**](#capítulo-2-configuración-avanzada)
 - [**Capítulo 3: Backend**](#capítulo-3-documentación-del-backend)
@@ -18,10 +16,10 @@
 - [**Capítulo 5: Seguridad**](#capítulo-5-seguridad-y-autenticación)
 - [**Capítulo 6: Testing**](#capítulo-6-guía-de-pruebas)
 - [**Capítulo 7: Sistema de Pedidos**](#capítulo-7-sistema-de-pedidos)
-- [**Capítulo 8: Análisis Comparativo**](#capítulo-8-informe-comparativo)
-- [**Apéndice**](#apéndice-registro-de-cambios)
 
-> 📖 **Para información detallada sobre Docker**: Consulta [`DOCKER.md`](./DOCKER.md)
+> 📖 **Documentación relacionada**:
+> - [README.md](../README.md) - Inicio rápido con Docker y desarrollo local
+> - [DOCKER.md](./DOCKER.md) - Guía completa de Docker
 
 ---
 
@@ -62,225 +60,26 @@ Este es un sistema de e-commerce marketplace completo que implementa:
 
 ## Guía de Lectura
 
-- **Nuevo en el proyecto**: Comienza con el [Capítulo 0](#capítulo-0-inicio-rápido) - Elige tu método de instalación
-- **Docker - Producción**: Capítulo 0, Método 2 + `DOCKER.md`
-- **Desarrollo Local**: Capítulo 0, Método 1
+- **Nuevo en el proyecto**: Comienza con el [README.md](../README.md) para inicio rápido
+- **Docker**: Consulta [DOCKER.md](./DOCKER.md) para configuración completa
 - **Desarrollador Backend**: Capítulos 1, 3, 5
 - **Desarrollador Frontend**: Capítulos 1, 4, 7
-- **Testing/QA**: Capítulos 0, 6
+- **Testing/QA**: Capítulo 6 + Postman Collection
 - **Documentación completa**: Lee todos los capítulos en orden
 
-> 📖 **Nuevo**: El proyecto ahora soporta dos métodos de ejecución:
-> - **Método 1**: Desarrollo local (tradicional con Maven + npm)
-> - **Método 2**: Docker Compose (containerización completa) 🐳
+---
+
+## Inicio Rápido
+
+> ⚡ **Para comenzar rápidamente**, consulta el [README.md](../README.md) que incluye:
+> - Método 1: Docker (recomendado) - `docker-compose up -d --build`
+> - Método 2: Desarrollo Local - Configuración manual
+> - URLs de acceso y credenciales de prueba
+> - Comandos útiles básicos
 >
-> Para documentación completa de Docker, consulta [`DOCKER.md`](./DOCKER.md)
+> **Para documentación detallada de Docker**, consulta [DOCKER.md](./DOCKER.md)
 
----
-
-# Capítulo 0: Inicio Rápido
-
-## Requisitos Previos por Método
-
-### Comparación Rápida
-
-| Requisito | Método 1 (Local) | Método 2 (Docker) |
-|-----------|-----------------|-------------------|
-| Docker Desktop | ✅ (solo MySQL) | ✅ Requerido |
-| Java 17+ | ✅ Requerido | ❌ No necesario |
-| Node.js 18+ | ✅ Requerido | ❌ No necesario |
-| Maven/mvnd | ✅ Requerido | ❌ No necesario |
-| npm | ✅ Requerido | ❌ No necesario |
-| Git | ✅ (para clonar) | ✅ (para clonar) |
-| RAM libre | 2GB | 4GB recomendado |
-| Espacio disco | 1GB | 10GB recomendado |
-
-### Método 1: Desarrollo Local
-
-**Necesitas instalar:**
-- **Java 17+** (recomendado Java 24)
-- **Node.js 18+** y npm
-- **Docker Desktop** (para MySQL únicamente)
-- **Maven** o **Maven Daemon (mvnd)**
-- **Git**
-
-### Método 2: Docker Compose
-
-**Solo necesitas:**
-- **Docker Desktop 20.10+** (incluye Docker Compose automáticamente)
-- **Al menos 4GB de RAM libre**
-- **10GB de espacio en disco**
-
-> ✅ **Ventaja clave de Docker**: No necesitas instalar Java, Node.js, Maven, npm. Todo se instala automáticamente dentro de contenedores Docker. Solo necesitas Docker Desktop.
-
----
-
-## Método 1: Desarrollo Local (Manual)
-
-### 1. Clonar el Repositorio
-
-```powershell
-git clone [url-del-repositorio]
-cd TPO-Ecommerce
-```
-
-### 2. Configurar MySQL con Docker
-
-```powershell
-# Crear y ejecutar contenedor MySQL
-docker run --name mysql-ecommerce `
-  -e MYSQL_ROOT_PASSWORD=password `
-  -e MYSQL_DATABASE=ecommerce_db `
-  -p 3308:3306 `
-  -d mysql:8.0
-
-# Verificar que esté corriendo
-docker ps
-```
-
-**✅ Resultado esperado:** Contenedor corriendo con el nombre `mysql-ecommerce`
-
-### 3. Iniciar Backend y Frontend
-
-**Opción A: Todo Junto**
-```powershell
-# Desde el directorio raíz
-cd TPO-Ecommerce
-
-# Instalar dependencias del frontend
-npm install
-
-# Iniciar backend y frontend simultáneamente
-npm run start
-```
-
-Esto ejecutará:
-- **Backend**: http://localhost:8081
-- **Frontend**: http://localhost:5173
-
-**Opción B: Por Separado**
-
-**Terminal 1 - Backend:**
-```powershell
-cd TPO-Ecommerce\backend
-mvnd clean compile
-mvnd spring-boot:run
-```
-
-**Terminal 2 - Frontend:**
-```powershell
-cd TPO-Ecommerce
-npm install
-npm run dev
-```
-
----
-
-## Método 2: Docker Compose (Recomendado) 🐳
-
-> ⚡ **Ventaja clave**: Con Docker NO necesitas instalar dependencias locales (Java, Node.js, Maven, npm). Docker se encarga de todo automáticamente dentro de los contenedores.
-
-### 1. Clonar el Repositorio
-
-```powershell
-git clone [url-del-repositorio]
-cd TPO-Ecommerce
-```
-
-### 2. Construir y Levantar Todos los Servicios
-
-```powershell
-# Desde la raíz del proyecto TPO-Ecommerce
-docker-compose up -d --build
-```
-
-**¿Qué hace este comando?**
-- ✅ Descarga e instala Java, Node.js, Maven automáticamente
-- ✅ Instala dependencias del backend (Maven)
-- ✅ Instala dependencias del frontend (npm)
-- ✅ Compila el backend
-- ✅ Construye el frontend
-- ✅ Levanta MySQL con datos persistentes
-- ✅ Configura la red interna
-
-**Todo lo anterior sucede dentro de contenedores Docker** - No necesitas tener nada instalado en tu máquina excepto Docker Desktop.
-
-**Tiempo estimado**: 5-10 minutos (primera vez)
-
-### 2. Acceder a la Aplicación
-
-- **Frontend**: http://localhost
-- **Backend API**: http://localhost:8081/api
-- **Health Check**: http://localhost:8081/api/categorias
-
-### 3. Ver Logs y Estado
-
-```powershell
-# Ver estado de servicios
-docker-compose ps
-
-# Ver logs en tiempo real
-docker-compose logs -f
-
-# Ver logs de un servicio específico
-docker-compose logs -f backend
-docker-compose logs -f frontend
-docker-compose logs -f mysql-db
-```
-
-### 4. Comandos Útiles de Docker
-
-```powershell
-# Detener servicios
-docker-compose down
-
-# Reiniciar servicios
-docker-compose restart
-
-# Reconstruir servicios (después de cambios)
-docker-compose up -d --build
-
-# Ver uso de recursos
-docker stats
-
-# Detener y eliminar volúmenes (⚠️ Elimina datos)
-docker-compose down -v
-```
-
-> 📖 **Más información**: Ver guía completa en [`DOCKER.md`](./DOCKER.md)
-
----
-
-## Cargar Datos Iniciales
-
-### Para Método 1 (Desarrollo Local)
-
-```powershell
-# Desde el directorio backend
-Get-Content TPO-Ecommerce\backend\db-seed-completo.sql | docker exec -i mysql-ecommerce mysql -u root -ppassword ecommerce_db
-```
-
-### Para Método 2 (Docker Compose)
-
-El DataInitializer carga automáticamente:
-- 3 usuarios con roles (admin, user1, testuser)
-- 5 categorías
-- 7 productos de ejemplo
-
-**✅ Datos precargados incluyen:**
-- Migración completa del sistema marketplace
-- Usuarios con roles configurados
-- Categorías completas
-- Productos de ejemplo
-- Estados granulares del marketplace
-
-**Nota (Método 1):** Si no ejecutas el script SQL, el backend cargará automáticamente datos mínimos al iniciar.
-
-**Nota (Método 2):** Los datos se cargan automáticamente al iniciar el backend por primera vez.
-
----
-
-## Credenciales de Acceso
+### Credenciales de Prueba
 
 El sistema viene con 3 usuarios pre-configurados:
 
@@ -290,97 +89,12 @@ El sistema viene con 3 usuarios pre-configurados:
 | **Usuario** | user1@test.com | user1 | user123 |
 | **Usuario** | test@test.com | testuser | test123 |
 
----
+### URLs de Acceso
 
-## Verificación
+- **Frontend**: http://localhost (Docker) / http://localhost:5173 (Local)
+- **Backend API**: http://localhost:8081/api
+- **MySQL**: localhost:3307 (Docker) / localhost:3308 (Local)
 
-### 1. Verificar Backend
-
-Abre tu navegador o Postman:
-
-```
-GET http://localhost:8081/api/productos
-```
-
-**Respuesta esperada:** Lista de productos en formato JSON
-
-### 2. Verificar Frontend
-
-**Método 1 (Desarrollo):** http://localhost:5173  
-**Método 2 (Docker):** http://localhost
-
-**Resultado esperado:** 
-- Página principal con productos
-- Botón de login funcional
-- Interfaz responsive
-
-### 3. Probar Login
-
-1. Click en "Iniciar Sesión"
-2. Usar credenciales: `admin@test.com` / `admin123`
-3. Deberías ser redirigido al dashboard
-
----
-
-## Comandos Útiles por Método
-
-### Método 1: Desarrollo Local
-
-```powershell
-# Detener el backend
-Get-Process java -ErrorAction SilentlyContinue | Stop-Process -Force
-
-# Reiniciar MySQL
-docker restart mysql-ecommerce
-
-# Ver logs de MySQL
-docker logs mysql-ecommerce
-
-# Limpiar y recompilar backend
-cd TPO-Ecommerce\backend
-mvnd clean compile
-```
-
-### Método 2: Docker Compose
-
-```powershell
-# Ver todos los servicios corriendo
-docker-compose ps
-
-# Ver logs de un servicio específico
-docker-compose logs -f backend
-docker-compose logs -f frontend
-docker-compose logs -f mysql-db
-
-# Detener todos los servicios
-docker-compose down
-
-# Reiniciar todos los servicios
-docker-compose restart
-
-# Ver recursos utilizados
-docker stats
-
-# Acceder a un contenedor
-docker exec -it ecommerce-backend sh
-docker exec -it ecommerce-frontend sh
-docker exec -it ecommerce-mysql mysql -u root -ppassword
-```
-
----
-
-## Solución Rápida de Problemas
-
-| Problema | Método 1 (Desarrollo) | Método 2 (Docker) |
-|----------|----------------------|-------------------|
-| **Puerto 8081 ocupado** | Detener procesos Java:<br>`Get-Process java \| Stop-Process` | Cambiar puerto en `docker-compose.yml`:<br>`"3306:3306"` → `"8082:8081"` |
-| **Puerto 3306 ocupado** | Cambiar mapeo: `-p 3309:3306` | Ver: `docker-compose ps` |
-| **Error de conexión BD** | Verificar MySQL:<br>`docker ps \| Select-String mysql` | Ver logs:<br>`docker-compose logs mysql-db` |
-| **Productos no cargan** | Verificar backend:<br>`curl http://localhost:8081/api/productos` | Ver logs backend:<br>`docker-compose logs backend` |
-| **Login no funciona** | Credenciales:<br>`admin@test.com / admin123` | Credenciales:<br>`admin@test.com / admin123` |
-| **Build falla** | Limpiar y recompilar:<br>`cd backend && mvnd clean package` | Reconstruir sin cache:<br>`docker-compose build --no-cache` |
-| **Frontend no conecta backend** | Verificar CORS | Verificar proxy Nginx:<br>`docker exec ecommerce-frontend nginx -t` |
-| **Contenedores no inician** | - | Ver logs:<br>`docker-compose logs` |
 
 ---
 
@@ -1344,33 +1058,17 @@ El proyecto actual cumple con la estructura esperada y agrega capas adicionales 
 
 ## Docker Compose - Despliegue con Containerización
 
-El proyecto ahora soporta despliegue completo con Docker Compose, incluyendo:
+El proyecto soporta despliegue completo con Docker Compose. Para información detallada sobre:
 
-### Servicios Containerizados
+- ✅ Arquitectura completa con Docker
+- ✅ Configuración de servicios (MySQL, Backend, Frontend)
+- ✅ Multi-stage builds optimizados
+- ✅ Comandos avanzados de Docker Compose
+- ✅ Troubleshooting específico de contenedores
+- ✅ Implementación técnica de Dockerfiles
+- ✅ Variables de entorno y configuración
 
-1. **MySQL 8.0** - Base de datos con volumen persistente
-2. **Backend Spring Boot** - API REST con multi-stage build
-3. **Frontend React + Nginx** - Interfaz web con proxy reverse
-
-### Características de Docker
-
-- ✅ Multi-stage builds para imágenes optimizadas
-- ✅ Healthchecks en todos los servicios
-- ✅ Docker Compose v2.0 para orquestación
-- ✅ Red interna `ecommerce-network`
-- ✅ Volúmenes persistentes para MySQL
-- ✅ Variables de entorno configurables
-
-### Documentación Docker
-
-Para información detallada sobre:
-- Arquitectura completa con Docker
-- Comandos avanzados de Docker Compose
-- Troubleshooting específico de contenedores
-- Implementación técnica de Dockerfiles
-- Variables de entorno y configuración
-
-Consulta: [`DOCKER.md`](./DOCKER.md)
+📖 **Consulta la guía completa**: [`DOCKER.md`](./DOCKER.md)
 
 ---
 

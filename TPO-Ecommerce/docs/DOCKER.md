@@ -2,6 +2,8 @@
 
 Este documento proporciona una guía completa para usar Docker con la aplicación de e-commerce, incluyendo implementación, uso y troubleshooting.
 
+> ⚡ **Para inicio rápido con Docker**, consulta el [README.md](../README.md) que incluye el comando básico: `docker-compose up -d --build`
+
 ## 📋 Tabla de Contenidos
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)

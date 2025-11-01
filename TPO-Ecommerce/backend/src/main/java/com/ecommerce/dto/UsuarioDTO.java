@@ -15,7 +15,9 @@ import java.time.LocalDateTime;
 @Builder
 public class UsuarioDTO {
     private Long id;
+    private String username;
     private String nombre;
+    private String apellido;
     private String email;
     private Role role;
     private LocalDateTime createdAt;
@@ -24,7 +26,9 @@ public class UsuarioDTO {
     // Constructor para mapear desde Usuario (sin password por seguridad)
     public UsuarioDTO(Usuario usuario) {
         this.id = usuario.getId();
+        this.username = usuario.getUsername();
         this.nombre = usuario.getNombre();
+        this.apellido = usuario.getApellido();
         this.email = usuario.getEmail();
         this.role = usuario.getRole();
         this.createdAt = usuario.getCreatedAt();
