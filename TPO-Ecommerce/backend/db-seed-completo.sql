@@ -348,16 +348,15 @@ SELECT '', 'Índices creados',
 -- ============================================
 -- NOTA: Ejecutar estas consultas DESPUÉS de que el backend cree los usuarios
 -- 
--- Asignar productos a usuarios existentes (DISTRIBUCIÓN EQUITATIVA):
+-- Asignar productos a usuarios existentes (Usuario 1 sin productos, solo usuarios 2 y 3):
 
--- Usuario 1: productos 1-34 (34 productos)
-UPDATE productos SET owner_user_id = 1 WHERE id BETWEEN 1 AND 34;
+-- Usuario 1: sin productos (no se asignan productos al usuario 1)
 
--- Usuario 2: productos 35-67 (33 productos)
-UPDATE productos SET owner_user_id = 2 WHERE id BETWEEN 35 AND 67;
+-- Usuario 2: productos 1-50 (50 productos)
+UPDATE productos SET owner_user_id = 2 WHERE id BETWEEN 1 AND 50;
 
--- Usuario 3: productos 68-100 (33 productos)
-UPDATE productos SET owner_user_id = 3 WHERE id BETWEEN 68 AND 100;
+-- Usuario 3: productos 51-100 (50 productos)
+UPDATE productos SET owner_user_id = 3 WHERE id BETWEEN 51 AND 100;
 
 -- ============================================
 -- FINALIZADO
