@@ -42,20 +42,20 @@ const ContactModal = ({ isOpen, onClose }) => {
       <div className="space-y-6">
         {/* Contact Info */}
         <div className="grid sm:grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-blue-50 rounded-lg">
-            <Mail className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900">Email</h3>
-            <p className="text-sm text-gray-600">contacto@ecommerce.com</p>
+          <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+            <Mail className="h-8 w-8 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+            <h3 className="font-semibold text-gray-900 dark:text-white">Email</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">contacto@ecommerce.com</p>
           </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <Phone className="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900">Teléfono</h3>
-            <p className="text-sm text-gray-600">+54 11 1234-5678</p>
+          <div className="text-center p-4 bg-green-50 dark:bg-green-900/30 rounded-lg">
+            <Phone className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+            <h3 className="font-semibold text-gray-900 dark:text-white">Teléfono</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">+54 11 1234-5678</p>
           </div>
-          <div className="text-center p-4 bg-purple-50 rounded-lg">
-            <MapPin className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900">Ubicación</h3>
-            <p className="text-sm text-gray-600">Buenos Aires, Argentina</p>
+          <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
+            <MapPin className="h-8 w-8 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+            <h3 className="font-semibold text-gray-900 dark:text-white">Ubicación</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Buenos Aires, Argentina</p>
           </div>
         </div>
         {/* Contact Form */}
@@ -63,7 +63,7 @@ const ContactModal = ({ isOpen, onClose }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Nombre *
                 </label>
                 <input
@@ -73,12 +73,12 @@ const ContactModal = ({ isOpen, onClose }) => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Tu nombre completo"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Email *
                 </label>
                 <input
@@ -88,13 +88,13 @@ const ContactModal = ({ isOpen, onClose }) => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="tu@email.com"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Asunto *
               </label>
               <input
@@ -104,12 +104,12 @@ const ContactModal = ({ isOpen, onClose }) => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="¿En qué podemos ayudarte?"
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Mensaje *
               </label>
               <textarea
@@ -119,14 +119,14 @@ const ContactModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 required
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Cuéntanos más detalles..."
               />
             </div>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-blue-600 dark:bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>
@@ -143,17 +143,17 @@ const ContactModal = ({ isOpen, onClose }) => {
           </form>
         ) : (
           <div className="text-center py-8">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">¡Mensaje Enviado!</h3>
-            <p className="text-gray-600">
+            <CheckCircle className="h-16 w-16 text-green-500 dark:text-green-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">¡Mensaje Enviado!</h3>
+            <p className="text-gray-600 dark:text-gray-300">
               Gracias por contactarnos. Te responderemos en las próximas 24 horas.
             </p>
           </div>
         )}
         {/* Business Hours */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-2">Horarios de Atención</h3>
-          <div className="text-sm text-gray-600 space-y-1">
+        <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Horarios de Atención</h3>
+          <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
             <p>Lunes a Viernes: 9:00 - 18:00</p>
             <p>Sábados: 9:00 - 13:00</p>
             <p>Domingos: Cerrado</p>

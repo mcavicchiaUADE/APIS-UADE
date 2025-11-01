@@ -16,8 +16,6 @@
 - [**Capítulo 5: Seguridad**](#capítulo-5-seguridad-y-autenticación)
 - [**Capítulo 6: Testing**](#capítulo-6-guía-de-pruebas)
 - [**Capítulo 7: Sistema de Pedidos**](#capítulo-7-sistema-de-pedidos)
-- [**Capítulo 8: Análisis Comparativo**](#capítulo-8-informe-comparativo)
-- [**Apéndice**](#apéndice-registro-de-cambios)
 
 ---
 
@@ -57,7 +55,7 @@ Este es un sistema de e-commerce marketplace completo que implementa:
 - **Nuevo en el proyecto**: Comienza con el [Capítulo 0](#capítulo-0-inicio-rápido)
 - **Desarrollador Backend**: Capítulos 1, 3, 5
 - **Desarrollador Frontend**: Capítulos 1, 4, 7
-- **Testing/QA**: Capítulos 0, 6
+- **Testing/QA**: Capítulo 6 + Postman Collection
 - **Documentación completa**: Lee todos los capítulos en orden
 
 ---
@@ -170,9 +168,11 @@ El sistema viene con 3 usuarios pre-configurados:
 | **Usuario** | user1@test.com | user1 | user123 |
 | **Usuario** | test@test.com | testuser | test123 |
 
----
+### URLs de Acceso
 
-## Verificación
+- **Frontend**: http://localhost (Docker) / http://localhost:5173 (Local)
+- **Backend API**: http://localhost:8081/api
+- **MySQL**: localhost:3307 (Docker) / localhost:3308 (Local)
 
 ### 1. Verificar Backend
 
@@ -1197,6 +1197,25 @@ El proyecto actual cumple con la estructura esperada y agrega capas adicionales 
 **Última actualización**: Octubre 12, 2025  
 **Versión del documento**: 3.0.0 - **MARKETPLACE**  
 **Estado**: Completo y actualizado con sistema de marketplace multi-vendedor
+## Docker Compose - Despliegue con Containerización
+
+El proyecto soporta despliegue completo con Docker Compose. Para información detallada sobre:
+
+- ✅ Arquitectura completa con Docker
+- ✅ Configuración de servicios (MySQL, Backend, Frontend)
+- ✅ Multi-stage builds optimizados
+- ✅ Comandos avanzados de Docker Compose
+- ✅ Troubleshooting específico de contenedores
+- ✅ Implementación técnica de Dockerfiles
+- ✅ Variables de entorno y configuración
+
+📖 **Consulta la guía completa**: [`DOCKER.md`](./DOCKER.md)
+
+---
+
+**Última actualización**: Octubre 27, 2025  
+**Versión del documento**: 3.1.0 - **MARKETPLACE + DOCKER COMPOSE**  
+**Estado**: Completo con sistema de marketplace multi-vendedor y containerización completa
 
 ---
 

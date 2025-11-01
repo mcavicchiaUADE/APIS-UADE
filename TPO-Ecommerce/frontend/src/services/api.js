@@ -53,9 +53,9 @@ export const api = {
         user: {
           id: response.user.id,
           email: response.user.email,
-          username: response.user.email.split('@')[0], // Usar parte del email como username
+          username: response.user.username || response.user.email.split('@')[0],
           firstName: response.user.nombre,
-          lastName: response.user.nombre, // Backend solo tiene 'nombre'
+          lastName: response.user.apellido || response.user.nombre,
           role: response.user.role.toLowerCase()
         },
         token: response.token
@@ -83,9 +83,9 @@ export const api = {
         user: {
           id: response.user.id,
           email: response.user.email,
-          username: userData.username || response.user.email.split('@')[0],
+          username: response.user.username || userData.username || response.user.email.split('@')[0],
           firstName: response.user.nombre,
-          lastName: response.user.nombre,
+          lastName: response.user.apellido || response.user.nombre,
           role: response.user.role.toLowerCase()
         },
         token: response.token
@@ -106,9 +106,9 @@ export const api = {
       return {
         id: response.id,
         email: response.email,
-        username: response.email.split('@')[0],
+        username: response.username || response.email.split('@')[0],
         firstName: response.nombre,
-        lastName: response.nombre,
+        lastName: response.apellido || response.nombre,
         role: response.role.toLowerCase()
       }
     } catch (error) {
@@ -520,6 +520,173 @@ export const api = {
       return stats
     } catch (error) {
       throw new Error(error.message || 'Error al obtener estadísticas generales')
+    }
+  },
+
+  // ===== ADMIN - GESTIÓN DE USUARIOS =====
+  
+  /**
+   * Obtener todos los usuarios (solo ADMIN)
+   */
+  async getAllUsers() {
+    try {
+      const users = await request('/admin/usuarios')
+      return users.map(user => ({
+        id: user.id,
+        username: user.username,
+        nombre: user.nombre,
+        apellido: user.apellido,
+        email: user.email,
+        role: user.role?.toLowerCase() || 'user',
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }))
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener usuarios')
+    }
+  },
+  
+  /**
+   * Obtener usuario por ID (solo ADMIN)
+   */
+  async getUserById(userId) {
+    try {
+      const user = await request(`/admin/usuarios/${userId}`)
+      return {
+        id: user.id,
+        username: user.username,
+        nombre: user.nombre,
+        apellido: user.apellido,
+        email: user.email,
+        role: user.role?.toLowerCase() || 'user',
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener usuario')
+    }
+  },
+  
+  /**
+   * Crear nuevo usuario (solo ADMIN)
+   */
+  async createUser(userData) {
+    try {
+      const newUser = {
+        username: userData.username,
+        email: userData.email,
+        password: userData.password,
+        nombre: userData.nombre,
+        apellido: userData.apellido,
+        role: userData.role?.toUpperCase() || 'USER'
+      }
+      
+      const created = await request('/admin/usuarios', {
+        method: 'POST',
+        body: JSON.stringify(newUser)
+      })
+      
+      return {
+        id: created.id,
+        username: created.username,
+        nombre: created.nombre,
+        apellido: created.apellido,
+        email: created.email,
+        role: created.role?.toLowerCase() || 'user',
+        createdAt: created.createdAt,
+        updatedAt: created.updatedAt
+      }
+    } catch (error) {
+      throw new Error(error.message || 'Error al crear usuario')
+    }
+  },
+  
+  /**
+   * Actualizar usuario (solo ADMIN)
+   */
+  async updateUser(userId, userData) {
+    try {
+      const updatedUser = {
+        username: userData.username,
+        email: userData.email,
+        nombre: userData.nombre,
+        apellido: userData.apellido,
+        role: userData.role?.toUpperCase()
+      }
+      
+      // Solo incluir password si se proporciona
+      if (userData.password) {
+        updatedUser.password = userData.password
+      }
+      
+      const updated = await request(`/admin/usuarios/${userId}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedUser)
+      })
+      
+      return {
+        id: updated.id,
+        username: updated.username,
+        nombre: updated.nombre,
+        apellido: updated.apellido,
+        email: updated.email,
+        role: updated.role?.toLowerCase() || 'user',
+        createdAt: updated.createdAt,
+        updatedAt: updated.updatedAt
+      }
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar usuario')
+    }
+  },
+  
+  /**
+   * Actualizar solo el rol de un usuario (solo ADMIN)
+   */
+  async updateUserRole(userId, newRole) {
+    try {
+      const updated = await request(`/admin/usuarios/${userId}/rol`, {
+        method: 'PUT',
+        body: JSON.stringify({ role: newRole.toUpperCase() })
+      })
+      
+      return {
+        id: updated.id,
+        username: updated.username,
+        nombre: updated.nombre,
+        apellido: updated.apellido,
+        email: updated.email,
+        role: updated.role?.toLowerCase() || 'user',
+        createdAt: updated.createdAt,
+        updatedAt: updated.updatedAt
+      }
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar rol de usuario')
+    }
+  },
+  
+  /**
+   * Eliminar usuario (solo ADMIN)
+   */
+  async deleteUser(userId) {
+    try {
+      await request(`/admin/usuarios/${userId}`, {
+        method: 'DELETE'
+      })
+      return true
+    } catch (error) {
+      throw new Error(error.message || 'Error al eliminar usuario')
+    }
+  },
+  
+  /**
+   * Obtener estadísticas de usuarios (solo ADMIN)
+   */
+  async getUsersStats() {
+    try {
+      const stats = await request('/admin/usuarios/estadisticas')
+      return stats
+    } catch (error) {
+      throw new Error(error.message || 'Error al obtener estadísticas de usuarios')
     }
   },
 }

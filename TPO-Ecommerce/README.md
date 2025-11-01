@@ -61,34 +61,30 @@ npm run start
 ```
 TPO-Ecommerce/
 ├── backend/                 # Spring Boot + MySQL
-│   ├── src/main/java/       # Código Java
-│   ├── src/main/resources/  # Configuración
+│   ├── src/main/java/      # Código Java
+│   ├── src/main/resources/ # Configuración
 │   └── postman-collection-complete.json
-├── src/                     # React Frontend
-│   ├── pages/              # Páginas principales
-│   ├── components/         # Componentes reutilizables
-│   ├── context/            # Estado global
-│   └── services/api.js     # API integrada con backend
+├── frontend/               # React Frontend
+│   ├── src/
+│   │   ├── pages/         # Páginas principales
+│   │   ├── components/    # Componentes reutilizables
+│   │   ├── context/        # Estado global
+│   │   └── services/api.js # API integrada con backend
+│   └── package.json
 ├── docs/                   # Documentación completa
-│   ├── SETUP.md           # Guía de configuración
-│   ├── BACKEND.md         # Documentación del backend
-│   ├── TESTING.md         # Guía de pruebas
-│   ├── INTEGRATION.md     # Integración frontend-backend
-│   ├── CREDENTIALS.md     # Credenciales de acceso
-│   └── ARCHITECTURE.md    # Arquitectura del sistema
-└── package.json
+│   ├── DOCUMENTACION-COMPLETA.md  # Guía completa de desarrollo
+│   └── DOCKER.md          # Guía específica de Docker
+├── docker-compose.yml      # Orquestación Docker
+└── package.json           # Scripts de desarrollo
 ```
 
 ---
 
 ## 📚 Documentación
 
-- **[Guía de Configuración](./docs/SETUP.md)** - Instalación paso a paso
-- **[Documentación del Backend](./docs/BACKEND.md)** - API y endpoints
-- **[Guía de Pruebas](./docs/TESTING.md)** - Testing y validación
-- **[Integración](./docs/INTEGRATION.md)** - Frontend ↔ Backend
-- **[Credenciales](./docs/CREDENTIALS.md)** - Usuarios de prueba
-- **[Arquitectura](./docs/ARCHITECTURE.md)** - Diseño del sistema
+- **[Documentación Completa](./docs/DOCUMENTACION-COMPLETA.md)** - Guía completa de desarrollo, arquitectura, backend, frontend, testing
+- **[Guía de Docker](./docs/DOCKER.md)** - Configuración, comandos y troubleshooting de Docker
+- **Postman Collection**: `backend/postman-collection-complete.json` - Colección completa para testing de la API
 
 ---
 
@@ -191,9 +187,10 @@ npm run start
 
 ## 📈 Próximos Pasos
 
-- [ ] Sistema de órdenes/pedidos
-- [ ] Panel de administración avanzado
-- [ ] Gestión de usuarios completa
+- [x] Sistema de órdenes/pedidos ✅
+- [x] Panel de administración ✅
+- [x] Gestión de usuarios ✅
+- [x] Sistema de marketplace multi-vendedor ✅
 - [ ] Sistema de reviews y ratings
 - [ ] Pasarela de pagos
 - [ ] Deploy a producción
@@ -212,4 +209,4 @@ Las contribuciones son bienvenidas. Por favor, abre un issue primero para discut
 
 ---
 
-**¿Necesitas ayuda?** Consulta la [documentación completa](./docs/) o abre un issue.
+**¿Necesitas ayuda?** Consulta la [documentación completa](./docs/DOCUMENTACION-COMPLETA.md) o la [guía de Docker](./docs/DOCKER.md).
