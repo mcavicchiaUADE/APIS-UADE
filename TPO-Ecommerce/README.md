@@ -43,7 +43,8 @@ npm run start
 
 ### Credenciales de Prueba:
 - **Admin**: `admin@test.com` / `admin123`
-- **User**: `user1@test.com` / `user123`
+- **Usuario**: `user1@test.com` / `user123`
+- **Usuario**: `test@test.com` / `test123`
 
 > 📖 Para más información sobre Docker, consulta [DOCKER.md](./docs/DOCKER.md)
 

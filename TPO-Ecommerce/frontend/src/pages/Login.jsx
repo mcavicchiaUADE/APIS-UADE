@@ -323,6 +323,9 @@ const Login = () => {
                 <p>
                   <strong>Usuario:</strong> user1@test.com / user123
                 </p>
+                <p>
+                  <strong>Usuario:</strong> test@test.com / test123
+                </p>
               </div>
             </div>
           )}

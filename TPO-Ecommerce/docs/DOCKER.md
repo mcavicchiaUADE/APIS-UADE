@@ -88,6 +88,7 @@ Este comando:
 
 - **Admin**: `admin@test.com` / `admin123`
 - **Usuario**: `user1@test.com` / `user123`
+- **Usuario**: `test@test.com` / `test123`
 
 ### 4. Verificar Estado
 
