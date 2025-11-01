@@ -4,7 +4,25 @@ Aplicación completa de e-commerce con **React + Vite** (Frontend) y **Spring Bo
 
 ## 🚀 Inicio Rápido
 
-### Setup en 3 pasos:
+### 🐳 Método 1: Docker (Recomendado)
+
+#### Opción A: Desarrollo Local (construir desde código)
+```powershell
+# Construir e iniciar desde código local
+docker-compose up -d --build
+
+# ¡Listo! Los servicios están corriendo
+```
+
+#### Opción B: Producción (usar imágenes de Docker Hub)
+```powershell
+# Descargar y usar imágenes publicadas (más rápido)
+docker-compose -f docker-compose.prod.yml up -d
+
+# ¡Listo! Los servicios están corriendo
+```
+
+### 💻 Método 2: Desarrollo Local (Manual)
 
 ```powershell
 # 1. MySQL con Docker
@@ -90,6 +108,33 @@ TPO-Ecommerce/
 
 ## 🛠️ Comandos Útiles
 
+### 🐳 Docker Compose (Recomendado)
+
+#### Desarrollo Local (construir desde código)
+```powershell
+# Construir e iniciar desde código local
+docker-compose up -d --build        # Construir e iniciar todo
+docker-compose logs -f             # Ver logs en tiempo real
+docker-compose ps                   # Ver estado de servicios
+docker-compose restart              # Reiniciar servicios
+docker-compose down                 # Detener servicios
+docker-compose down -v              # Detener y eliminar volúmenes
+```
+
+#### Producción (usar imágenes de Docker Hub)
+```powershell
+# Usar imágenes publicadas en Docker Hub (más rápido)
+docker-compose -f docker-compose.prod.yml up -d     # Descargar y usar imágenes de Docker Hub
+docker-compose -f docker-compose.prod.yml logs -f   # Ver logs
+docker-compose -f docker-compose.prod.yml ps         # Ver estado
+docker-compose -f docker-compose.prod.yml down       # Detener servicios
+```
+
+**Diferencia**:
+- `docker-compose.yml` → Construye las imágenes desde tu código local
+- `docker-compose.prod.yml` → Descarga y usa las imágenes de Docker Hub (`bautistabozzer/ecommerce-backend:latest`)
+
+### 💻 Desarrollo Local
 ```powershell
 # Desarrollo
 npm run dev              # Solo frontend
