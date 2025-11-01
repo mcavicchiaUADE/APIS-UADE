@@ -296,8 +296,7 @@ public class PedidoService {
                 .count();
         long itemsCancelados = items.stream()
                 .filter(item -> item.getEstadoItem() == EstadoPedido.CANCELADO_COMPRADOR || 
-                              item.getEstadoItem() == EstadoPedido.CANCELADO_VENDEDOR ||
-                              item.getEstadoItem() == EstadoPedido.CANCELADO)
+                              item.getEstadoItem() == EstadoPedido.CANCELADO_VENDEDOR)
                 .count();
         long itemsEnTransito = items.stream()
                 .filter(item -> item.getEstadoItem() == EstadoPedido.EN_TRANSITO)
@@ -402,8 +401,7 @@ public class PedidoService {
         }
         
         // Estados finales no pueden cambiar
-        else if (estadoActual == EstadoPedido.CANCELADO || 
-                 estadoActual == EstadoPedido.CANCELADO_COMPRADOR || 
+        else if (estadoActual == EstadoPedido.CANCELADO_COMPRADOR || 
                  estadoActual == EstadoPedido.CANCELADO_VENDEDOR || 
                  estadoActual == EstadoPedido.DEVUELTO) {
             throw new IllegalArgumentException("No se puede cambiar el estado de un item cancelado o devuelto");
