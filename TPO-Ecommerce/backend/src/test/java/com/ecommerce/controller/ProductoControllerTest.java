@@ -6,6 +6,7 @@ import com.ecommerce.entity.Producto;
 import com.ecommerce.entity.Usuario;
 import com.ecommerce.exception.ProductoNotFoundException;
 import com.ecommerce.service.ProductoService;
+import com.ecommerce.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +34,9 @@ class ProductoControllerTest {
 
     @Mock
     private ProductoService productoService;
+    
+    @Mock
+    private JwtUtil jwtUtil;
 
     @InjectMocks
     private ProductoController productoController;
@@ -110,16 +116,20 @@ class ProductoControllerTest {
     @DisplayName("Debería crear un nuevo producto")
     void testCrearProducto() {
         // Arrange
-        when(productoService.crearProducto(any(Producto.class))).thenReturn(producto);
+        String authHeader = "Bearer test-token";
+        Long userId = 1L;
+        
+        when(jwtUtil.getUserIdFromToken("test-token")).thenReturn(userId);
+        when(productoService.crearProducto(any(Producto.class), eq(userId))).thenReturn(producto);
 
         // Act
-        ResponseEntity<ProductoDTO> respuesta = productoController.crearProducto(producto);
+        ResponseEntity<ProductoDTO> respuesta = productoController.crearProducto(producto, authHeader);
 
         // Assert
         assertEquals(HttpStatus.CREATED, respuesta.getStatusCode());
         assertNotNull(respuesta.getBody());
         assertEquals("Laptop", respuesta.getBody().getName());
-        verify(productoService, times(1)).crearProducto(any(Producto.class));
+        verify(productoService, times(1)).crearProducto(any(Producto.class), eq(userId));
     }
 
     @Test

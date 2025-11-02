@@ -3,7 +3,9 @@ package com.ecommerce.controller;
 import com.ecommerce.dto.ProductoDTO;
 import com.ecommerce.entity.Producto;
 import com.ecommerce.exception.ProductoNotFoundException;
+import com.ecommerce.exception.UnauthorizedException;
 import com.ecommerce.service.ProductoService;
+import com.ecommerce.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class ProductoController {
     
     @Autowired
     private ProductoService productoService;
+    
+    @Autowired
+    private JwtUtil jwtUtil;
     
     /**
      * GET /api/productos
@@ -48,10 +53,20 @@ public class ProductoController {
     /**
      * POST /api/productos
      * Crea un nuevo producto
+     * Asigna automáticamente el producto al vendedor autenticado
      */
     @PostMapping
-    public ResponseEntity<ProductoDTO> crearProducto(@RequestBody Producto producto) {
-        Producto productoCreado = productoService.crearProducto(producto);
+    public ResponseEntity<ProductoDTO> crearProducto(
+            @RequestBody Producto producto,
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        // Obtener usuario del token
+        Long userId = getUserIdFromAuth(authHeader);
+        if (userId == null) {
+            throw new UnauthorizedException("Debe iniciar sesión para crear un producto");
+        }
+        
+        // Crear el producto asignándolo al usuario autenticado
+        Producto productoCreado = productoService.crearProducto(producto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ProductoDTO(productoCreado));
     }
     
@@ -125,5 +140,23 @@ public class ProductoController {
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("Servicio de productos funcionando correctamente");
+    }
+    
+    // ===== MÉTODOS AUXILIARES =====
+    
+    /**
+     * Extrae el ID del usuario del token JWT
+     */
+    private Long getUserIdFromAuth(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        
+        try {
+            String token = authHeader.substring(7);
+            return jwtUtil.getUserIdFromToken(token);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
