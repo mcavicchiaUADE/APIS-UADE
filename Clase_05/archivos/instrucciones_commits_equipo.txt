@@ -1,0 +1,83 @@
+📦 REPO: https://github.com/mcavicchiaUADE/APIS-UADE.git  
+🌿 RAMA ORIGEN: bbozzer  
+🎯 OBJETIVO: cada integrante toma 1 commit de la rama bbozzer, lo pasa a su rama personal y hace PR al main.
+
+⚙️ PASOS GENERALES (TODOS)
+----------------------------------
+git fetch origin
+git checkout <tu-rama-personal>
+git pull origin <tu-rama-personal>
+git cherry-pick <SHA-del-commit>   # usar el que corresponda
+git push origin <tu-rama-personal>
+
+Después abrir Pull Request hacia main.
+
+----------------------------------
+👤 INTEGRANTE 1 – Commit A
+----------------------------------
+SHA: 966a15f0d484f1f54fde950ac6c3a21343951c32
+
+git fetch origin
+git checkout <rama-integrante1>
+git pull origin <rama-integrante1>
+git cherry-pick 966a15f0d484f1f54fde950ac6c3a21343951c32
+git push origin <rama-integrante1>
+
+PR → "Integración del commit A desde la rama bbozzer"
+
+----------------------------------
+👤 INTEGRANTE 2 – Commit B
+----------------------------------
+SHA: abb863de12153d79541171bde8737026b286772f
+
+git fetch origin
+git checkout <rama-integrante2>
+git pull origin <rama-integrante2>
+git cherry-pick abb863de12153d79541171bde8737026b286772f
+git push origin <rama-integrante2>
+
+PR → "Integración del commit B desde la rama bbozzer"
+⚠️ Mergear después del commit A.
+
+----------------------------------
+👤 INTEGRANTE 3 – Commit C
+----------------------------------
+SHA: 6dc396dae88c3b536f350a9a9c22c76578ffe1ff
+
+git fetch origin
+git checkout <rama-integrante3>
+git pull origin <rama-integrante3>
+git rebase origin/main    # asegurarse de que A y B ya estén mergeados
+git cherry-pick 6dc396dae88c3b536f350a9a9c22c76578ffe1ff
+git push origin <rama-integrante3>
+
+PR → "Integración del commit C desde la rama bbozzer"
+⚠️ Mergear después del commit B.
+
+----------------------------------
+👤 INTEGRANTE 4 – Commit D
+----------------------------------
+SHA: 188157cd8cf5f01ab146588f7476473e800214cf
+
+git fetch origin
+git checkout <rama-integrante4>
+git pull origin <rama-integrante4>
+git rebase origin/main    # asegurarse de que A, B y C ya estén mergeados
+git cherry-pick 188157cd8cf5f01ab146588f7476473e800214cf
+git push origin <rama-integrante4>
+
+PR → "Integración del commit D desde la rama bbozzer"
+⚠️ Este se mergea último.
+
+----------------------------------
+✅ ORDEN DE MERGES AL MAIN
+----------------------------------
+1️⃣ Commit A → Integrante 1
+2️⃣ Commit B → Integrante 2
+3️⃣ Commit C → Integrante 3
+4️⃣ Commit D → Integrante 4
+
+IMPORTANTE:
+- No usar “Squash and Merge” (para que se mantenga el autor original).
+- Hacer los PRs en orden.
+- Confirmar que el main está actualizado antes de cada cherry-pick.
