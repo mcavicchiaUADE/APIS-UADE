@@ -1,0 +1,962 @@
+{
+  "info": {
+    "name": "E-commerce Backend API - Completa",
+    "description": "Colección completa de Postman para probar el backend del e-commerce con todas las funcionalidades: Productos, Categorías, Usuarios, Autenticación, Pedidos, Ventas (Marketplace), Administración y Estadísticas. Incluye gestión completa del ciclo de vida de pedidos con control de stock y sistema de marketplace multi-vendedor.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "3.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT del usuario autenticado (obtenerlo del endpoint Login)"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT del administrador (obtenerlo del endpoint Login con credenciales de admin)"
+    },
+    {
+      "key": "userToken",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT de un usuario regular (obtenerlo del endpoint Login con credenciales de usuario)"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 AUTENTICACIÓN",
+      "item": [
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"adminToken\", jsonData.token);",
+                  "    console.log(\"Admin token guardado:\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"emailOrUsername\": \"admin@test.com\",\n    \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Autentica un administrador y obtiene un token JWT. El token se guarda automáticamente en la variable `adminToken`."
+          }
+        },
+        {
+          "name": "Login (Usuario)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"token\", jsonData.token);",
+                  "    pm.collectionVariables.set(\"userToken\", jsonData.token);",
+                  "    console.log(\"User token guardado:\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"emailOrUsername\": \"user1@test.com\",\n    \"password\": \"user123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Autentica un usuario regular y obtiene un token JWT. El token se guarda automáticamente en las variables `token` y `userToken`. También puedes usar `username` en lugar de `emailOrUsername`."
+          }
+        },
+        {
+          "name": "Registro de usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"token\", jsonData.token);",
+                  "    console.log(\"Token guardado:\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@ejemplo.com\",\n    \"password\": \"test123\",\n    \"nombre\": \"Usuario Test\",\n    \"apellido\": \"Apellido Test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Registra un nuevo usuario. El usuario se crea con rol USER por defecto. Devuelve un token JWT automáticamente."
+          }
+        },
+        {
+          "name": "Validar token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT a validar"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/validate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "validate"]
+            },
+            "description": "Valida si un token JWT es válido y no ha expirado. Devuelve la información del usuario si el token es válido."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏠 PRODUCTOS",
+      "item": [
+        {
+          "name": "Obtener todos los productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Obtiene todos los productos disponibles con sus categorías y usuarios propietarios. Endpoint público."
+          }
+        },
+        {
+          "name": "Obtener producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            },
+            "description": "Obtiene un producto específico por su ID. Endpoint público."
+          }
+        },
+        {
+          "name": "Buscar productos por nombre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/buscar?nombre=iPhone",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "buscar"],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "iPhone",
+                  "description": "Término de búsqueda (búsqueda parcial, case-insensitive)"
+                }
+              ]
+            },
+            "description": "Busca productos por nombre usando búsqueda parcial. Endpoint público."
+          }
+        },
+        {
+          "name": "Buscar productos por categoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/categoria/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "categoria", "1"]
+            },
+            "description": "Obtiene todos los productos de una categoría específica. Endpoint público."
+          }
+        },
+        {
+          "name": "Buscar productos por stock",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/stock?disponible=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "stock"],
+              "query": [
+                {
+                  "key": "disponible",
+                  "value": "true",
+                  "description": "true para productos con stock, false para productos sin stock"
+                }
+              ]
+            },
+            "description": "Busca productos según disponibilidad de stock. Endpoint público."
+          }
+        },
+        {
+          "name": "Crear nuevo producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT requerido"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Nuevo Producto Test\",\n    \"description\": \"Descripción del nuevo producto\",\n    \"price\": 99.99,\n    \"stock\": 10,\n    \"images\": [\"https://example.com/image.jpg\"],\n    \"categoriaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Crea un nuevo producto. Requiere autenticación. El usuario autenticado será el propietario del producto (owner)."
+          }
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT requerido"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Producto Actualizado\",\n    \"description\": \"Descripción actualizada\",\n    \"price\": 149.99,\n    \"stock\": 15,\n    \"images\": [\"https://example.com/updated-image.jpg\"],\n    \"categoriaId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            },
+            "description": "Actualiza un producto existente. Requiere autenticación. Solo el propietario del producto o un ADMIN pueden actualizarlo."
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT requerido"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            },
+            "description": "Elimina un producto. Requiere autenticación. Solo el propietario del producto o un ADMIN pueden eliminarlo."
+          }
+        },
+        {
+          "name": "Health Check - Productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "health"]
+            },
+            "description": "Endpoint de salud para verificar que el servicio de productos está funcionando. Endpoint público."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📂 CATEGORÍAS",
+      "item": [
+        {
+          "name": "Obtener todas las categorías",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias"]
+            },
+            "description": "Obtiene todas las categorías disponibles. Endpoint público."
+          }
+        },
+        {
+          "name": "Obtener categoría por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "1"]
+            },
+            "description": "Obtiene una categoría específica por su ID. Endpoint público."
+          }
+        },
+        {
+          "name": "Crear nueva categoría",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT requerido"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Nueva Categoría\",\n    \"descripcion\": \"Descripción de la nueva categoría\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias"]
+            },
+            "description": "Crea una nueva categoría. Requiere autenticación."
+          }
+        },
+        {
+          "name": "Actualizar categoría",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT requerido"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Categoría Actualizada\",\n    \"descripcion\": \"Descripción actualizada\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "1"]
+            },
+            "description": "Actualiza una categoría existente. Requiere autenticación."
+          }
+        },
+        {
+          "name": "Eliminar categoría",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT requerido"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "1"]
+            },
+            "description": "Elimina una categoría. Requiere autenticación."
+          }
+        },
+        {
+          "name": "Health Check - Categorías",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "health"]
+            },
+            "description": "Endpoint de salud para verificar que el servicio de categorías está funcionando. Endpoint público."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 PEDIDOS",
+      "item": [
+        {
+          "name": "Crear nuevo pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"items\": [\n        {\n            \"productoId\": 1,\n            \"cantidad\": 2\n        },\n        {\n            \"productoId\": 3,\n            \"cantidad\": 1\n        }\n    ],\n    \"direccionEnvio\": \"Av. Ejemplo 123, CABA, Argentina\",\n    \"notas\": \"Entregar en horario de oficina\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos"]
+            },
+            "description": "Crea un nuevo pedido desde el carrito. Requiere autenticación. El pedido se crea en estado PENDIENTE y descuenta stock automáticamente. Cada item del pedido se asigna al vendedor (owner del producto)."
+          }
+        },
+        {
+          "name": "Obtener mis pedidos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/mis-pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "mis-pedidos"]
+            },
+            "description": "Obtiene el historial completo de pedidos del usuario autenticado (como comprador)."
+          }
+        },
+        {
+          "name": "Obtener pedido por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "1"]
+            },
+            "description": "Obtiene un pedido específico por ID. Solo el dueño del pedido o un ADMIN pueden verlo. Incluye detalles de cada item con información del vendedor."
+          }
+        },
+        {
+          "name": "Cancelar pedido",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del usuario autenticado"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/1/cancelar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "1", "cancelar"]
+            },
+            "description": "Cancela un pedido (solo si está en estado PENDIENTE). Restaura el stock de los productos automáticamente. Solo el dueño del pedido puede cancelarlo."
+          }
+        },
+        {
+          "name": "Obtener todos los pedidos (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos"]
+            },
+            "description": "Obtiene todos los pedidos del sistema. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Obtener pedidos por estado (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/estado/PENDIENTE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "estado", "PENDIENTE"]
+            },
+            "description": "Obtiene pedidos filtrados por estado. Estados válidos: PENDIENTE, CONFIRMADO, ENVIADO, EN_TRANSITO, ENTREGADO, CANCELADO_COMPRADOR, CANCELADO_VENDEDOR, DEVOLUCION_SOLICITADA, DEVUELTO. Solo para administradores."
+          }
+        },
+        {
+          "name": "Actualizar estado de pedido (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/1/estado?estado=CONFIRMADO",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "1", "estado"],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "CONFIRMADO",
+                  "description": "Nuevo estado del pedido. Estados válidos: PENDIENTE, CONFIRMADO, ENVIADO, EN_TRANSITO, ENTREGADO, CANCELADO_COMPRADOR, CANCELADO_VENDEDOR, DEVOLUCION_SOLICITADA, DEVUELTO"
+                }
+              ]
+            },
+            "description": "Actualiza el estado general de un pedido. Solo accesible para administradores. Nota: Los vendedores pueden actualizar estados de items individuales desde /api/ventas."
+          }
+        },
+        {
+          "name": "Obtener todas las ventas (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/admin/ventas-totales",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "admin", "ventas-totales"]
+            },
+            "description": "Obtiene todas las ventas (items vendidos) de todos los vendedores en el marketplace. Incluye información del vendedor y comprador por cada item. Solo para administradores."
+          }
+        },
+        {
+          "name": "Estadísticas generales del marketplace (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/admin/estadisticas-generales",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "admin", "estadisticas-generales"]
+            },
+            "description": "Obtiene estadísticas generales del marketplace: total de pedidos, total de items, items pendientes, items entregados, etc. Solo para administradores."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛍️ VENTAS (Marketplace - Vendedor)",
+      "item": [
+        {
+          "name": "Obtener mis ventas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del vendedor"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ventas/mis-ventas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ventas", "mis-ventas"]
+            },
+            "description": "Obtiene todas las ventas del usuario autenticado (como vendedor). Incluye todos los items que el usuario ha vendido, con información del comprador y estado de cada item."
+          }
+        },
+        {
+          "name": "Obtener mis ventas por estado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del vendedor"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ventas/mis-ventas/estado/PENDIENTE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ventas", "mis-ventas", "estado", "PENDIENTE"]
+            },
+            "description": "Obtiene las ventas del vendedor filtradas por estado del item. Estados válidos: PENDIENTE, CONFIRMADO, PREPARANDO, ENVIADO, EN_TRANSITO, ENTREGADO, CANCELADO_COMPRADOR, CANCELADO_VENDEDOR, DEVOLUCION_SOLICITADA, DEVUELTO."
+          }
+        },
+        {
+          "name": "Obtener detalle de venta por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del vendedor"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ventas/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ventas", "1"]
+            },
+            "description": "Obtiene el detalle de una venta específica (item de pedido). Solo el vendedor del item puede verlo. Incluye información completa del comprador y del pedido."
+          }
+        },
+        {
+          "name": "Actualizar estado de item de venta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del vendedor"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ventas/1/estado?estado=CONFIRMADO",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ventas", "1", "estado"],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "CONFIRMADO",
+                  "description": "Nuevo estado del item. Estados válidos: PENDIENTE → CONFIRMADO → PREPARANDO → ENVIADO → EN_TRANSITO → ENTREGADO. También puede cancelarse (CANCELADO_VENDEDOR) desde PENDIENTE o CONFIRMADO."
+                }
+              ]
+            },
+            "description": "Actualiza el estado de un item de venta. Solo el vendedor del item puede actualizarlo. El estado del pedido general se sincroniza automáticamente basándose en los estados de todos sus items."
+          }
+        },
+        {
+          "name": "Estadísticas de mis ventas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Token JWT del vendedor"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ventas/estadisticas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ventas", "estadisticas"]
+            },
+            "description": "Obtiene estadísticas de ventas del vendedor: total de ventas, ventas pendientes, confirmadas, enviadas, entregadas, canceladas, etc."
+          }
+        }
+      ]
+    },
+    {
+      "name": "👑 ADMINISTRACIÓN",
+      "item": [
+        {
+          "name": "Obtener todos los usuarios (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios"]
+            },
+            "description": "Obtiene todos los usuarios del sistema. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Obtener usuario por ID (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios", "1"]
+            },
+            "description": "Obtiene un usuario específico por ID. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Crear nuevo usuario (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"nuevousuario\",\n    \"email\": \"nuevo@ejemplo.com\",\n    \"password\": \"password123\",\n    \"nombre\": \"Nuevo Usuario\",\n    \"apellido\": \"Apellido Usuario\",\n    \"role\": \"USER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios"]
+            },
+            "description": "Crea un nuevo usuario. El administrador puede asignar el rol (USER o ADMIN). Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Actualizar usuario (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"usuariomodificado\",\n    \"email\": \"modificado@ejemplo.com\",\n    \"nombre\": \"Usuario Modificado\",\n    \"apellido\": \"Apellido Modificado\",\n    \"password\": \"nuevopassword123\",\n    \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios", "1"]
+            },
+            "description": "Actualiza un usuario existente. El administrador puede cambiar cualquier campo incluyendo el rol. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Actualizar solo el rol de usuario (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios/1/rol",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios", "1", "rol"]
+            },
+            "description": "Actualiza solo el rol de un usuario. Útil para promover usuarios a ADMIN o degradar de ADMIN a USER. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Eliminar usuario (ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios", "1"]
+            },
+            "description": "Elimina un usuario del sistema. Solo accesible para administradores."
+          }
+        },
+        {
+          "name": "Estadísticas de usuarios (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "description": "Token JWT de un usuario ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/usuarios/estadisticas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "usuarios", "estadisticas"]
+            },
+            "description": "Obtiene estadísticas de usuarios: total de usuarios, cantidad de administradores, cantidad de usuarios regulares. Solo accesible para administradores."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧪 HEALTH & INFO",
+      "item": [
+        {
+          "name": "Health Check - Root",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "Endpoint raíz. Debería devolver 403 por Spring Security si no hay autenticación."
+          }
+        },
+        {
+          "name": "Health Check - Categorías",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "health"]
+            },
+            "description": "Verifica que el servicio de categorías está funcionando."
+          }
+        },
+        {
+          "name": "Health Check - Productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "health"]
+            },
+            "description": "Verifica que el servicio de productos está funcionando."
+          }
+        }
+      ]
+    }
+  ]
+}
