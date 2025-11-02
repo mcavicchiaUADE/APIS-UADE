@@ -348,12 +348,15 @@ SELECT '', 'Índices creados',
 -- ============================================
 -- NOTA: Ejecutar estas consultas DESPUÉS de que el backend cree los usuarios
 -- 
--- Asignar productos a usuarios existentes (ejemplo):
--- UPDATE productos SET owner_user_id = 1 WHERE id BETWEEN 1 AND 50;  -- Admin
--- UPDATE productos SET owner_user_id = 2 WHERE id BETWEEN 51 AND 100; -- Usuario
--- 
--- O asignar todos los productos al primer usuario disponible:
--- UPDATE productos SET owner_user_id = (SELECT id FROM usuarios LIMIT 1) WHERE owner_user_id IS NULL;
+-- Asignar productos a usuarios existentes (Usuario 1 sin productos, solo usuarios 2 y 3):
+
+-- Usuario 1: sin productos (no se asignan productos al usuario 1)
+
+-- Usuario 2: productos 1-50 (50 productos)
+UPDATE productos SET owner_user_id = 2 WHERE id BETWEEN 1 AND 50;
+
+-- Usuario 3: productos 51-100 (50 productos)
+UPDATE productos SET owner_user_id = 3 WHERE id BETWEEN 51 AND 100;
 
 -- ============================================
 -- FINALIZADO
