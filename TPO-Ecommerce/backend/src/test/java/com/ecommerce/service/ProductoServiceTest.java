@@ -4,6 +4,7 @@ import com.ecommerce.entity.Categoria;
 import com.ecommerce.entity.Producto;
 import com.ecommerce.entity.Usuario;
 import com.ecommerce.repository.ProductoRepository;
+import com.ecommerce.service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class ProductoServiceTest {
 
     @Mock
     private ProductoRepository productoRepository;
+    
+    @Mock
+    private UsuarioService usuarioService;
 
     @InjectMocks
     private ProductoService productoService;
@@ -114,12 +118,14 @@ class ProductoServiceTest {
     @DisplayName("Debería crear un nuevo producto correctamente")
     void testCrearProducto() {
         // Arrange
+        Long ownerUserId = 1L;
         Producto nuevoProducto = Producto.builder()
                 .name("Tablet")
                 .price(new BigDecimal("500.00"))
                 .stock(5)
                 .build();
 
+        when(usuarioService.findById(ownerUserId)).thenReturn(usuario);
         when(productoRepository.save(any(Producto.class))).thenAnswer(invocation -> {
             Producto p = invocation.getArgument(0);
             p.setId(2L);
@@ -128,12 +134,15 @@ class ProductoServiceTest {
         });
 
         // Act
-        Producto resultado = productoService.crearProducto(nuevoProducto);
+        Producto resultado = productoService.crearProducto(nuevoProducto, ownerUserId);
 
         // Assert
         assertNotNull(resultado);
         assertNotNull(resultado.getId());
         assertNotNull(resultado.getCreatedAt());
+        assertNotNull(resultado.getOwnerUser());
+        assertEquals(ownerUserId, resultado.getOwnerUser().getId());
+        verify(usuarioService, times(1)).findById(ownerUserId);
         verify(productoRepository, times(1)).save(any(Producto.class));
     }
 

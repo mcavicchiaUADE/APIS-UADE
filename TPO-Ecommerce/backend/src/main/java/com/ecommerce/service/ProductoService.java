@@ -1,6 +1,8 @@
 package com.ecommerce.service;
 
 import com.ecommerce.entity.Producto;
+import com.ecommerce.entity.Usuario;
+import com.ecommerce.exception.UsuarioNotFoundException;
 import com.ecommerce.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
+    
+    @Autowired
+    private UsuarioService usuarioService;
 
     /**
      * Obtener todos los productos
@@ -36,9 +41,19 @@ public class ProductoService {
 
     /**
      * Crear nuevo producto
+     * Asigna automáticamente el producto al usuario (vendedor) que lo crea
      */
-    public Producto crearProducto(Producto producto) {
+    public Producto crearProducto(Producto producto, Long ownerUserId) {
+        // Obtener el usuario propietario
+        Usuario ownerUser = usuarioService.findById(ownerUserId);
+        if (ownerUser == null) {
+            throw new UsuarioNotFoundException(ownerUserId);
+        }
+        
+        // Asignar el usuario como propietario del producto
+        producto.setOwnerUser(ownerUser);
         producto.setCreatedAt(LocalDateTime.now());
+        
         return productoRepository.save(producto);
     }
 
