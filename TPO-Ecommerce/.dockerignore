@@ -1,0 +1,73 @@
+# ========================================
+# .dockerignore - Raíz del proyecto
+# ========================================
+# Excluye archivos innecesarios si se construye desde la raíz
+# (Aunque normalmente se construye desde backend/ y frontend/)
+
+# Node modules (frontend)
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Maven build artifacts (backend)
+**/target/
+**/.m2/
+**/.mvn/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Logs
+*.log
+logs/
+
+# Docker files (no copiar dentro de contenedores)
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
+
+# Documentation
+docs/
+README.md
+*.md
+!backend/README.md
+!frontend/README.md
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.example
+
+# Database scripts (no necesarios en imagen)
+**/db-seed*.sql
+
+# Testing
+coverage/
+.nyc_output/
+**/coverage/
+
+# Misc
+*.pem
+vercel/
+.vercel
+

@@ -53,8 +53,10 @@ public class AuthController {
                 .token(token)
                 .user(UsuarioDTO.builder()
                         .id(usuario.getId())
+                        .username(usuario.getUsername())
                         .email(usuario.getEmail())
                         .nombre(usuario.getNombre())
+                        .apellido(usuario.getApellido())
                         .role(usuario.getRole())
                         .build())
                 .build();
@@ -94,8 +96,10 @@ public class AuthController {
                 .token(token)
                 .user(UsuarioDTO.builder()
                         .id(usuarioGuardado.getId())
+                        .username(usuarioGuardado.getUsername())
                         .email(usuarioGuardado.getEmail())
                         .nombre(usuarioGuardado.getNombre())
+                        .apellido(usuarioGuardado.getApellido())
                         .role(usuarioGuardado.getRole())
                         .build())
                 .build();
@@ -124,8 +128,10 @@ public class AuthController {
 
         UsuarioDTO userDTO = UsuarioDTO.builder()
                 .id(usuario.getId())
+                .username(usuario.getUsername())
                 .email(usuario.getEmail())
                 .nombre(usuario.getNombre())
+                .apellido(usuario.getApellido())
                 .role(usuario.getRole())
                 .build();
 

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { useCart } from "../context/CartContext"
-import { ShoppingCart, User, LogOut, Package, ClipboardList, ShoppingBag } from "lucide-react"
+import { ShoppingCart, User, LogOut, Package, ClipboardList, ShoppingBag, Shield } from "lucide-react"
 import ThemeToggle from "./ThemeToggle"
 const Header = () => {
   const { user, logout } = useAuth()
@@ -12,6 +12,7 @@ const Header = () => {
     navigate("/login")
   }
   const cartItemsCount = getCartItemsCount()
+  const isAdmin = user?.role === 'admin'
   return (
     <header className="bg-white dark:bg-gray-700 shadow-md border-b border-gray-200 dark:border-gray-500">
       <div className="container mx-auto px-4">
@@ -46,6 +47,15 @@ const Header = () => {
               <ClipboardList size={18} />
               Mis Pedidos
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center gap-2"
+              >
+                <Shield size={18} />
+                Administración
+              </Link>
+            )}
           </nav>
           {/* User actions */}
           <div className="flex items-center space-x-4">
@@ -93,6 +103,12 @@ const Header = () => {
             <Link to="/orders" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">
               Mis Pedidos
             </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors whitespace-nowrap flex items-center gap-1">
+                <Shield size={16} />
+                Administración
+              </Link>
+            )}
           </div>
         </nav>
       </div>
